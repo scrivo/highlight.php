@@ -1,0 +1,42 @@
+package main
+
+import (
+    "fmt"
+    "rand"
+    "os"
+)
+
+const (
+    Sunday = iota
+    Partyday
+    numberOfDays  // this constant is not exported
+)
+
+type Foo interface {
+    FooFunc(int, float32) (complex128, []int)
+}
+
+// simple comment
+type Bar struct {
+    os.File /* multi
+    line
+    comment */
+
+    PublicData chan int
+}
+
+func main() {
+    ch := make(chan int)
+    ch <- 1
+    x, ok := <- ch
+    ok = true
+    x = nil
+    float_var := 1.0e10
+    defer fmt.Println('\'')
+    defer fmt.Println(`exitting now\`)
+    var fv1 float64 = 0.75
+    go println(len("hello world!"))
+    return
+}
+
+
