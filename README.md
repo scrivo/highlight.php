@@ -10,12 +10,13 @@ use otherwise. But there are occasions where you're better off with a more
 email or for API documents. For this I needed a code highlighting program 
 preferably written in PHP.
 
-I could not found any satisfactory solutions so I decided to port one from
-JavaScript. After some comparison based on license, technology, language
-support highlight.js (softwaremaniacs.org/soft/highlight/en/) came out most
+I couldn't found any satisfactory PHP solution so I decided to port one from
+JavaScript. After some comparison of different highlighting programs 
+based on license, technology, language support 
+[highlight.js](softwaremaniacs.org/soft/highlight/en/) came out most
 favorable in my opinion.
 
 It was my decision not to make a PHP highlighter but to do a port of 
 highlight.js, these are different things. The goal was to make it work
-exactly as highlight.js so language definitions and CSS files of the 
-original program could be used. 
+exactly as highlight.js to make as much use as possible of the
+language definitions and CSS files of the original program. 
