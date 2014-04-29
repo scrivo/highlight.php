@@ -42,80 +42,15 @@ class Highlighter {
 	private $relevance = 0;
 	private $ignoreIllegals = false;
 	
-	private $classMap = array(
-		"python" => "Python",
-		"profile" => "PythonProfiler",
-		"ruby" => "Ruby",
-		"haml" => "Haml",
-		"perl" => "Perl",
-		"php" => "PHP",
-		"scala" => "Scala",
-		"go" => "Go",
-		"xml" => "XML",
-		"html" => "XML",
-		"lasso" => "Lasso",
-		"markdown" => "Markdown",
-		"asciidoc" => "AsciiDoc",
-		"django" => "Django",
-		"handlebars" => "Handlebars",
-		"css" => "CSS",
-		"scss" => "SCSS",
-		"json" => "JSON",
-		"javascript" => "JavaScript",
-		"coffeescript" => "CoffeeScript",
-		"actionscript" => "ActionScript",
-		"vbscript" => "VBScript",
-		"vbnet" => "VBNet",
-		"http" => "HTTP",
-		"lua" => "Lua",
-		"applescript" => "AppleScript",
-		"delphi" => "Delphi",
-		"java" => "Java",
-		"cpp" => "CPP",
-		"objectivec" => "ObjectiveC",
-		"vala" => "Vala",
-		"cs" => "CSharp",
-		"fsharp" => "FSharp",
-		"d" => "D",
-		"rsl" => "RSL",
-		"rib" => "RIB",
-		"mel" => "MEL",
-		"glsl" => "GLSL",
-		"sql" => "SQL",
-		"smalltalk" => "SmallTalk",
-		"lisp" => "Lisp",
-		"clojure" => "Clojure",
-		"ini" => "INI",
-		"apache" => "Apache",
-		"nginx" => "Nginx",
-		"diff" => "Diff",
-		"dos" => "DOS",
-		"bash" => "Bash",
-		"cmake" => "CMake",
-		"axapta" => "Axapta",
-		"ruleslanguage" => "OracleRL",
-		"1c" => "OneC",
-		"avrasm" => "AvrASM",
-		"vhdl" => "VHDL",
-		"parser3" => "Parser3",
-		"tex" => "TeX",
-		"brainfuck" => "Brainfuck",
-		"haskell" => "Haskell",
-		"erlang" => "Erlang",
-		"erlang-repl" => "ErlangREPL",
-		"matlab" => "Matlab",
-		"rust" => "Rust",
-		"r" => "R",
-		"mizar" => "Mizar");
+	private $classMap = array();
 	
 	private $autodetectSet = array(
 		"html", "xml", "json", "javascript", "css", "php", "http"
 	);
 	
 	private function createLanguage($languageId) {
-		if (is_string($this->classMap[$languageId])) {
-			$lang = "Highlight\\Languages\\{$this->classMap[$languageId]}";
-			$this->classMap[$languageId] = new $lang();
+		if (!isset($this->classMap[$languageId])) {
+			$this->classMap[$languageId] = new Language($languageId);
 		}
 		return $this->classMap[$languageId];
 	}
@@ -154,7 +89,7 @@ class Highlighter {
 		if (!$this->top->keywords) {
 			return $buffer;
 		}
-
+				
 		$result = "";
 		$lastIndex = 0;
 		while (preg_match($this->top->lexemsRe, $buffer, $match, PREG_OFFSET_CAPTURE, $lastIndex)) {
@@ -179,8 +114,12 @@ class Highlighter {
 		try {
 			$hl = new Highlighter();
 			$hl->autodetectSet = $this->autodetectSet;
+			$slm = isset($this->top->subLanguageMode) ? 
+				$this->top->subLanguageMode : null;
+			$continuation = $slm === "continuous" && isset($this->top->top)
+				? $this->top->top : null;
 			if ($this->top->subLanguage) {
-				$res = $hl->highlight($this->top->subLanguage, $this->modeBuffer, $this->ignoreIllegals);
+				$res = $hl->highlight($this->top->subLanguage, $this->modeBuffer, $this->ignoreIllegals, $continuation);
 			} else {
 				$res = $hl->highlightAuto($this->modeBuffer);
 			}
@@ -192,6 +131,7 @@ class Highlighter {
 				$this->keywordCount += $res->keywordCount;
 				$this->relevance += $res->relevance;
 			}
+			$this->top->top = $res->top;
 			return "<span class=\"{$res->language}\">{$res->value}</span>";
 				
 		} catch(\Exception $e) {
@@ -264,8 +204,10 @@ class Highlighter {
 		}
 
 		if ($this->isIllegal($lexem, $this->top)) {
-			throw new \Exception("Illegal lexem \"{$lexem}\" for mode \"" .
-				(isset($this->top->className) ? $this->top->className : "unnamed") . "\"");
+			$className = $this->top->className 
+				? $this->top->className : "unnamed";
+			$err = "Illegal lexem \"{$lexem}\" for mode \"{$className}\"";
+			throw new \Exception($err);
 		}
 
 		//Parser should not reach this point as all types of lexems should be caught
@@ -278,17 +220,24 @@ class Highlighter {
 	}
 	
 	public function setAutodetectLanguages(array $set) {
-		$this->autodetectSet = $set;
+		$this->autodetectSet = array_unique($set);
 	}
 
-	public function highlight($language, $code, $ignoreIllegals=true) {
+	public function highlight($language, $code, $ignoreIllegals=true, $continuation=null) {
 		
 		$this->language = $this->createLanguage($language);
-		$this->top = $this->language;
+		$this->top = $continuation ? $continuation : $this->language->mode;
+		$this->result = "";
+		for ($current = $this->top; $current != $this->language->mode; $current = $current->parent) {
+			if ($current->className) {
+				$this->result = 
+					"<span class=\"".$current->className."\">".$this->result;
+			}
+		}
+		
 		$this->modeBuffer = "";
 		$this->relevance = 0;
 		$this->keywordCount = 0;
-		$this->result = "";
 		$this->ignoreIllegals = $ignoreIllegals;
 		
 		$res = new \stdClass;
@@ -296,6 +245,7 @@ class Highlighter {
 		$res->value = "";
 		$res->keywordCount = 0;
 		$res->language = "";
+		$res->top = null;
 		
 		try {
 			$match = null;
@@ -310,11 +260,17 @@ class Highlighter {
 				$index = $match[0][1] + $count;
 			}
 			$this->processLexem(substr($code, $index));
-
+			for ($current = $this->top; $current != $this->language->mode; $current = $current->parent) {
+				if ($current->className) {
+					$this->result .= "</span>";
+				}
+			}
+				
 			$res->relevance = $this->relevance;
 			$res->keywordCount = $this->keywordCount;
 			$res->value = $this->result;
 			$res->language = $this->language->name;
+			$res->top = $this->top;
 			
 			return $res;
 			

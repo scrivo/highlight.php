@@ -1,5 +1,0 @@
-for x in [1, 2, 3]:
-<span style="background:yellow">	</span>count(x)
-	if x == 3:
-	<span style="background:yellow">	</span>count(x + 1)
-

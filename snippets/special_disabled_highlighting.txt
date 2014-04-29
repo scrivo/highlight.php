@@ -1,4 +1,0 @@
-<div id="contents">
-  <p>Hello, World!
-</div>
-

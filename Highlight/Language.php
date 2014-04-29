@@ -1,8 +1,8 @@
 <?php
 /* Copyright (c)
- * - 2006-2013, Ivan Sagalaev (maniac@softwaremaniacs.org), highlight.js
+ * - 2006-2013, Ivan Sagalaev (maniacsoftwaremaniacs.org), highlight.js
  *              (original author)
- * - 2013,      Geert Bergman (geert@scrivo.nl), highlight.php
+ * - 2013,      Geert Bergman (geertscrivo.nl), highlight.php
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -32,185 +32,115 @@
 
 namespace Highlight;
 
-abstract class Language extends Mode {
+class Language {
 
-	// Common regexps
 	protected $IDENT_RE = "[a-zA-Z][a-zA-Z0-9_]*";
-	protected $UNDERSCORE_IDENT_RE = "[a-zA-Z_][a-zA-Z0-9_]*";
-	protected $NUMBER_RE = "\b\d+(\.\d+)?";
-	protected $C_NUMBER_RE = // 0x..., 0..., decimal, float
-		"(\b0[xX][a-fA-F0-9]+|(\b\d+(\.\d*)?|\.\d+)([eE][-+]?\\d+)?)"; 
-	protected $BINARY_NUMBER_RE = "\b(0b[01]+)"; // 0b...
-	protected $RE_STARTERS_RE = 
-		"!|!=|!==|%|%=|&|&&|&=|\*|\*=|\+|\+=|,|\.|-|-=|\/|\/=|:|;|<<|<<=|<=|<|===|==|=|>>>=|>>=|>=|>>>|>>|>|\?|\[|\{|\(|\^|\^=|\||\|=|\|\||~";
 
-	// Common modes
-	protected $BACKSLASH_ESCAPE;
-	protected $APOS_STRING_MODE;
-	protected $QUOTE_STRING_MODE;
-	protected $C_LINE_COMMENT_MODE;
-	protected $C_BLOCK_COMMENT_MODE;
-	protected $HASH_COMMENT_MODE;
-	protected $NUMBER_MODE;
-	protected $C_NUMBER_MODE;
-	protected $BINARY_NUMBER_MODE;
-	protected $REGEXP_MODE;
-
-	protected $caseInsinsitive = false;
+	public $caseInsensitive = false;
 	
-	public function __construct() {
+	public function complete(&$e) {
 
-		parent::__construct();
+		$patch = array(
+			"begin" => true,
+			"end" => true,
+			"lexems" => true,
+			"illegal" => true,
+		);
 
-		$this->initCommonModes();
-		
-		$this->caseInsensitive = $this->isCaseInsensitive();
-		$this->name = $this->getName();
-		$this->keywords = $this->getKeyWords();
-		$this->contains = $this->getContainedModes();
-		$this->illegal = $this->getIllegal();
-		$this->lexems = $this->getLexems();
-		$sl = $this->getSubLanguage();
-		if ($sl instanceof Mode) {
-			$this->subLanguage = $sl->subLanguage;
-			$this->relevance = $sl->relevance;
-		} else {
-			$this->subLanguage = $sl;
+		$def = array(
+			"begin" => "",
+			"beginRe" => "",
+			"beginWithKeyword" => "",
+			"excludeBegin" => "",
+			"returnBegin" => "",
+			"end" => "",
+			"endRe" => "",
+			"endsWithParent" => "",
+			"excludeEnd" => "",
+			"returnEnd" => "",
+			"starts" => "",
+			"terminators" => "",
+			"terminatorEnd" => "",
+			"lexems" => "",
+			"lexemsRe" => "",
+			"illegal" => "",
+			"illegalRe" => "",
+			"className" => "",
+			"contains" => array(),
+			"keywords" => null,
+			"subLanguage" => null,
+			"compiled" => false,
+			"relevance" => 1);
+
+		foreach($patch as $k =>  $v) {
+			if (isset($e->$k)) {
+				$e->$k = str_replace("\\/", "/", $e->$k);
+				$e->$k = str_replace("/", "\\/", $e->$k);
+			}
 		}
+
+		foreach($def as $k =>  $v) {
+			if (!isset($e->$k)) {
+				@$e->$k = $v;
+			}
+		}
+		
+	}
+
+	public $mode = null;
+	
+	public function __construct($lang) {
+
+		$json = file_get_contents(dirname(__FILE__)."/languages/{$lang}.json");
+		$jr = new JsonRef();
+		$this->mode = $jr->decode($json);
+		
+		$this->name = $lang;
+
+		$this->caseInsensitive = isset($this->mode->case_insensitive) ?
+			$this->mode->case_insensitive : false;
 		
 		$this->compile();
 	}
 	
-	protected function isCaseInsensitive() {
-		return false;
-	}
-	
-	abstract protected function getName();
-	
-	abstract protected function getKeyWords();
-	
-	abstract protected function getContainedModes();
-
-	protected function getIllegal() {
-		return null;
-	}
-	
-	protected function getLexems() {
-		return null;
-	}
-	
-	protected function getSubLanguage() {
-		return null;
-	}
-	
-	private function initCommonModes() {
-
-		// Common modes
-		$this->BACKSLASH_ESCAPE = new Mode(array(
-			"begin" => "\\\\[\s\S]",
-			"relevance" => 0
-		));
-
-		$this->APOS_STRING_MODE = new Mode(array(
-			"className" => "string",
-			"begin" => "'",
-			"end" => "'",
-			"illegal" => "\\n", // < no multiline strings
-			"contains" => array($this->BACKSLASH_ESCAPE),
-			"relevance" => 0
-		));
-
-		$this->QUOTE_STRING_MODE = new Mode(array(
-			"className" => "string",
-			"begin" => "\"",
-			"end" => "\"",
-			"illegal" => "\\n", // < no multiline strings
-			"contains" => array($this->BACKSLASH_ESCAPE),
-			"relevance" => 0
-		));
-
-		$this->C_LINE_COMMENT_MODE = new Mode(array(
-			"className" => "comment",
-			"begin" => "\/\/",
-			"end" => "$"
-		));
-
-		$this->C_BLOCK_COMMENT_MODE = new Mode(array(
-			"className" => "comment",
-			"begin" => "\/\*",
-			"end" => "\*\/"
-		));
-
-		$this->HASH_COMMENT_MODE = new Mode(array(
-			"className" => "comment",
-			"begin" => "#",
-			"end" => "$"
-		));
-
-		$this->NUMBER_MODE = new Mode(array(
-			"className" => "number",
-			"begin" => $this->NUMBER_RE,
-			"relevance" => 0
-		));
-
-		$this->C_NUMBER_MODE = new Mode(array(
-			"className" => "number",
-			"begin" => $this->C_NUMBER_RE,
-			"relevance" => 0
-		));
-
-		$this->BINARY_NUMBER_MODE = new Mode(array(
-			"className" => "number",
-			"begin" => $this->BINARY_NUMBER_RE,
-			"relevance" => 0
-		));
-
-		$this->REGEXP_MODE = new Mode(array(
-			"className" => "regexp",
-			"begin" => "\/",
-			"end" => "\/[im]*",
-			"illegal" => "\n",
-			"contains" => array(
-				$this->BACKSLASH_ESCAPE,
-				new Mode(array(
-					"begin" => "\[",
-					"end" => "\]",
-					"relevance" => 0,
-					"contains" => array($this->BACKSLASH_ESCAPE)
-				))
-			)
-		));
-	}
-
 	private function langRe($value, $global=false) {
 		return "/{$value}/um" . ($this->caseInsensitive ? "i" : "");
 	}
 
 	private function processKeyWords($kw) {
 		if (is_string($kw)) {
+			if ($this->caseInsensitive) {
+				$kw = mb_strtolower($kw, "UTF-8");
+			}
 			$kw = array("keyword" => explode(" ", $kw));
 		} else {
 			foreach($kw as $cls=>$vl) {
-				$kw[$cls] = explode(" ", $vl);
+				if (!is_array($vl)) {
+					if ($this->caseInsensitive) {
+						$vl = mb_strtolower($vl, "UTF-8");
+					}
+					$kw->$cls = explode(" ", $vl);
+				}
 			}
 		}
 		return $kw;
 	}
 
-	private function compileMode($mode, $parent=null) {
+	private function compileMode(&$mode, $parent=null) {
 
-		if ($mode->compiled) {
+		if (isset($mode->compiled)) {
 			return;
 		}
+		$this->complete($mode);
 		$mode->compiled = true;
-
+		
 		$kwds = array(); // used later with beginWithKeyword but filled as a side-effect of keywords compilation
 
 		if ($mode->keywords) {
 
 			$compiledKeywords = array();
 
-			$mode->lexemsRe = $this->langRe($mode->lexems ? $mode->lexems : $this->IDENT_RE . "(?!\\.)", true);
+			$mode->lexemsRe = $this->langRe($mode->lexems ? $mode->lexems : "\b". $this->IDENT_RE . "\b(?!\.)", true);
 
 			foreach($this->processKeyWords($mode->keywords) as $className => $data) {
 				if (!is_array($data)) {
@@ -274,7 +204,7 @@ abstract class Language extends Mode {
 	}
 
 	protected function compile() {
-		$this->compileMode($this);
+		$this->compileMode($this->mode);
 	}
 
 }

@@ -1,0 +1,248 @@
+Syntax highlighting with language autodetection in PHP.
+
+-------------------------------------------------------------------------------
+
+Author(s):
+	Geert Bergman (geert@scrivo.nl)
+	
+Contributer(s):
+	Carsten Brandt (mail@cebe.cc)
+
+-------------------------------------------------------------------------------
+
+highlight.js (the reference project)
+
+Core developers (in order of appearance):
+
+	Ivan Sagalaev (original author) <maniac@softwaremaniacs.org>
+	Jeremy Hull <sourdrums@gmail.com>
+	Oleg Efimov <efimovov@gmail.com>
+
+-------------------------------------------------------------------------------
+
+Language definitions (automatically created from the highlight.js project)
+
+1c.json
+	Author(s): Yuri Ivanov <ivanov@supersoft.ru>
+	Contributor(s): Sergey Baranov <segyrn@yandex.ru>
+
+actionscript.json
+	Author(s): Alexander Myadzel <myadzel@gmail.com>
+
+apache.json
+	Author(s): Ruslan Keba <rukeba@gmail.com>
+	Contributor(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
+
+applescript.json
+	Author(s): Nathan Grigg <nathan@nathanamy.org>, 
+		Dr. Drang <drdrang@gmail.com>
+
+asciidoc.json
+	Author(s): Dan Allen <dan.j.allen@gmail.com>
+
+avrasm.json
+	Author(s): Vladimir Ermakov <vooon341@gmail.com>
+
+axapta.json
+	Author(s): Dmitri Roudakov <dmitri@roudakov.ru>
+
+bash.json
+	Author(s): vah <vahtenberg@gmail.com>
+
+brainfuck.json
+	Author(s): Evgeny Stepanischev <imbolk@gmail.com>
+
+clojure.json
+	Author(s): mfornos
+
+cmake.json
+	Author(s): Igor Kalnitsky <igor@kalnitsky.org>
+
+coffeescript.json
+	Author(s): Dmytrii Nagirniak <dnagir@gmail.com>
+	Contributor(s): Oleg Efimov <efimovov@gmail.com>, 
+		Cédric Néhémie <cedric.nehemie@gmail.com>
+
+cpp.json
+	Author(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
+	Contributor(s): Evgeny Stepanischev <imbolk@gmail.com>
+
+cs.json
+	Author(s): Jason Diamond <jason@diamond.name>
+
+css.json
+	Author(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
+
+d.json
+	Author(s): Aleksandar Ruzicic <aleksandar@ruzicic.info>
+
+delphi.json
+	Author(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
+
+diff.json
+	Author(s): Vasily Polovnyov <vast@whiteants.net>
+
+django.json
+	Author(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
+	Contributor(s): Ilya Baryshev <baryshev@gmail.com>
+
+dos.json
+	Author(s): Alexander Makarov (http://rmcreative.ru/)
+
+erlang-repl.json
+	Author(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
+
+erlang.json
+	Author(s): Nikolay Zakharov <nikolay.desh@gmail.com>, 
+		Dmitry Kovega <arhibot@gmail.com>
+
+fsharp.json
+	Author(s): Jonas Follesø <jonas@follesoe.no>
+	Contributor(s): Troy Kershaw <hello@troykershaw.com>
+
+glsl.json
+	Author(s): Sergey Tikhomirov <me@stikhomirov.com>
+
+go.json
+	Author(s): Stephan Kountso aka StepLg <steplg@gmail.com>
+	Contributor(s): Evgeny Stepanischev <imbolk@gmail.com>
+
+haml.json
+	Author(s): Dan Allen <dan.j.allen@gmail.com>
+
+handlebars.json
+	Author(s): Robin Ward <robin.ward@gmail.com>
+
+haskell.json
+	Author(s): Jeremy Hull <sourdrums@gmail.com>
+	Contributor(s): Zena Treep <zena.treep@gmail.com>
+
+http.json
+	Author(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
+
+ini.json
+	Author(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
+
+java.json
+	Author(s): Vsevolod Solovyov <vsevolod.solovyov@gmail.com>
+
+javascript.json
+	Author(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
+
+json.json
+	Author(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
+
+lasso.json
+	Author(s): Eric Knibbe <eric@lassosoft.com>
+
+lisp.json
+	Author(s): Vasily Polovnyov <vast@whiteants.net>
+
+livecodeserver.json
+	Author(s): Ralf Bitter <rabit@revigniter.com>
+
+lua.json
+	Author(s): Andrew Fedorov <dmmdrs@mail.ru>
+
+makefile.json
+	Author(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
+
+markdown.json
+	Author(s): John Crepezzi <john.crepezzi@gmail.com>
+
+matlab.json
+	Author(s): Denis Bardadym <bardadymchik@gmail.com>
+	Contributor(s): Eugene Nizhibitsky <nizhibitsky@ya.ru>
+
+mel.json
+	Author(s): Shuen-Huei Guan <drake.guan@gmail.com>
+
+mizar.json
+	Author(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
+
+nginx.json
+	Author(s): Peter Leonov <gojpeg@yandex.ru>
+	Contributor(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
+
+objectivec.json
+	Author(s): Valerii Hiora <valerii.hiora@gmail.com>
+	Contributor(s): Angel G. Olloqui <angelgarcia.mail@gmail.com>
+
+ocaml.json
+	Author(s): Mehdi Dogguy <mehdi@dogguy.org>
+	Contributor(s): Nicolas Braud-Santoni <nicolas.braud-santoni@ens-cachan.fr>
+
+parser3.json
+	Author(s): Oleg Volchkov <oleg@volchkov.net>
+
+perl.json
+	Author(s): Peter Leonov <gojpeg@yandex.ru>
+
+php.json
+	Author(s): Victor Karamzin <Victor.Karamzin@enterra-inc.com>
+	Contributor(s): Evgeny Stepanischev <imbolk@gmail.com>, 
+		Ivan Sagalaev <maniac@softwaremaniacs.org>
+
+profile.json
+	Author(s): Brian Beck <exogen@gmail.com>
+
+python.json
+	Author(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
+
+r.json
+	Author(s): Joe Cheng <joe@rstudio.org>
+
+rib.json
+	Author(s): Konstantin Evdokimenko <qewerty@gmail.com>
+	Contributor(s): Shuen-Huei Guan <drake.guan@gmail.com>
+
+rsl.json
+	Author(s): Konstantin Evdokimenko <qewerty@gmail.com>
+	Contributor(s): Shuen-Huei Guan <drake.guan@gmail.com>
+
+ruby.json
+	Author(s): Anton Kovalyov <anton@kovalyov.net>
+	Contributor(s): Peter Leonov <gojpeg@yandex.ru>, 
+		Vasily Polovnyov <vast@whiteants.net>, Loren Segal <lsegal@soen.ca>
+
+ruleslanguage.json
+	Author(s): Jason Jacobson <jason.a.jacobson@gmail.com>
+
+rust.json
+	Author(s): Andrey Vlasovskikh <andrey.vlasovskikh@gmail.com>
+
+scala.json
+	Author(s): Jan Berkel <jan.berkel@gmail.com>
+
+scilab.json
+	Author(s): Sylvestre Ledru <sylvestre.ledru@scilab-enterprises.com>
+
+scss.json
+	Author(s): Kurt Emch <kurt@kurtemch.com>
+
+smalltalk.json
+	Author(s): Vladimir Gubarkov <xonixx@gmail.com>
+
+sql.json
+	Author(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
+
+tex.json
+	Author(s): Vladimir Moskva <vladmos@gmail.com>
+
+vala.json
+	Author(s): Antono Vasiljev <antono.vasiljev@gmail.com>
+
+vbnet.json
+	Author(s): Poren Chiang <ren.chiang@gmail.com>
+
+vbscript.json
+	Author(s): Nikita Ledyaev <lenikita@yandex.ru>
+	Contributor(s): Michal Gabrukiewicz <mgabru@gmail.com>
+
+vhdl.json
+	Author(s): Igor Kalnitsky <igor@kalnitsky.org>
+	Contributor(s): Daniel C.K. Kho <daniel.kho@gmail.com>
+
+xml.json
+	Author(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
+
