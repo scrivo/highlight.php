@@ -1,0 +1,14 @@
+{
+	"name": "scrivo/highlight.php",
+	"description": "A port of highlight.js by Ivan Sagalaev to PHP",
+	"keywords": ["code", "highlight", "highlight.js", "highlight.php"],
+	"type": "library",
+	"license": "BSD-3-Clause",
+	"support": {
+		"issues": "https://github.com/scrivo/highlight.php/issues",
+		"source": "https://github.com/scrivo/highlight.php"
+	},
+	"autoload": {
+		"psr-0": { "Highlight\\": "" }
+	}
+}
