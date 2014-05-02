@@ -1,10 +1,9 @@
 function $initHighlight(block, flags) {
   try {
     if (block.className.search(/\bno\-highlight\b/) != -1)
-      return processBlock(block, true, 0x0F) + ' class=""';
+      return processBlock(block.function, true, 0x0F) + ' class=""';
   } catch (e) {
     /* handle exception */
-
     var e4x =
         <div>Example
             <p>1234</p></div>;
@@ -13,4 +12,5 @@ function $initHighlight(block, flags) {
     if (checkCondition(classes[i]) === undefined)
       return /\d+[\s/]/g;
   }
+  console.log(Array.every(classes, Boolean));
 }

@@ -39,28 +39,25 @@ spl_autoload_register("Highlight\\Autoloader::load");
 use Highlight\Highlighter;
 
 $test = json_decode(file_get_contents("snippets/snippets.json"), true);
-$test = array("xml", "handlebars", "erlang");
 
 $hl = new Highlighter();
 $hl->setAutodetectLanguages(array_values($test));
 
 $tableRows = "";
 $failed = array();
+
 foreach ($test as $title => $name) {
 	$sn = strpos($title, "HTML") !== false ? "html" : $name;
 	$snippet = file_get_contents("snippets/{$sn}.txt");
 	$r = $hl->highlightAuto($snippet);
 	$passed = ($r->language === $name);
 	$res = "<div class=\"test\"><var class=\"".($passed?"passed":"failed").
-		"\">{$r->language}</var>"." ({$r->keywordCount}+{$r->relevance}=".
-		($r->keywordCount+$r->relevance).")<br>";
+		"\">{$r->language}</var>"." ({$r->relevance})<br>";
 	if (isset($r->secondBest)) {
-		$res .= "{$r->secondBest->language}".
-			" ({$r->secondBest->keywordCount}+{$r->secondBest->relevance}=".
-				($r->secondBest->keywordCount+$r->secondBest->relevance).")";
+		$res .= "{$r->secondBest->language}"." ({$r->secondBest->relevance})";
 	}
 	$tableRows .= "<tr><th>{$title}{$res}</th><td class=\"{$name}\">
-		<pre><code class=\"{$name}\">{$r->value}</code></pre></td></th>";
+		<pre><code class=\"hljs {$name}\">{$r->value}</code></pre></td></th>";
 	if (!$passed) {
 		$failed[] = $name;
 	}
@@ -204,7 +201,7 @@ $testResult .= "</p><p>Highlighting took ".
 		.code {
 			font: medium monospace;
 		}
-		.code .keyword {
+		.code .hljs-keyword {
 			font-weight: bold;
 		}
 	</style>
@@ -274,7 +271,7 @@ $testResult .= "</p><p>Highlighting took ".
 <body>
 
 <p>This is a demo/test page showing all languages supported by 
-<a href="http://softwaremaniacs.org/soft/highlight/en/">highlight.js</a>.
+<a href="https://github.com/scrivo/highlight.php">highlight.php</a>.
 Most snippets do not contain working code :-).
 
 <div id="styleswitcher">

@@ -31,79 +31,16 @@
  */
 $start = microtime(true);
 
-/* Set in the same order as languages defined in highlight.pack.js. */
-$autodetectSet = array(
-	"mel",
-	"mizar",
-	"haskell",
-	"lasso",
-	"perl",
-	"xml",
-	"vhdl",
-	"html",
-	"asciidoc",
-	"ruby",
-	"cmake",
-	"json",
-	"php",
-	"apache",
-	"css",
-	"sql",
-	"clojure",
-	"glsl",
-	"scala",
-	"erlang",
-	"brainfuck",
-	"handlebars",
-	"markdown",
-	"smalltalk",
-	"erlang-repl",
-	"fsharp",
-	"vbscript",
-	"objectivec",
-	"avrasm",
-	"d",
-	"dos",
-	"http",
-	"bash",
-	"rust",
-	"axapta",
-	"diff",
-	"r",
-	"vbnet",
-	"cs",
-	"parser3",
-	"actionscript",
-	"nginx",
-	"ruleslanguage",
-	"applescript",
-	"java",
-	"matlab",
-	"lua",
-	"tex",
-	"django",
-	"rib",
-	"vala",
-	"python",
-	"haml",
-	"cpp",
-	"javascript",
-	"go",
-	"scss",
-	"lisp",
-	"delphi",
-	"ini",
-	"1c",
-	"profile",
-	"coffeescript",
-	"rsl"
-);
 
 require_once("../Highlight/Autoloader.php");
 spl_autoload_register("Highlight\\Autoloader::load");
 
+$test = json_decode(file_get_contents("snippets/snippets.json"), true);
+
 $hl = new Highlight\Highlighter();
-$hl->setAutodetectLanguages($autodetectSet);
+$hl->setAutodetectLanguages(array_values($test));
+
+//$hl->setAutodetectLanguages($autodetectSet);
 
 ?>
 <html>
@@ -128,10 +65,9 @@ function testDetection() {
 		var code1 = tds[1].getElementsByTagName('DIV')[0]; 
 		var code2 = tds[2].getElementsByTagName('CODE')[0];
 
-		p2a.innerHTML = code2.result.language +	": " + 
-			code2.result.kw + ", " + code2.result.re;
+		p2a.innerHTML = code2.result.language +	": " + code2.result.re;
 		p2b.innerHTML = code2.second_best.language +	": " + 
-			code2.second_best.kw + ", " + code2.second_best.re;
+			code2.second_best.re;
 		
 		if (code1.innerHTML != code2.innerHTML
 				 || p1a.innerHTML != p2a.innerHTML
@@ -155,7 +91,7 @@ window.addEventListener("load", testDetection );  // capture phase
 		<style type="text/css">
 
 table { border-spacing: 0px; border-collapse:collapse; width: 100%}
-th, td { font-family: sans-serif; border: solid grey 1px; overflow: scroll}
+th, td { font-family: sans-serif; border: solid grey 1px; overflow: auto; max-width:500px}
 td p { margin: 0px; }
 pre code, pre div { padding: 0.5em; background: #F0F0F0; }
 td.signal { padding: 0.5em; background-color: #ccffcc; }
@@ -172,16 +108,17 @@ pre { margin: 0px; }
 			<th>highlight.js</th>
 		</tr>
 <?php
-foreach($autodetectSet as $language) {
-	$snippet = file_get_contents("snippets/{$language}.txt");
+//var_dump($test);
+foreach($test as $name => $languageId) {
+	$snippet = file_get_contents("snippets/{$languageId}.txt");
 	$r = $hl->highlightAuto($snippet);
 ?>
 		<tr>
 			<td class="signal">pass</td>
 			<td>
-				<p><?=$r->language?>: <?=$r->keywordCount?>, <?=$r->relevance?></p>
-				<p><?=$r->secondBest->language?>: <?=$r->secondBest->keywordCount?>, <?=$r->secondBest->relevance?></p>
-				<pre><div><?= $r->value?></div></pre>
+				<p><?=$r->language?>: <?=$r->relevance?></p>
+				<p><?=$r->secondBest->language?>: <?=$r->secondBest->relevance?></p>
+				<pre><div class=" hljs <?=$r->language?>"><?= $r->value?></div></pre>
 			</td>
 			<td class="js">
 				<p>&nbsp;</p>

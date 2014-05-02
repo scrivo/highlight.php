@@ -40,6 +40,9 @@ applescript.json
 asciidoc.json
 	Author(s): Dan Allen <dan.j.allen@gmail.com>
 
+autohotkey.json
+	Author(s): Seongwon Lee <dlimpid@gmail.com>
+
 avrasm.json
 	Author(s): Vladimir Ermakov <vooon341@gmail.com>
 
@@ -65,7 +68,8 @@ coffeescript.json
 
 cpp.json
 	Author(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
-	Contributor(s): Evgeny Stepanischev <imbolk@gmail.com>
+	Contributor(s): Evgeny Stepanischev <imbolk@gmail.com>, 
+		Zaven Muradyan <megalivoithos@gmail.com>
 
 cs.json
 	Author(s): Jason Diamond <jason@diamond.name>
@@ -95,6 +99,9 @@ erlang-repl.json
 erlang.json
 	Author(s): Nikolay Zakharov <nikolay.desh@gmail.com>, 
 		Dmitry Kovega <arhibot@gmail.com>
+
+fix.json
+	Author(s): Brent Bradbury <brent@brentium.com>
 
 fsharp.json
 	Author(s): Jonas Follesø <jonas@follesoe.no>
@@ -150,6 +157,9 @@ makefile.json
 markdown.json
 	Author(s): John Crepezzi <john.crepezzi@gmail.com>
 
+mathematica.json
+	Author(s): Daniel Kvasnicka <dkvasnicka@vendavo.com>
+
 matlab.json
 	Author(s): Denis Bardadym <bardadymchik@gmail.com>
 	Contributor(s): Eugene Nizhibitsky <nizhibitsky@ya.ru>
@@ -171,6 +181,9 @@ objectivec.json
 ocaml.json
 	Author(s): Mehdi Dogguy <mehdi@dogguy.org>
 	Contributor(s): Nicolas Braud-Santoni <nicolas.braud-santoni@ens-cachan.fr>
+
+oxygene.json
+	Author(s): Carlo Kok <ck@remobjects.com>
 
 parser3.json
 	Author(s): Oleg Volchkov <oleg@volchkov.net>
@@ -245,4 +258,3 @@ vhdl.json
 
 xml.json
 	Author(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
-

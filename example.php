@@ -30,7 +30,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-/* Sample: test a single language without auto detection.
+/* Sample: highlight a this code file without auto detection.
  */
 
 require_once("Highlight/Autoloader.php");
@@ -45,6 +45,6 @@ $r = $hl->highlight("php", file_get_contents(__FILE__));
 		<link rel="stylesheet" type="text/css" href="styles/default.css">
 	</head>
 	<body>
-		<pre><code class="<?=$r->language?>"><?=$r->value?></code></pre>
+		<pre><code class="hljs <?=$r->name?>"><?=$r->value?></code></pre>
 	</body>
 </html>
