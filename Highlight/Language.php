@@ -32,207 +32,206 @@
 
 namespace Highlight;
 
-class Language {
+class Language 
+{
+    public $caseInsensitive = false;
+    
+    public function complete(&$e) 
+    {
+        $patch = array(
+            "begin" => true,
+            "end" => true,
+            "lexemes" => true,
+            "illegal" => true,
+        );
 
-	public $caseInsensitive = false;
-	
-	public function complete(&$e) {
+        $def = array(
+            "begin" => "",
+            "beginRe" => "",
+            "beginKeywords" => "",
+            "excludeBegin" => "",
+            "returnBegin" => "",
+            "end" => "",
+            "endRe" => "",
+            "endsWithParent" => "",
+            "excludeEnd" => "",
+            "returnEnd" => "",
+            "starts" => "",
+            "terminators" => "",
+            "terminatorEnd" => "",
+            "lexemes" => "",
+            "lexemesRe" => "",
+            "illegal" => "",
+            "illegalRe" => "",
+            "className" => "",
+            "contains" => array(),
+            "keywords" => null,
+            "subLanguage" => null,
+            "subLanguageMode" => "",
+            "compiled" => false,
+            "relevance" => 1);
 
-		$patch = array(
-			"begin" => true,
-			"end" => true,
-			"lexemes" => true,
-			"illegal" => true,
-		);
+        foreach($patch as $k =>  $v) {
+            if (isset($e->$k)) {
+                $e->$k = str_replace("\\/", "/", $e->$k);
+                $e->$k = str_replace("/", "\\/", $e->$k);
+            }
+        }
 
-		$def = array(
-			"begin" => "",
-			"beginRe" => "",
-			"beginKeywords" => "",
-			"excludeBegin" => "",
-			"returnBegin" => "",
-			"end" => "",
-			"endRe" => "",
-			"endsWithParent" => "",
-			"excludeEnd" => "",
-			"returnEnd" => "",
-			"starts" => "",
-			"terminators" => "",
-			"terminatorEnd" => "",
-			"lexemes" => "",
-			"lexemesRe" => "",
-			"illegal" => "",
-			"illegalRe" => "",
-			"className" => "",
-			"contains" => array(),
-			"keywords" => null,
-			"subLanguage" => null,
-			"subLanguageMode" => "",
-			"compiled" => false,
-			"relevance" => 1);
+        foreach($def as $k =>  $v) {
+            if (!isset($e->$k)) {
+                @$e->$k = $v;
+            }
+        }
+    }
 
-		foreach($patch as $k =>  $v) {
-			if (isset($e->$k)) {
-				$e->$k = str_replace("\\/", "/", $e->$k);
-				$e->$k = str_replace("/", "\\/", $e->$k);
-			}
-		}
+    public function __construct($lang) 
+    {
+        $json = file_get_contents(dirname(__FILE__)."/languages/{$lang}.json");
+        $jr = new JsonRef();
+        $this->mode = $jr->decode($json);
+        
+        $this->name = $lang;
 
-		foreach($def as $k =>  $v) {
-			if (!isset($e->$k)) {
-				@$e->$k = $v;
-			}
-		}
-		
-	}
+        $this->caseInsensitive = isset($this->mode->case_insensitive) ?
+            $this->mode->case_insensitive : false;
+        
+        $this->compile();
+    }
+    
+    private function langRe($value, $global=false) 
+    {
+        return "/{$value}/um" . ($this->caseInsensitive ? "i" : "");
+    }
 
-	public function __construct($lang) {
+    private function processKeyWords($kw) 
+    {
+        if (is_string($kw)) {
+            if ($this->caseInsensitive) {
+                $kw = mb_strtolower($kw, "UTF-8");
+            }
+            $kw = array("keyword" => explode(" ", $kw));
+        } else {
+            foreach($kw as $cls=>$vl) {
+                if (!is_array($vl)) {
+                    if ($this->caseInsensitive) {
+                        $vl = mb_strtolower($vl, "UTF-8");
+                    }
+                    $kw->$cls = explode(" ", $vl);
+                }
+            }
+        }
+        return $kw;
+    }
 
-		$json = file_get_contents(dirname(__FILE__)."/languages/{$lang}.json");
-		$jr = new JsonRef();
-		$this->mode = $jr->decode($json);
-		
-		$this->name = $lang;
+    private function compileMode($mode, $parent=null) 
+    {
+        if (isset($mode->compiled)) {
+            return;
+        }
+        $this->complete($mode);
+        $mode->compiled = true;
+        
+        $mode->keywords = 
+            $mode->keywords ? $mode->keywords : $mode->beginKeywords; 
+        
+        /* Note: JsonRef method creates different references as those in the
+         * original source files. Two modes may refer to the same keywors
+         * set, so only testing if the mode has keywords is not enough: the
+         * mode's keywords might be compiled already, so it is necessary
+         * to do an 'is_array' check.
+         */
+        if ($mode->keywords && !is_array($mode->keywords)) {
 
-		$this->caseInsensitive = isset($this->mode->case_insensitive) ?
-			$this->mode->case_insensitive : false;
-		
-		$this->compile();
-	}
-	
-	private function langRe($value, $global=false) {
-		return "/{$value}/um" . ($this->caseInsensitive ? "i" : "");
-	}
+            $compiledKeywords = array();
 
-	private function processKeyWords($kw) {
-		if (is_string($kw)) {
-			if ($this->caseInsensitive) {
-				$kw = mb_strtolower($kw, "UTF-8");
-			}
-			$kw = array("keyword" => explode(" ", $kw));
-		} else {
-			foreach($kw as $cls=>$vl) {
-				if (!is_array($vl)) {
-					if ($this->caseInsensitive) {
-						$vl = mb_strtolower($vl, "UTF-8");
-					}
-					$kw->$cls = explode(" ", $vl);
-				}
-			}
-		}
-		return $kw;
-	}
+            $mode->lexemesRe = $this->langRe($mode->lexemes 
+                    ? $mode->lexemes : "\b[A-Za-z0-9_]+\b", true);
 
-	private function compileMode($mode, $parent=null) {
-		
-		if (isset($mode->compiled)) {
-			return;
-		}
-		$this->complete($mode);
-		$mode->compiled = true;
-		
-		$mode->keywords = 
-			$mode->keywords ? $mode->keywords : $mode->beginKeywords; 
-		
-		/* Note: JsonRef method creates different references as those in the
-		 * original source files. Two modes may refer to the same keywors
-		 * set, so only testing if the mode has keywords is not enough: the
-		 * mode's keywords might be compiled already, so it is necessary
-		 * to do an 'is_array' check.
-		 */
-		if ($mode->keywords && !is_array($mode->keywords)) {
+            foreach($this->processKeyWords($mode->keywords) as $clsNm => $dat) {
+                if (!is_array($dat)) {
+                    $dat = array($dat);
+                }
+                foreach ($dat as $kw) {
+                    $pair = explode("|", $kw);
+                    $compiledKeywords[$pair[0]] = 
+                        array($clsNm, isset($pair[1]) ? intval($pair[1]) : 1);
+                }
+            }
+            $mode->keywords = $compiledKeywords;
+        }
 
-			$compiledKeywords = array();
+        if ($parent) {
+            if ($mode->beginKeywords) {
+                $mode->begin = implode("|",explode(" ", $mode->beginKeywords));
+            }
+            if (!$mode->begin) {
+                $mode->begin = "\B|\b";
+            }
+            $mode->beginRe = $this->langRe($mode->begin);
+            if (!$mode->end && !$mode->endsWithParent) {
+                $mode->end = "\B|\b";
+            }
+            if ($mode->end) {
+                $mode->endRe = $this->langRe($mode->end);
+            }
+            $mode->terminatorEnd = $mode->end;
+            if ($mode->endsWithParent && $parent->terminatorEnd) {
+                $mode->terminatorEnd .= 
+                    ($mode->end ? "|" : "") . $parent->terminatorEnd;
+            }
+        }
 
-			$mode->lexemesRe = $this->langRe($mode->lexemes 
-					? $mode->lexemes : "\b[A-Za-z0-9_]+\b", true);
+        if ($mode->illegal) {
+            $mode->illegalRe = $this->langRe($mode->illegal);
+        }
 
-			foreach($this->processKeyWords($mode->keywords) as $clsNm => $dat) {
-				if (!is_array($dat)) {
-					$dat = array($dat);
-				}
-				foreach ($dat as $kw) {
-					$pair = explode("|", $kw);
-					$compiledKeywords[$pair[0]] = 
-						array($clsNm, isset($pair[1]) ? intval($pair[1]) : 1);
-				}
-			}
-			$mode->keywords = $compiledKeywords;
-		}
+        $expanded_contains = array();
+        for ($i=0; $i<count($mode->contains); $i++) {
+            if (isset($mode->contains[$i]->variants)) {
+                foreach($mode->contains[$i]->variants as $v) {
+                    $x = (object)((array)$v + (array)$mode->contains[$i]);
+                    unset($x->variants);         
+                    $expanded_contains[] = $x;
+                }
+            } else {
+                $expanded_contains[] = "self" === $mode->contains[$i] ?
+                    $mode : $mode->contains[$i];
+            }
+        }
+        $mode->contains = $expanded_contains;
 
-		if ($parent) {
-			if ($mode->beginKeywords) {
-				$mode->begin = implode("|",explode(" ", $mode->beginKeywords));
-			}
-			if (!$mode->begin) {
-				$mode->begin = "\B|\b";
-			}
-			$mode->beginRe = $this->langRe($mode->begin);
-			if (!$mode->end && !$mode->endsWithParent) {
-				$mode->end = "\B|\b";
-			}
-			if ($mode->end) {
-				$mode->endRe = $this->langRe($mode->end);
-			}
-			$mode->terminatorEnd = $mode->end;
-			if ($mode->endsWithParent && $parent->terminatorEnd) {
-				$mode->terminatorEnd .= 
-					($mode->end ? "|" : "") . $parent->terminatorEnd;
-			}
-		}
+        for ($i=0; $i<count($mode->contains); $i++) {
+            $this->compileMode($mode->contains[$i], $mode);
+        }
+        
+        if ($mode->starts) {
+            $this->compileMode($mode->starts, $parent);
+        }
+        
+        $terminators = array();
 
-		if ($mode->illegal) {
-			$mode->illegalRe = $this->langRe($mode->illegal);
-		}
+        for ($i=0; $i<count($mode->contains); $i++) {
+            $terminators[] = $mode->contains[$i]->beginKeywords 
+                ? "\.?\b(" . $mode->contains[$i]->begin . ")\b\.?"
+                : $mode->contains[$i]->begin;
+        }
+        if ($mode->terminatorEnd) {
+            $terminators[] = $mode->terminatorEnd;
+        }
+        if ($mode->illegal) {
+            $terminators[] = $mode->illegal;
+        }
+        $mode->terminators = count($terminators)
+            ? $this->langRe(implode("|", $terminators), true) : null;
 
-		$expanded_contains = array();
-		for ($i=0; $i<count($mode->contains); $i++) {
-			if (isset($mode->contains[$i]->variants)) {
-				foreach($mode->contains[$i]->variants as $v) {
-					$x = (object)((array)$v + (array)$mode->contains[$i]);
-					unset($x->variants);		 
-					$expanded_contains[] = $x;
-				}
-			} else {
-				$expanded_contains[] = "self" === $mode->contains[$i] ?
-					$mode : $mode->contains[$i];
-			}
-		}
-		$mode->contains = $expanded_contains;
+        $mode->continuation = new \stdClass();
+        $mode->continuation->top = null;
+        
+    }
 
-		for ($i=0; $i<count($mode->contains); $i++) {
-			$this->compileMode($mode->contains[$i], $mode);
-		}
-		
-		if ($mode->starts) {
-			$this->compileMode($mode->starts, $parent);
-		}
-		
-		$terminators = array();
-
-		for ($i=0; $i<count($mode->contains); $i++) {
-			$terminators[] = $mode->contains[$i]->beginKeywords 
-				? "\.?\b(" . $mode->contains[$i]->begin . ")\b\.?"
-				: $mode->contains[$i]->begin;
-		}
-		if ($mode->terminatorEnd) {
-			$terminators[] = $mode->terminatorEnd;
-		}
-		if ($mode->illegal) {
-			$terminators[] = $mode->illegal;
-		}
-		$mode->terminators = count($terminators)
-			? $this->langRe(implode("|", $terminators), true) : null;
-
-		$mode->continuation = new \stdClass();
-		$mode->continuation->top = null;
-		
-	}
-
-	protected function compile() {
-		$this->compileMode($this->mode);
-	}
-
+    protected function compile() 
+    {
+        $this->compileMode($this->mode);
+    }
 }
-
-?>

@@ -1,6 +1,6 @@
 <?php
 /* Copyright (c)
- * - 2013,      Geert Bergman (geert@scrivo.nl), highlight.php
+ * - 2013-2104, Geert Bergman (geert@scrivo.nl), highlight.php
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -50,25 +50,25 @@ namespace Highlight;
  * ?>
  *
  */
-class Autoloader {
-
-	/**
-	 * The method to include the source file for a given class to use in
-	 * the PHP spl_autoload_register function.
-	 *
-	 * @param string A name of a Scrivo class.
-	 *
-	 * @return boolean True if the source file was successfully included.
-	 */
-	public static function load($class) {
-		if (substr($class, 0, 10) !== "Highlight\\") {
-			return false;
-		}
-		$c = str_replace("\\", "/", substr($class, 10)).".php";
-		$res = include(__DIR__."/$c");
-		return $res==1 ? true : false;
-	}
-
+class Autoloader 
+{
+    /**
+     * The method to include the source file for a given class to use in
+     * the PHP spl_autoload_register function.
+     *
+     * @param string A name of a Scrivo class.
+     *
+     * @return boolean True if the source file was successfully included.
+     */
+    public static function load($class) 
+    {
+        if (substr($class, 0, 10) !== "Highlight\\") {
+            return false;
+        }
+        
+        $c = str_replace("\\", "/", substr($class, 10)).".php";
+        $res = include(__DIR__."/$c");
+        
+        return $res==1 ? true : false;
+    }
 }
-
-?>

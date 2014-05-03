@@ -64,73 +64,73 @@ namespace Highlight;
  * echo $data->oldestChild->name; // echos 'Jennika Zyp' 
  *
  */
-class JsonRef {
-	
-	/**
-	 * Array to hold all data paths in the given JSON data. 
-	 * @var array
-	 */
-	private $paths = null;
-	
-	/**
-	 * Recurse through the data tree and fill an array of paths that reference
-	 * the nodes in the decoded JSON data structure.
-	 *  
-	 * @param mixed $s
-	 *     Decoded JSON data (decoded with json_decode).
-	 * @param string $r
-	 *     The current path key (for example: '#children.0').
-	 */
-	private function getPaths(&$s, $r="#") {
-		$this->paths[$r] = &$s;
-		if (is_array($s) || is_object($s)) {
-			foreach ($s as $k => &$v) {
-				if ($k !== "\$ref") {
-					$this->getPaths($v, $r=="#"?"#{$k}":"{$r}.{$k}");
-				}
-			}
-		}
-	}
-	
-	/**
-	 * Recurse through the data tree and resolve all path references.
-	 *  
-	 * @param mixed $s
-	 *     Decoded JSON data (decoded with json_decode).
-	 */
-	private function resolvePathReferences(&$s) {
-		if (is_array($s) || is_object($s)) {
-			foreach ($s as $k => &$v) {
-				if ($k === "\$ref") {
-					$s = $this->paths[$v];
-				} else {
-					$this->resolvePathReferences($v);
-				}
-			}
-		}
-	}
-	
-	/**
-	 * Decode JSON data that may contain path based references.
-	 * 
-	 * @param string $json 
-	 *    JSON data string.
-	 * @return mixed 
-	 *    The decoded JSON data.
-	 */
-	public function decode($json) {
-		// Clear the path array.
-		$this->paths = array();
-		// Decode the given JSON data.
-		$x = json_decode($json);
-		// Get all data paths.
-		$this->getPaths($x);
-		// Resolve all path references.
-		$this->resolvePathReferences($x);
-		// Return the data.
-		return $x;
-	}
-	
+class JsonRef 
+{
+    /**
+     * Array to hold all data paths in the given JSON data. 
+     * @var array
+     */
+    private $paths = null;
+    
+    /**
+     * Recurse through the data tree and fill an array of paths that reference
+     * the nodes in the decoded JSON data structure.
+     *  
+     * @param mixed $s
+     *     Decoded JSON data (decoded with json_decode).
+     * @param string $r
+     *     The current path key (for example: '#children.0').
+     */
+    private function getPaths(&$s, $r="#") 
+    {
+        $this->paths[$r] = &$s;
+        if (is_array($s) || is_object($s)) {
+            foreach ($s as $k => &$v) {
+                if ($k !== "\$ref") {
+                    $this->getPaths($v, $r=="#"?"#{$k}":"{$r}.{$k}");
+                }
+            }
+        }
+    }
+    
+    /**
+     * Recurse through the data tree and resolve all path references.
+     *  
+     * @param mixed $s
+     *     Decoded JSON data (decoded with json_decode).
+     */
+    private function resolvePathReferences(&$s) 
+    {
+        if (is_array($s) || is_object($s)) {
+            foreach ($s as $k => &$v) {
+                if ($k === "\$ref") {
+                    $s = $this->paths[$v];
+                } else {
+                    $this->resolvePathReferences($v);
+                }
+            }
+        }
+    }
+    
+    /**
+     * Decode JSON data that may contain path based references.
+     * 
+     * @param string $json 
+     *     JSON data string.
+     * @return mixed 
+     *     The decoded JSON data.
+     */
+    public function decode($json) 
+    {
+        // Clear the path array.
+        $this->paths = array();
+        // Decode the given JSON data.
+        $x = json_decode($json);
+        // Get all data paths.
+        $this->getPaths($x);
+        // Resolve all path references.
+        $this->resolvePathReferences($x);
+        // Return the data.
+        return $x;
+    }
 }
-
-?>

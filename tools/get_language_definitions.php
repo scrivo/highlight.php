@@ -34,10 +34,11 @@
 
 define("HIGHLIGHT_JS", "/var/www/html/highlight.js-8.0");
 
-function echoFile($name) {
-	$f = file_get_contents(HIGHLIGHT_JS."/src/languages/{$name}");
-	$f = str_replace("'</script>'", "\"<\\/script>\"", $f);
-	echo $f;
+function echoFile($name) 
+{
+    $f = file_get_contents(HIGHLIGHT_JS."/src/languages/{$name}");
+    $f = str_replace("'</script>'", "\"<\\/script>\"", $f);
+    echo $f;
 }
 
 ?>
@@ -50,63 +51,62 @@ function echoFile($name) {
 
 require(["dojox/json/ref"], function(){
 
-
-	var hljs = new <?php include HIGHLIGHT_JS."/src/highlight.js"; ?> ();
-	var lang = [];
+    var hljs = new <?php include HIGHLIGHT_JS."/src/highlight.js"; ?> ();
+    var lang = [];
 
 <?php
 
 foreach (new DirectoryIterator(HIGHLIGHT_JS."/src/languages") as $fileInfo) {
-	if ($fileInfo->isDot()) {
-		continue;
-	}
-	echo "\nlang[\"".str_replace(".js", "", $fileInfo->getFilename())."\"] = ";
-	echoFile($fileInfo->getFilename());
+    if ($fileInfo->isDot()) {
+        continue;
+    }
+    echo "\nlang[\"".str_replace(".js", "", $fileInfo->getFilename())."\"] = ";
+    echoFile($fileInfo->getFilename());
 }
 
 ?>
 
-	var refs = [];
-	function regExpsRep(l,p) {
-		refs.push(l);
-		for (x in {"begin":1, "end":2, "lexemes":3, "illegal":4}) {
-			if (l[x] && l[x].source) {
-				l[x] = l[x].source;
-			}
-		}
-		for (var i in l) {
-			var doneIt = false;
-			for (var j=0; j<refs.length; j++) {
-				if (refs[j] == l[i]) {
-					doneIt = true;
-				}
-			}
-			if (l[i] && typeof l[i] == 'object' && !doneIt) {
-				regExpsRep(l[i], l[i]);
-			}
-		}
-	}
+    var refs = [];
+    function regExpsRep(l,p) {
+        refs.push(l);
+        for (x in {"begin":1, "end":2, "lexemes":3, "illegal":4}) {
+            if (l[x] && l[x].source) {
+                l[x] = l[x].source;
+            }
+        }
+        for (var i in l) {
+            var doneIt = false;
+            for (var j=0; j<refs.length; j++) {
+                if (refs[j] == l[i]) {
+                    doneIt = true;
+                }
+            }
+            if (l[i] && typeof l[i] == 'object' && !doneIt) {
+                regExpsRep(l[i], l[i]);
+            }
+        }
+    }
 
-	function patch(o, m) {
-		if (o[m]) {
-			o[m] = o[m].replace("\/", "/");
-			o[m] = o[m].replace("/", "\/");
-		}
-	}
+    function patch(o, m) {
+        if (o[m]) {
+            o[m] = o[m].replace("\/", "/");
+            o[m] = o[m].replace("/", "\/");
+        }
+    }
 
-	var res = "";
-	for (var p in lang) {
-		res += p + "\n";
-		var l = eval("lang[\""+p+"\"](hljs)");
-		refs = [];
-		regExpsRep(l);
-		hljs.registerLanguage(p, lang[p]);
-		res += dojox.json.ref.toJson(l) + "\n";
+    var res = "";
+    for (var p in lang) {
+        res += p + "\n";
+        var l = eval("lang[\""+p+"\"](hljs)");
+        refs = [];
+        regExpsRep(l);
+        hljs.registerLanguage(p, lang[p]);
+        res += dojox.json.ref.toJson(l) + "\n";
 
-	}
+    }
 
-	// This is the output to capture
-	console.log(res);
+    // This is the output to capture
+    console.log(res);
 
 });
 

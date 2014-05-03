@@ -42,21 +42,19 @@ $lst = array();
 
 foreach($doc->getElementById("autotest")->getElementsByTagName("tr") as $row) {
 
-	$title = trim($row->getElementsByTagName("th")->item(0)->firstChild->data);
-	$td = $row->getElementsByTagName("td")->item(0);
-	$lang = $td->getAttribute("class");
-	$code = html_entity_decode(
-			$td->getElementsByTagName("code")->item(0)->firstChild->data);
+    $title = trim($row->getElementsByTagName("th")->item(0)->firstChild->data);
+    $td = $row->getElementsByTagName("td")->item(0);
+    $lang = $td->getAttribute("class");
+    $code = html_entity_decode(
+        $td->getElementsByTagName("code")->item(0)->firstChild->data);
 
-	$lst[$title] = $lang;
-	
-	// patch:
-	if ($lang === "xml" && strpos($title, "HTML") !== false) {
-		$lang = "html";
-	}
-	file_put_contents(SNIPPETS_DIR."/{$lang}.txt", $code);
+    $lst[$title] = $lang;
+    
+    // patch:
+    if ($lang === "xml" && strpos($title, "HTML") !== false) {
+        $lang = "html";
+    }
+    file_put_contents(SNIPPETS_DIR."/{$lang}.txt", $code);
 }
 
 file_put_contents(SNIPPETS_DIR."/snippets.json", json_encode($lst));
-
-?>
