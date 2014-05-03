@@ -71,14 +71,14 @@ class Language
             "compiled" => false,
             "relevance" => 1);
 
-        foreach($patch as $k =>  $v) {
+        foreach ($patch as $k =>  $v) {
             if (isset($e->$k)) {
                 $e->$k = str_replace("\\/", "/", $e->$k);
                 $e->$k = str_replace("/", "\\/", $e->$k);
             }
         }
 
-        foreach($def as $k =>  $v) {
+        foreach ($def as $k =>  $v) {
             if (!isset($e->$k)) {
                 @$e->$k = $v;
             }
@@ -112,7 +112,7 @@ class Language
             }
             $kw = array("keyword" => explode(" ", $kw));
         } else {
-            foreach($kw as $cls=>$vl) {
+            foreach ($kw as $cls=>$vl) {
                 if (!is_array($vl)) {
                     if ($this->caseInsensitive) {
                         $vl = mb_strtolower($vl, "UTF-8");
@@ -148,7 +148,7 @@ class Language
             $mode->lexemesRe = $this->langRe($mode->lexemes 
                     ? $mode->lexemes : "\b[A-Za-z0-9_]+\b", true);
 
-            foreach($this->processKeyWords($mode->keywords) as $clsNm => $dat) {
+            foreach ($this->processKeyWords($mode->keywords) as $clsNm => $dat) {
                 if (!is_array($dat)) {
                     $dat = array($dat);
                 }
@@ -189,7 +189,7 @@ class Language
         $expanded_contains = array();
         for ($i=0; $i<count($mode->contains); $i++) {
             if (isset($mode->contains[$i]->variants)) {
-                foreach($mode->contains[$i]->variants as $v) {
+                foreach ($mode->contains[$i]->variants as $v) {
                     $x = (object)((array)$v + (array)$mode->contains[$i]);
                     unset($x->variants);         
                     $expanded_contains[] = $x;
