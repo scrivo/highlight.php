@@ -50,7 +50,8 @@ class Highlighter
         "html", "xml", "json", "javascript", "css", "php", "http"
     );
     
-    public function __construct() {
+    public function __construct()
+    {
         $this->options = (object)array(
             "classPrefix" => "hljs-",
             "tabReplace" => null,
@@ -67,7 +68,7 @@ class Highlighter
         return self::$classMap[$languageId];
     }
 
-    function testRe($re, $lexeme) 
+    public function testRe($re, $lexeme) 
     {
         if (!$re) {
             return false;
@@ -177,7 +178,7 @@ class Highlighter
             }            
             return $this->buildSpan($res->language, $res->value, false, true);
                 
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             return htmlspecialchars($this->modeBuffer, ENT_NOQUOTES);
         }
     }
@@ -196,7 +197,7 @@ class Highlighter
         if ($mode->returnBegin) {
             $this->result .= $markup;
             $this->modeBuffer = "";
-        } else if ($mode->excludeBegin) {
+        } elseif ($mode->excludeBegin) {
             $this->result .= htmlspecialchars($lexeme, ENT_NOQUOTES) . $markup;
             $this->modeBuffer = "";
         } else {
@@ -270,13 +271,13 @@ class Highlighter
         $this->autodetectSet = array_unique($set);
     }
 
-    /*
-    Core highlighting function. Accepts a language name, or an alias, and a
-    string with the code to highlight. Returns an object with the following
-    properties:
-    - relevance (int)
-    - value (an HTML string with highlighting markup)
-    */    
+    /**
+     * Core highlighting function. Accepts a language name, or an alias, and a
+     * string with the code to highlight. Returns an object with the following
+     * properties:
+     * - relevance (int)
+     * - value (an HTML string with highlighting markup)
+     */    
     public function highlight(
             $language, $code, $ignoreIllegals=true, $continuation=null) 
     {
