@@ -19,4 +19,34 @@ favorable in my opinion.
 It was my decision not to make a PHP highlighter but to do a port of 
 highlight.js, these are different things. The goal was to make it work
 exactly as highlight.js to make as much use as possible of the
-language definitions and CSS files of the original program. 
+language definitions and CSS files of the original program.
+
+Installation using Composer
+=============
+
+Run composer require from your commandline:
+```
+composer require scrivo/highlight.php:8.*
+```
+
+Or add this to your composer.json and run composer install:
+```
+{
+    "require": {
+        "scrivo/highlight.php": "8.*"
+    }
+}
+```
+
+Add the from Composer prepared autoload file to your php file:
+```
+require 'vendor/autoload.php';
+```
+
+Example
+=============
+
+```
+$hl = new Highlight\Highlighter();
+$r = $hl->highlight("php", file_get_contents(__FILE__));
+```
