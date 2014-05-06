@@ -2,18 +2,21 @@ highlight.php
 =============
 
 *highlight.php* is a server side code highlighter written in PHP that currently
-supports over 70 languages. It is a port of 
-[highlight.js](http://www.highlightjs.org) 
-by Ivan Sagalaev that makes full use of the language and style definitions of 
-the original JavaScript project.
+supports over 70 languages. It's a port of [highlight.js]
+(http://www.highlightjs.org) by Ivan Sagalaev that makes full use of the 
+language and style definitions of the original JavaScript project.
 
-Get started and get your code highlighted
-=========================================
+Get started
+===========
 
 Make sure that the classes defined in _scrivo/Highlight_ can be found either
-by inclusion or an autoloader. A trivial autoloader for this purpose is 
-included in this project or alternatively you can use other autoloading 
+by inclusion or by an autoloader. A trivial autoloader for this purpose is 
+included in this project. Alternatively you can use some other autoloading 
 functionality, for example the one provided by composer.
+
+Second, the [styles](#2-styles) directory must be located somewhere in your 
+document root. The page that contains your highlighted code will need to
+reference these CSS files.
 
 The _Highlight\Highlighter_ class contains the highlighting functionality.
 You can choose between two highlighting modes: explicit mode or automatic 
@@ -34,20 +37,22 @@ $r = $hl->highlight("ruby", file_get_contents("a_ruby_script.rb"));
 ?>
 <html>
     <head>
+        <!-- Link to the style sheets: -->
         <link rel="stylesheet" type="text/css" href="styles/default.css">
     </head>
     <body>
+        <!-- Print the highlighted code: -->
         <pre class="hljs <?=$r->language?>"><?=$r->value?></pre>
     </body>
 </html>
 ```
 
 Alternatively you can use the autodetection mode. The thing to note
-here is that you need to supply a list of languages that you want to detect
+here is that you'll need to supply a list of languages that you want to detect
 automatically. When using language autodetection the code to highlight is 
 sampled using all given language definitions. This is rather inefficient when
 you use the whole set of 70+ languages so a method is provided for you to 
-limit the set to just those languages that are relevant for your project. 
+limit this set to just those languages that are relevant for your project. 
 
 ```php
 <?php
@@ -63,23 +68,25 @@ $r = $hl->highlightAuto(file_get_contents("a_ruby_script.rb"));
 ?>
 <html>
     <head>
+        <!-- Link to the style sheets: -->
         <link rel="stylesheet" type="text/css" href="styles/default.css">
     </head>
     <body>
+        <!-- Print the highlighted code: -->
         <pre class="hljs <?=$r->language?>"><?=$r->value?></pre>
     </body>
-</html>  
+</html>
 ```
 
 Installation using Composer
 ===========================
 
-Run composer require from your command line:
+Run _composer require_ from your command line:
 ```bash
 composer require scrivo/highlight.php:8.*
 ```
 
-Or add this to your composer.json and run composer install:
+Or add this to your _composer.json_ and run _composer install_:
 ```json
 {
     "require": {
@@ -98,15 +105,15 @@ Project structure
 
 The project contains the following folders:
 
-1. [Highlight](#highlightphp-highlight)
-2. [styles](#languagephp-language)
-3. [test](#jsonrefphp-jsonref)
-4. [tools](#autoloaderphp-autoloader)
+1. [Highlight](#1-highlight)
+2. [styles](#2-styles)
+3. [test](#3-test)
+4. [tools](#4-tools)
 
-1. Highlight: the main source
------------------------------
+1. Highlight
+------------
 
-This folder contains the source of the following files (classes):
+This folder contains the main source and the following files (classes):
 
 ### Highlight.php (Highlight)
 
@@ -124,14 +131,15 @@ You don't need this class.
 ### JsonRef.php (JsonRef)
 
 Auxiliary class to decode JSON files that contain path based references. The 
-language definition data from highlight.js is to complex to describe in 
-ordinary JSON files. Therefore it was chosen to use[dojox.json.ref]
+language definition data from [highlight.js](http://www.highlightjs.org) is 
+to complex to describe in ordinary JSON files. Therefore it was chosen to 
+use [dojox.json.ref]
 (https://dojotoolkit.org/reference-guide/1.9/dojox/json/ref.html) to export 
 them. This class is able (to a very limited extend) to decode JSON data that
-was created with this _dojo_ toolkit.
+was created with this [dojo](https://dojotoolkit.org) toolkit.
 
 This class has a very distinct purpose and might be useful in other projects
-as well (and maybe a new project as well ;) ).
+as well (and maybe a start of a new project ;) ).
 
 ### Autoloader.php (Autoloader)
 
@@ -141,46 +149,48 @@ to use. It is used for the tools and tests.
 ### the languages folder
 
 This folder contains all language definitions: one JSON file for each language.
-These files are hand coded but extracted from the original 
+These files are not hand coded but extracted from the original 
 [highlight.js](http://www.highlightjs.org) project. 
 
-2. styles: the CSS files needed to actually color the code
--------------------------------------------------------
+2. styles
+---------
 
-Not much to say about: these are just copied from the 
-[highlight.js](https://github.com/isagalaev/highlight.js/tree/master/src/styles)
+These are the the CSS files needed to actually color the code. Not much to 
+say about: these are just copied from the [highlight.js]
+(https://github.com/isagalaev/highlight.js/tree/master/src/styles)
 project.
 
 3. test
 -------
 
 This folder contains two tests that can be accessed through your browser (thus
-not through the cli or phpunit).
+not through the CLI or PHPUnit).
 
 ### test.php
 
-This is a test page showing all supported languages and styles. It is a copy of
-the [test page](http://highlightjs.org/static/test.html) in the original 
-project. 
+A test page showing all supported languages and styles. It is a copy of
+the [test page](http://highlightjs.org/static/test.html) from the original 
+project but now using the PHP highlighter instead of the JavaScript one. 
 
 ### compare.php
 
 Much like [test.php](#testphp) but this page focuses on the comparison between 
-highlight.php and highlight.js. Both should yield the same results.
+_highlight.php_ and _highlight.js_. Both should yield the same results.
 
 ### highlight.pack.js
 
-The minified source of highlight.js used in the tests.
+The minified source of [highlight.js](http://www.highlightjs.org) used in 
+the tests.
 
 ### the snippets folder
 
-This folder contains the code snippets used in the test pages. 
+This folder contains the code snippets used for the test pages. 
 
 4. tools
 --------
 
-A collection of scripts that are used to extract data from the original project:
-[highlight.js](http://www.highlightjs.org).
+A collection of scripts that are used to extract data from the original 
+[highlight.js](http://www.highlightjs.org) project.
 
 Note that these scripts assume the installation of _highlight.js_ on your box.
 
@@ -188,26 +198,27 @@ Note that these scripts assume the installation of _highlight.js_ on your box.
 
 A page that should be rendered in your browser with javascript debugging on.
 If so you'll be able to retrieve all language definitions in a large string and
-save those to a file named "languages.dat" by using your favorite text editor.
+save those to a file named "languages.dat" using your favorite text editor.
 
 ### get_language_definitions_2.php
 
-This script will read the "languages.dat" file you've created and (re-)generate
+This script will read forementioned "languages.dat" file and (re-)generate
 (and overwrite) all JSON language definition files in the folder 
 _Highlight/languages_ for you. 
 
 ### get_snippets.php
 
-This script extracts all code snippers from the 
-[highlight.js](https://github.com/isagalaev/highlight.js/tree/master/src) test
-file and saves (overwrites) them in the folder _test/snippets_.
+This script extracts all code snippets from the [highlight.js]
+(https://github.com/isagalaev/highlight.js/tree/master/src) test
+file and saves (overwrites) them in the folder [test/snippets]
+(#the-snippets-folder).
 
 ### get_snippets.php
 
 This script extracts the author and contributor names from the language
 [definition files]
 (https://github.com/isagalaev/highlight.js/tree/master/src/languages) in 
-highlight.js
+_highlight.js_.
 
 Some History
 ============
@@ -225,12 +236,12 @@ preferably written in PHP.
 I couldn't found any satisfactory PHP solution so I decided to port one from
 JavaScript. After some comparison of different highlighting programs 
 based on license, technology, language support 
-[highlight.js](softwaremaniacs.org/soft/highlight/en/) came out most
+[highlight.js](http://www.highlightjs.org) came out most
 favorable in my opinion.
 
 It was my decision not to make a PHP highlighter but to do a port of 
 highlight.js, these are different things. The goal was to make it work
-exactly as highlight.js to make as much use as possible of the
-language definitions and CSS files of the original program. 
+exactly as [highlight.js](http://www.highlightjs.org) to make as much use 
+as possible of the language definitions and CSS files of the original program. 
 
 Happy coding!
