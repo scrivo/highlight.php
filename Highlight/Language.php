@@ -3,6 +3,7 @@
  * - 2006-2013, Ivan Sagalaev (maniacsoftwaremaniacs.org), highlight.js
  *              (original author)
  * - 2013-2014, Geert Bergman (geertscrivo.nl), highlight.php
+ * - 2014,      Daniel Lynge, highlight.php (contributor)
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
