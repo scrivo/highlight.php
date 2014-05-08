@@ -37,7 +37,7 @@ $r = $hl->highlight("ruby", file_get_contents("a_ruby_script.rb"));
 ?>
 <html>
     <head>
-        <!-- Link to the style sheets: -->
+        <!-- Link to the stylesheets: -->
         <link rel="stylesheet" type="text/css" href="styles/default.css">
     </head>
     <body>
@@ -68,7 +68,7 @@ $r = $hl->highlightAuto(file_get_contents("a_ruby_script.rb"));
 ?>
 <html>
     <head>
-        <!-- Link to the style sheets: -->
+        <!-- Link to the stylesheets: -->
         <link rel="stylesheet" type="text/css" href="styles/default.css">
     </head>
     <body>
@@ -204,7 +204,7 @@ save those to a file named "languages.dat" using your favorite text editor.
 
 This script will read forementioned "languages.dat" file and (re-)generate
 (and overwrite) all JSON language definition files in the folder 
-_Highlight/languages_ for you. 
+[Highlight/languages](#the-languages-folder) for you. 
 
 ### get_snippets.php
 
