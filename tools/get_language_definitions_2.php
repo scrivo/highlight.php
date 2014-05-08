@@ -1,6 +1,7 @@
 <?php 
 /* Copyright (c)
  * - 2013-2014, Geert Bergman (geert@scrivo.nl), highlight.php
+ * - 2014,      Daniel Lynge, highlight.php (contributor)
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,15 +30,29 @@
  */
 
 /**
- * Extract language definitions (JSON strings) from the large file and create
- * a json file for each language.
+ * Extract language definitions (JSON strings) from the large file that was
+ * created using 'get_language_definitions.php' and create a JSON file for 
+ * each language.
  */
 
 $f = file("languages.dat");
 
 for ($i=0; $i<count($f); $i+=2) {
-    if (isset($f[$i]) && isset($f[$i+1])) {
+    if (isset($f[$i+1])) {
+    	
         $fl = trim($f[$i]);
-        file_put_contents("../Highlight/languages/{$fl}.json", $f[$i+1]);
+        $json = $f[$i+1];
+        
+        if (!$fl) {
+            die("ERROR: No language name on line ".($i+1).".<br />\n");
+        }
+        if (!@json_decode($json)) {
+            die("ERROR: invalid JSON data on line ".($i+2).".<br />\n");
+        }
+        
+        echo "Creating language file '{$fl}.json'.<br />\n";
+        if (!file_put_contents("../Highlight/languages/{$fl}.json", $json)) {
+            die("ERROR: Couldn't write to file.<br />\n");;
+        }
     }
 }
