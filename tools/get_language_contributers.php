@@ -34,7 +34,8 @@
 
 define("HIGHLIGHT_JS", "/var/www/html/highlight.js-8.0");
 
-function echoFile($name) {
+function echoFile($name)
+{
     $f = str_replace("'</script>'", "\"<\\/script>\"", $f);
     echo $f;
 }
@@ -55,7 +56,7 @@ foreach ($files as $fn) {
     $f = file(HIGHLIGHT_JS."/src/languages/{$fn}");
 
     $f2 = array();
-    foreach($f as $l) {
+    foreach ($f as $l) {
         if (preg_match("/^\s/", $l)) {
             $f2[count($f2)-1] .= ", " . trim($l);
         } else {
@@ -63,7 +64,7 @@ foreach ($files as $fn) {
         }
     }
     
-    foreach($f2 as $l) {
+    foreach ($f2 as $l) {
         $la = explode(":", $l, 2);
         if (strtolower(substr(trim($la[0]), 0, 6)) == "author") {
             $authors[] = trim($la[1]);

@@ -40,7 +40,7 @@ $doc->loadHTMLFile(HIGHLIGHT_JS."/src/test.html");
 
 $lst = array();
 
-foreach($doc->getElementById("autotest")->getElementsByTagName("tr") as $row) {
+foreach ($doc->getElementById("autotest")->getElementsByTagName("tr") as $row) {
 
     $title = trim($row->getElementsByTagName("th")->item(0)->firstChild->data);
     $td = $row->getElementsByTagName("td")->item(0);
@@ -49,7 +49,7 @@ foreach($doc->getElementById("autotest")->getElementsByTagName("tr") as $row) {
         $td->getElementsByTagName("code")->item(0)->firstChild->data);
 
     $lst[$title] = $lang;
-    
+
     // patch:
     if ($lang === "xml" && strpos($title, "HTML") !== false) {
         $lang = "html";

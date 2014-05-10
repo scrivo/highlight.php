@@ -104,8 +104,7 @@ pre { margin: 0px; }
       <th>highlight.js</th>
     </tr>
 <?php
-//var_dump($test);
-foreach($test as $name => $languageId) {
+foreach ($test as $name => $languageId) {
   $snippet = file_get_contents("snippets/{$languageId}.txt");
   $r = $hl->highlightAuto($snippet);
 ?>
