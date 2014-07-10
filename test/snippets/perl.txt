@@ -21,6 +21,10 @@ sub load
     }
   }
   $o->save if delete $o->{'_save_after_load'};
+
+  # GH-117
+  my $g = glob("/usr/bin/*");
+
   return $o;
 }
 

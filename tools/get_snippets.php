@@ -1,6 +1,7 @@
 <?php
 /* Copyright (c)
  * - 2013-2014, Geert Bergman (geert@scrivo.nl), highlight.php
+ * - 2014,      Daniel Lynge, highlight.php (contributor)
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -32,7 +33,7 @@
  * Extract code snippets from highlight.js test page.
  */
 
-define("HIGHLIGHT_JS", "/var/www/html/highlight.js-8.0");
+define("HIGHLIGHT_JS", "/var/www/html/highlight.js-8.1");
 define("SNIPPETS_DIR", "../test/snippets");
 
 $doc = new DOMDocument();

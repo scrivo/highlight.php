@@ -32,7 +32,7 @@
  * Extract language definions in JSON format from highlight.js test page.
  */
 
-define("HIGHLIGHT_JS", "/var/www/html/highlight.js-8.0");
+define("HIGHLIGHT_JS", "/var/www/html/highlight.js-8.1");
 
 function echoFile($name) 
 {

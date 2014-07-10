@@ -123,33 +123,38 @@ class Highlighter
         return $openSpan . $insideSpan . $closeSpan;
     }
     
+    private function escape($value) {
+        return htmlspecialchars($value, ENT_NOQUOTES);
+    }
+    
     private function processKeywords() 
     {
-        $buffer = htmlspecialchars($this->modeBuffer, ENT_NOQUOTES);
         if (!$this->top->keywords) {
-            return $buffer;
+            return $this->escape($this->modeBuffer);
         }
                 
         $result = "";
         $lastIndex = 0;
 
-        while (preg_match($this->top->lexemesRe, $buffer, $match, 
+        while (preg_match($this->top->lexemesRe, $this->modeBuffer, $match, 
                 PREG_OFFSET_CAPTURE, $lastIndex)) {
 
-            $result .= substr($buffer, $lastIndex, $match[0][1] - $lastIndex);
+            $result .= $this->escape(substr(
+                $this->modeBuffer, $lastIndex, $match[0][1] - $lastIndex));
             $keyword_match = $this->keywordMatch($this->top, $match[0]);
 
             if ($keyword_match) {
                 $this->relevance += $keyword_match[1];
-                $result .= $this->buildSpan($keyword_match[0], $match[0][0]);
+                $result .= $this->buildSpan(
+                    $keyword_match[0], $this->escape($match[0][0]));
             } else {
-                $result .= $match[0][0];
+                $result .= $this->escape($match[0][0]);
             }
 
             $lastIndex = strlen($match[0][0]) + $match[0][1];
         }
 
-        return $result . substr($buffer, $lastIndex);
+        return $result . $this->escape(substr($this->modeBuffer, $lastIndex));
     }
 
     private function processSubLanguage() 
@@ -180,7 +185,7 @@ class Highlighter
             return $this->buildSpan($res->language, $res->value, false, true);
                 
         } catch (\Exception $e) {
-            return htmlspecialchars($this->modeBuffer, ENT_NOQUOTES);
+            return $this->escape($this->modeBuffer);
         }
     }
 
@@ -199,7 +204,7 @@ class Highlighter
             $this->result .= $markup;
             $this->modeBuffer = "";
         } elseif ($mode->excludeBegin) {
-            $this->result .= htmlspecialchars($lexeme, ENT_NOQUOTES) . $markup;
+            $this->result .= $this->escape($lexeme) . $markup;
             $this->modeBuffer = "";
         } else {
             $this->result .= $markup;
@@ -242,7 +247,7 @@ class Highlighter
                 $this->top = $this->top->parent;
             } while ($this->top != $end_mode->parent);
             if ($origin->excludeEnd) {
-                $this->result .= htmlspecialchars($lexeme, ENT_NOQUOTES);
+                $this->result .= $this->escape($lexeme);
             }
             $this->modeBuffer = "";
             if ($end_mode->starts) {
@@ -289,7 +294,7 @@ class Highlighter
         for ($current = $this->top; $current != $this->language->mode; 
                 $current = $current->parent) {
             if ($current->className) {
-                $this->result = 
+                $this->result .= 
                     $this->buildSpan($current->className, $this->result, true);
             }
         }
@@ -336,7 +341,7 @@ class Highlighter
         } catch (\Exception $e) {
             
             if (strpos($e->getMessage(), "Illegal") !== false) {
-                $res->value = htmlspecialchars($code, ENT_NOQUOTES);
+                $res->value = $this->escape($code);
                 return $res;
             } else {
                 throw $e;
@@ -348,7 +353,7 @@ class Highlighter
     {
         $res = new \stdClass;
         $res->relevance = 0;
-        $res->value = htmlspecialchars($code);
+        $res->value = $this->escape($code);
         $res->language = "";
         $scnd = clone $res;
         
