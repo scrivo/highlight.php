@@ -56,6 +56,9 @@ bash.json
 brainfuck.json
 	Author(s): Evgeny Stepanischev <imbolk@gmail.com>
 
+capnproto.json
+	Author(s): Oleg Efimov <efimovov@gmail.com>
+
 clojure.json
 	Author(s): mfornos
 
@@ -94,6 +97,9 @@ django.json
 dos.json
 	Author(s): Alexander Makarov (http://rmcreative.ru/)
 
+elixir.json
+	Author(s): Josh Adams <josh@isotope11.com>
+
 erlang-repl.json
 	Author(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
 
@@ -108,12 +114,18 @@ fsharp.json
 	Author(s): Jonas Follesø <jonas@follesoe.no>
 	Contributor(s): Troy Kershaw <hello@troykershaw.com>
 
+gherkin.json
+	Author(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
+
 glsl.json
 	Author(s): Sergey Tikhomirov <me@stikhomirov.com>
 
 go.json
 	Author(s): Stephan Kountso aka StepLg <steplg@gmail.com>
 	Contributor(s): Evgeny Stepanischev <imbolk@gmail.com>
+
+gradle.json
+	Author(s): Damian Mee <mee.damian@gmail.com>
 
 haml.json
 	Author(s): Dan Allen <dan.j.allen@gmail.com>
@@ -124,6 +136,9 @@ handlebars.json
 haskell.json
 	Author(s): Jeremy Hull <sourdrums@gmail.com>
 	Contributor(s): Zena Treep <zena.treep@gmail.com>
+
+haxe.json
+	Author(s): Christopher Kaster <ikasoki@gmail.com>
 
 http.json
 	Author(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
@@ -171,13 +186,26 @@ mel.json
 mizar.json
 	Author(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
 
+monkey.json
+	Author(s): Arthur Bikmullin <devolonter@gmail.com>
+
 nginx.json
 	Author(s): Peter Leonov <gojpeg@yandex.ru>
 	Contributor(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
 
+nimrod.json
+	Author(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
+
+nix.json
+	Author(s): Domen Kožar <domen@dev.si>
+
+nsis.json
+	Author(s): Jan T. Sott <jan.sott@gmail.com>
+
 objectivec.json
 	Author(s): Valerii Hiora <valerii.hiora@gmail.com>
-	Contributor(s): Angel G. Olloqui <angelgarcia.mail@gmail.com>
+	Contributor(s): Angel G. Olloqui <angelgarcia.mail@gmail.com>, 
+		Matt Diephouse <matt@diephouse.com>
 
 ocaml.json
 	Author(s): Mehdi Dogguy <mehdi@dogguy.org>
@@ -200,6 +228,9 @@ php.json
 profile.json
 	Author(s): Brian Beck <exogen@gmail.com>
 
+protobuf.json
+	Author(s): Dan Tao <daniel.tao@gmail.com>
+
 python.json
 	Author(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
 
@@ -217,13 +248,15 @@ rsl.json
 ruby.json
 	Author(s): Anton Kovalyov <anton@kovalyov.net>
 	Contributor(s): Peter Leonov <gojpeg@yandex.ru>, 
-		Vasily Polovnyov <vast@whiteants.net>, Loren Segal <lsegal@soen.ca>
+		Vasily Polovnyov <vast@whiteants.net>, Loren Segal <lsegal@soen.ca>, 
+		Pascal Hurni <phi@ruby-reactive.org>
 
 ruleslanguage.json
 	Author(s): Jason Jacobson <jason.a.jacobson@gmail.com>
 
 rust.json
 	Author(s): Andrey Vlasovskikh <andrey.vlasovskikh@gmail.com>
+	Contributor(s): Roman Shmatov <romanshmatov@gmail.com>
 
 scala.json
 	Author(s): Jan Berkel <jan.berkel@gmail.com>
@@ -240,8 +273,18 @@ smalltalk.json
 sql.json
 	Author(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
 
+swift.json
+	Author(s): Chris Eidhof <chris@eidhof.nl>
+	Contributor(s): Nate Cook <natecook@gmail.com>
+
 tex.json
 	Author(s): Vladimir Moskva <vladmos@gmail.com>
+
+thrift.json
+	Author(s): Oleg Efimov <efimovov@gmail.com>
+
+typescript.json
+	Author(s): Panu Horsmalahti <panu.horsmalahti@iki.fi>
 
 vala.json
 	Author(s): Antono Vasiljev <antono.vasiljev@gmail.com>
@@ -257,5 +300,102 @@ vhdl.json
 	Author(s): Igor Kalnitsky <igor@kalnitsky.org>
 	Contributor(s): Daniel C.K. Kho <daniel.kho@gmail.com>
 
+vim.json
+	Author(s): Jun Yang <yangjvn@126.com>
+
+x86asm.json
+	Author(s): innocenat <innocenat@gmail.com>
+
 xml.json
 	Author(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
+	
+-------------------------------------------------------------------------------
+
+CSS files (copied from the highlight.js project)
+
+arta
+	Author(s): pumbur <pumbur@pumbur.net>
+
+ascetic
+	Author(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
+	
+atelier
+	Author(s): Bram de Haan, Chris Kempson
+
+brown_paper
+	Author(s): Zaripov Yura <yur4ik7@ukr.net>
+
+dark
+	Author(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
+
+default
+	Author(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
+
+docco
+	Author(s): Simon Madine
+
+far
+	Author(s): MajestiC <majestic2k@gmail.com>
+
+foundation
+	Author(s): Dan Allen <dan.j.allen@gmail.com>
+
+github
+	Author(s): Vasily Polovnyov <vast@whiteants.net>
+
+googlecode
+	Author(s): Aahan Krish <geekpanth3r@gmail.com>
+
+idea
+	Author(s): Vasily Polovnyov <vast@whiteants.net>
+
+ir_black
+	Author(s): Vasily Mikhailitchenko <vaskas@programica.ru>
+
+magula
+	Author(s): Ruslan Keba <rukeba@gmail.com>
+
+monokai
+	Author(s): Luigi Maselli
+	
+monokai_sublime
+	Author(s): i@noformnocontent.com
+	 
+obsidian
+	Author(s): Alexander Marenin
+
+paraiso
+	Author(s): Jan T. Sott
+
+pojoaque
+	Author(s): Jason Tate
+	
+railscasts
+	Author(s): Visoft, Inc. (Damien White)
+
+rainbow
+	Author(s): Marc Fornos <marc.fornos@gmail.com>
+
+school_book
+	Author(s): Zaripov Yura <yur4ik7@ukr.net>
+	
+solarized
+	Author(s): Jeremy Hull <sourdrums@gmail.com>
+	
+sunburst
+	Author(s): Vasily Polovnyov <vast@whiteants.net>
+
+tomorrow
+	Authors(s): Yoshihide Jimbo <yjimbo@gmail.com>
+
+vs
+	Author(s): Jason Diamond <jason@diamond.name>
+
+xcode
+	Author(s): Angel Garcia <angelgarcia.mail@gmail.com>
+
+zenburn
+	Author(s): Vladimir Epifanov <voldmar@voldmar.ru>,
+		Ivan Sagalaev <maniac@softwaremaniacs.org>
+
+	
