@@ -324,6 +324,12 @@ atelier
 
 brown_paper
 	Author(s): Zaripov Yura <yur4ik7@ukr.net>
+	
+codepen-embed
+	Author(s): Justin Perry
+
+color-brewer
+	Author(s): Mike Bostock <mike@ocks.org>
 
 dark
 	Author(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
@@ -346,11 +352,17 @@ github
 googlecode
 	Author(s): Aahan Krish <geekpanth3r@gmail.com>
 
+hybrid
+	Author(s): Andrew Wong <wongadev@gmail.com>, Nic West
+	
 idea
 	Author(s): Vasily Polovnyov <vast@whiteants.net>
 
 ir_black
 	Author(s): Vasily Mikhailitchenko <vaskas@programica.ru>
+
+kimbie
+	Author(s): Jan T. Sott
 
 magula
 	Author(s): Ruslan Keba <rukeba@gmail.com>
