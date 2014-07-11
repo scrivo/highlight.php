@@ -69,7 +69,7 @@ class Highlighter
         return self::$classMap[$languageId];
     }
 
-    public function testRe($re, $lexeme) 
+    private function testRe($re, $lexeme) 
     {
         if (!$re) {
             return false;
