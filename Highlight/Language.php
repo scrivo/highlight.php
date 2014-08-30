@@ -164,7 +164,8 @@ class Language
 
         if ($parent) {
             if ($mode->beginKeywords) {
-                $mode->begin = implode("|",explode(" ", $mode->beginKeywords));
+                $mode->begin = "\\b(" . 
+                    implode("|",explode(" ", $mode->beginKeywords)) . ")\\b";
             }
             if (!$mode->begin) {
                 $mode->begin = "\B|\b";
@@ -214,7 +215,7 @@ class Language
 
         for ($i=0; $i<count($mode->contains); $i++) {
             $terminators[] = $mode->contains[$i]->beginKeywords 
-                ? "\.?\b(" . $mode->contains[$i]->begin . ")\b\.?"
+                ? "\.?(" . $mode->contains[$i]->begin . ")\.?"
                 : $mode->contains[$i]->begin;
         }
         if ($mode->terminatorEnd) {
@@ -225,10 +226,6 @@ class Language
         }
         $mode->terminators = count($terminators)
             ? $this->langRe(implode("|", $terminators), true) : null;
-
-        $mode->continuation = new \stdClass();
-        $mode->continuation->top = null;
-        
     }
 
     protected function compile() 

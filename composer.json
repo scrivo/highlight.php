@@ -1,7 +1,7 @@
 {
 	"name": "scrivo/highlight.php",
-	"description": "A port of highlight.js by Ivan Sagalaev to PHP",
-	"keywords": ["code", "highlight", "highlight.js", "highlight.php"],
+	"description": "Server side syntax highlighter that supports over 90 languages. It's a PHP port of highlight.js",
+	"keywords": ["code", "syntax", "highlight", "highlight.js", "highlight.php"],
 	"type": "library",
 	"license": "BSD-3-Clause",
 	"support": {

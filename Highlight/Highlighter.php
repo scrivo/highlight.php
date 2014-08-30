@@ -168,7 +168,7 @@ class Highlighter
 
             if ($this->top->subLanguage) {
                 $res = $hl->highlight($this->top->subLanguage, 
-                    $this->modeBuffer, true, $this->top->continuation->top);
+                    $this->modeBuffer, true, $this->subLanguageTop);
             } else {
                 $res = $hl->highlightAuto($this->modeBuffer);
             }
@@ -180,7 +180,7 @@ class Highlighter
                 $this->relevance += $res->relevance;
             }
             if ($this->top->subLanguageMode == "continuous") {
-                $this->top->continuation->top = $res->top;
+                $this->subLanguageTop = $res->top;
             }            
             return $this->buildSpan($res->language, $res->value, false, true);
                 
@@ -289,13 +289,15 @@ class Highlighter
     {
         $this->language = $this->createLanguage($language);
         $this->top = $continuation ? $continuation : $this->language->mode;
+        $this->subLanguageTop = null;
         $this->result = "";
 
         for ($current = $this->top; $current != $this->language->mode; 
                 $current = $current->parent) {
             if ($current->className) {
-                $this->result .= 
-                    $this->buildSpan($current->className, $this->result, true);
+                $this->result = 
+                    $this->buildSpan($current->className, '', true) . 
+                    $this->result;
             }
         }
         
