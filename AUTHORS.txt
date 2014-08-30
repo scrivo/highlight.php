@@ -84,6 +84,9 @@ css.json
 d.json
 	Author(s): Aleksandar Ruzicic <aleksandar@ruzicic.info>
 
+dart.json
+	Author(s): Maxim Dikun <dikmax@gmail.com>
+
 delphi.json
 	Author(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
 
@@ -95,7 +98,11 @@ django.json
 	Contributor(s): Ilya Baryshev <baryshev@gmail.com>
 
 dos.json
-	Author(s): Alexander Makarov (http://rmcreative.ru/)
+	Author(s): Alexander Makarov <sam@rmcreative.ru>
+	Contributor(s): Anton Kochkov <anton.kochkov@gmail.com>
+
+dust.json
+	Author(s): Michael Allen <michael.allen@benefitfocus.com>
 
 elixir.json
 	Author(s): Josh Adams <josh@isotope11.com>
@@ -112,7 +119,11 @@ fix.json
 
 fsharp.json
 	Author(s): Jonas Follesø <jonas@follesoe.no>
-	Contributor(s): Troy Kershaw <hello@troykershaw.com>
+	Contributor(s): Troy Kershaw <hello@troykershaw.com>,
+		Henrik Feldt <henrik@haf.se>
+
+gcode.json
+	Author(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
 
 gherkin.json
 	Author(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
@@ -126,6 +137,9 @@ go.json
 
 gradle.json
 	Author(s): Damian Mee <mee.damian@gmail.com>
+
+groovy.json
+	Author(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
 
 haml.json
 	Author(s): Dan Allen <dan.j.allen@gmail.com>
@@ -234,6 +248,9 @@ protobuf.json
 python.json
 	Author(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
 
+q.json
+	Author(s): Sergey Vidyuk <svidyuk@gmail.com>
+
 r.json
 	Author(s): Joe Cheng <joe@rstudio.org>
 
@@ -260,6 +277,11 @@ rust.json
 
 scala.json
 	Author(s): Jan Berkel <jan.berkel@gmail.com>
+	Contributor(s): Erik Osheim <d_m@plastic-idolatry.com>
+
+scheme.json
+	Author(s): JP Verkamp <me@jverkamp.com>
+	Contributor(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
 
 scilab.json
 	Author(s): Sylvestre Ledru <sylvestre.ledru@scilab-enterprises.com>
@@ -308,7 +330,7 @@ x86asm.json
 
 xml.json
 	Author(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
-	
+
 -------------------------------------------------------------------------------
 
 CSS files (copied from the highlight.js project)

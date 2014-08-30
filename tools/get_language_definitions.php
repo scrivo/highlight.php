@@ -32,7 +32,7 @@
  * Extract language definions in JSON format from highlight.js test page.
  */
 
-define("HIGHLIGHT_JS", "/var/www/html/highlight.js-8.1");
+define("HIGHLIGHT_JS", "/var/www/html/highlight.js-8.2");
 
 function echoFile($name) 
 {
@@ -87,11 +87,8 @@ foreach (new DirectoryIterator(HIGHLIGHT_JS."/src/languages") as $fileInfo) {
         }
     }
 
-    function patch(o, m) {
-        if (o[m]) {
-            o[m] = o[m].replace("\/", "/");
-            o[m] = o[m].replace("/", "\/");
-        }
+    function patch(s) {
+        return s.replace(/\\u(\d+)/g, "\\x{$1}");
     }
 
     var res = "";
@@ -101,7 +98,7 @@ foreach (new DirectoryIterator(HIGHLIGHT_JS."/src/languages") as $fileInfo) {
         refs = [];
         regExpsRep(l);
         hljs.registerLanguage(p, lang[p]);
-        res += dojox.json.ref.toJson(l) + "\n";
+        res += patch(dojox.json.ref.toJson(l)) + "\n";
 
     }
 

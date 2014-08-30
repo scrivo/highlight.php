@@ -1,6 +1,6 @@
 {
 	"name": "scrivo/highlight.php",
-	"description": "A port of highlight.js by Ivan Sagalaev to PHP",
+	"description": "A port of highlight.js to PHP",
 	"keywords": ["code", "highlight", "highlight.js", "highlight.php"],
 	"type": "library",
 	"license": "BSD-3-Clause",

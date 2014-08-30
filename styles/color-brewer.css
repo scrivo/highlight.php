@@ -11,13 +11,12 @@ Ported by Fabrício Tavares de Oliveira
   overflow-x: auto;
   padding: 0.5em;
   background: #fff;
+  -webkit-text-size-adjust: none;
 }
 
 .hljs,
 .hljs-subst,
 .hljs-tag .hljs-title,
-.lisp .hljs-title,
-.clojure .hljs-built_in,
 .nginx .hljs-title {
   color: #000;
 }
@@ -98,6 +97,7 @@ Ported by Fabrício Tavares de Oliveira
 .hljs-shebang,
 .apache .hljs-sqbracket,
 .nginx .hljs-built_in,
+.hljs-list .hljs-built_in,
 .tex .hljs-formula,
 .erlang_repl .hljs-reserved,
 .hljs-prompt,
@@ -121,12 +121,14 @@ Ported by Fabrício Tavares de Oliveira
 .css .hljs-tag,
 .hljs-javadoctag,
 .hljs-phpdoc,
+.hljs-dartdoc,
 .hljs-yardoctag,
 .smalltalk .hljs-class,
 .hljs-winutils,
 .bash .hljs-variable,
 .apache .hljs-tag,
-.go .hljs-typename,
+.hljs-type,
+.hljs-typename,
 .tex .hljs-command,
 .asciidoc .hljs-strong,
 .markdown .hljs-strong,
