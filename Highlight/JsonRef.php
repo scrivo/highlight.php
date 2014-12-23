@@ -115,8 +115,8 @@ class JsonRef
     /**
      * Decode JSON data that may contain path based references.
      * 
-     * @param string $json 
-     *     JSON data string.
+     * @param string|object $json 
+     *     JSON data string or JSON data object.
      * @return mixed 
      *     The decoded JSON data.
      */
@@ -124,8 +124,8 @@ class JsonRef
     {
         // Clear the path array.
         $this->paths = array();
-        // Decode the given JSON data.
-        $x = json_decode($json);
+        // Decode the given JSON data if necessary.
+        $x = is_string($json) ? json_decode($json) : $json;
         // Get all data paths.
         $this->getPaths($x);
         // Resolve all path references.

@@ -107,6 +107,10 @@ dust.json
 elixir.json
 	Author(s): Josh Adams <josh@isotope11.com>
 
+erb.json
+	Author(s): Lucas Mazza <lucastmazza@gmail.com>
+	Contributor(s): Kassio Borges <kassioborgesm@gmail.com>
+
 erlang-repl.json
 	Author(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
 
@@ -172,11 +176,18 @@ json.json
 lasso.json
 	Author(s): Eric Knibbe <eric@lassosoft.com>
 
+less.json
+	Author(s): Max Mikhailov <seven.phases.max@gmail.com>
+
 lisp.json
 	Author(s): Vasily Polovnyov <vast@whiteants.net>
 
 livecodeserver.json
 	Author(s): Ralf Bitter <rabit@revigniter.com>
+
+livescript.json
+	Author(s): Taneli Vatanen <taneli.vatanen@gmail.com>
+	Contributor(s): Jen Evers-Corvina <jen@sevvie.net>
 
 lua.json
 	Author(s): Andrew Fedorov <dmmdrs@mail.ru>
@@ -239,11 +250,21 @@ php.json
 	Contributor(s): Evgeny Stepanischev <imbolk@gmail.com>, 
 		Ivan Sagalaev <maniac@softwaremaniacs.org>
 
+powershell.json
+	Author(s): David Mohundro <david@mohundro.com>
+	Contributor(s): Nicholas Blumhardt <nblumhardt@nblumhardt.com>
+
+processing.json
+	Author(s): Erik Paluka <erik.paluka@gmail.com>
+
 profile.json
 	Author(s): Brian Beck <exogen@gmail.com>
 
 protobuf.json
 	Author(s): Dan Tao <daniel.tao@gmail.com>
+
+puppet.json
+	Author(s): Jose Molina Colmenero <gaudy41@gmail.com>
 
 python.json
 	Author(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
@@ -295,15 +316,24 @@ smalltalk.json
 sql.json
 	Author(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
 
+stylus.json
+	Author(s): Bryant Williams <b.n.williams@gmail.com>
+
 swift.json
 	Author(s): Chris Eidhof <chris@eidhof.nl>
 	Contributor(s): Nate Cook <natecook@gmail.com>
+
+tcl.json
+	Author(s): Radek Liska <radekliska@gmail.com>
 
 tex.json
 	Author(s): Vladimir Moskva <vladmos@gmail.com>
 
 thrift.json
 	Author(s): Oleg Efimov <efimovov@gmail.com>
+
+twig.json
+	Author(s): Luke Holder <lukemh@gmail.com>
 
 typescript.json
 	Author(s): Panu Horsmalahti <panu.horsmalahti@iki.fi>
@@ -313,6 +343,9 @@ vala.json
 
 vbnet.json
 	Author(s): Poren Chiang <ren.chiang@gmail.com>
+
+vbscript-html.json
+	Author(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
 
 vbscript.json
 	Author(s): Nikita Ledyaev <lenikita@yandex.ru>
@@ -327,6 +360,9 @@ vim.json
 
 x86asm.json
 	Author(s): innocenat <innocenat@gmail.com>
+
+xl.json
+	Author(s): Christophe de Dinechin <christophe@taodyne.com>
 
 xml.json
 	Author(s): Ivan Sagalaev <maniac@softwaremaniacs.org>

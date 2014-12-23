@@ -33,10 +33,10 @@ $start = microtime(true);
 require_once("../Highlight/Autoloader.php");
 spl_autoload_register("Highlight\\Autoloader::load");
 
-$test = json_decode(file_get_contents("snippets/snippets.json"), true);
+$test = json_decode(file_get_contents("snippets.json"), true);
 
 $hl = new Highlight\Highlighter();
-$hl->setAutodetectLanguages(array_values($test));
+$hl->setAutodetectLanguages($hl->listLanguages());
 
 ?>
 <html>
@@ -105,8 +105,8 @@ pre { margin: 0px; }
       <th>highlight.js</th>
     </tr>
 <?php
-foreach ($test as $name => $languageId) {
-  $snippet = file_get_contents("snippets/{$languageId}.txt");
+foreach ($hl->listLanguages() as $languageId) {
+  $snippet = file_get_contents("detect/{$languageId}/default.txt");
   $r = $hl->highlightAuto($snippet);
 ?>
     <tr>

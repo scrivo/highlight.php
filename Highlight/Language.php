@@ -36,6 +36,7 @@ namespace Highlight;
 class Language 
 {
     public $caseInsensitive = false;
+    public $aliases = null;
     
     public function complete(&$e) 
     {
@@ -88,16 +89,16 @@ class Language
 
     public function __construct($lang) 
     {
-        $json = file_get_contents(dirname(__FILE__)."/languages/{$lang}.json");
-        $jr = new JsonRef();
-        $this->mode = $jr->decode($json);
+        $json = file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . "languages" .
+            DIRECTORY_SEPARATOR . "{$lang}.json");
+        $this->mode = json_decode($json);
         
         $this->name = $lang;
-
+        $this->aliases = 
+            isset($this->mode->aliases) ? $this->mode->aliases : null;
+        
         $this->caseInsensitive = isset($this->mode->case_insensitive) ?
             $this->mode->case_insensitive : false;
-        
-        $this->compile();
     }
     
     private function langRe($value, $global=false) 
@@ -228,8 +229,12 @@ class Language
             ? $this->langRe(implode("|", $terminators), true) : null;
     }
 
-    protected function compile() 
+    public function compile() 
     {
-        $this->compileMode($this->mode);
+        if (!isset($this->mode->compiled)) {
+            $jr = new JsonRef();
+            $this->mode = $jr->decode($this->mode);
+            $this->compileMode($this->mode);
+        }
     }
 }

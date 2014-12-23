@@ -44,27 +44,48 @@ class Highlighter
     private $ignoreIllegals = false;
     
     private static $classMap = array();
+    private static $languages = null;
+    private static $aliases = null;
     
-    private $options = null;
-        
+    private $tabReplace = null;
+    private $classPrefix = "hljs-";
+    
     private $autodetectSet = array(
-        "html", "xml", "json", "javascript", "css", "php", "http"
+        "xml", "json", "javascript", "css", "php", "http"
     );
     
     public function __construct()
     {
-        $this->options = (object)array(
-            "classPrefix" => "hljs-",
-            "tabReplace" => null,
-            "useBR" => false,
-            "languages" => null
-        );
+        $this->registerLanguages();
+    }
+    
+    private function registerLanguages() {
+        
+        // XML takes precedence in the classMap array.
+        $this->createLanguage("xml");
+
+        $d = dir(__DIR__.DIRECTORY_SEPARATOR."languages");
+        while (false !== ($entry = $d->read())) {
+            if ($entry[0] !== ".") {
+                $lng = substr($entry, 0, -5);
+            }
+            $this->createLanguage($lng);
+        }
+        $d->close();
+        
+        self::$languages = array_keys(self::$classMap);
     }
     
     private function createLanguage($languageId) 
     {
         if (!isset(self::$classMap[$languageId])) {
-            self::$classMap[$languageId] = new Language($languageId);
+            $lang = new Language($languageId);
+            self::$classMap[$languageId] = $lang;
+            if (isset($lang->mode->aliases)) {
+                foreach ($lang->mode->aliases as $alias) {
+                    self::$aliases[$alias] = $languageId;
+                }
+            }
         }
         return self::$classMap[$languageId];
     }
@@ -114,7 +135,7 @@ class Highlighter
     private function buildSpan(
             $classname, $insideSpan, $leaveOpen=false, $noPrefix=false) 
     {
-        $classPrefix = $noPrefix ? "" : $this->options->classPrefix;
+        $classPrefix = $noPrefix ? "" : $this->classPrefix;
         $openSpan = "<span class=\"" . $classPrefix;
         $closeSpan = $leaveOpen ? "" : "</span>";
     
@@ -168,7 +189,9 @@ class Highlighter
 
             if ($this->top->subLanguage) {
                 $res = $hl->highlight($this->top->subLanguage, 
-                    $this->modeBuffer, true, $this->subLanguageTop);
+                    $this->modeBuffer, true, 
+                    isset($this->continuations[$this->top->subLanguage]) 
+                    ? $this->continuations[$this->top->subLanguage] : null);
             } else {
                 $res = $hl->highlightAuto($this->modeBuffer);
             }
@@ -180,7 +203,7 @@ class Highlighter
                 $this->relevance += $res->relevance;
             }
             if ($this->top->subLanguageMode == "continuous") {
-                $this->subLanguageTop = $res->top;
+                $this->continuations[$this->top->subLanguage] = $res->top;
             }            
             return $this->buildSpan($res->language, $res->value, false, true);
                 
@@ -272,9 +295,58 @@ class Highlighter
         return $l ? $l : 1;
     }
     
+    /**
+     * Replace tabs for something more usable.
+     */
+    private function replaceTabs($code) {
+        if ($this->tabReplace !== null) {
+            return str_replace("\t", $this->tabReplace, $code);
+        }
+        return $code; 
+    }
+    
+    /**
+     * Set the set of languages used for autodetection. When using 
+     * autodetection the code to highlight will be probed for every language
+     * in this set. Limiting this set to only the languages you want to use 
+     * will greatly improve highlighting speed.
+     *  
+     * @param array $set
+     *      An array of language games to use for autodetection. This defaults
+     *      to a typical set Web development languages.
+     */
     public function setAutodetectLanguages(array $set) 
     {
         $this->autodetectSet = array_unique($set);
+        $this->registerLanguages();
+    }
+
+    /**
+     * Get the tab replacement string.
+     * 
+     * @return string 
+     *      The tab replacement string.
+     */
+    public function getTabReplace() 
+    {
+        return $this->tabReplace;
+    }
+
+    /**
+     * Set the tab replacement string. This defaults to NULL: no tabs 
+     * will be replaced.
+     * 
+     * @param string $tabReplace 
+     *      The tab replacement string.
+     */
+    public function setTabReplace($tabReplace) 
+    {
+        $this->tabReplace = $tabReplace;
+    }
+    
+    private function getLanguage($name) {
+        return isset(self::$classMap[$name]) ? 
+            self::$classMap[$name] : self::$classMap[self::$aliases[$name]];
     }
 
     /**
@@ -287,9 +359,10 @@ class Highlighter
     public function highlight(
             $language, $code, $ignoreIllegals=true, $continuation=null) 
     {
-        $this->language = $this->createLanguage($language);
+        $this->language = $this->getLanguage($language);
+        $this->language->compile();
         $this->top = $continuation ? $continuation : $this->language->mode;
-        $this->subLanguageTop = null;
+        $this->continuations = array();
         $this->result = "";
 
         for ($current = $this->top; $current != $this->language->mode; 
@@ -334,7 +407,7 @@ class Highlighter
             }
                 
             $res->relevance = $this->relevance;
-            $res->value = $this->result;
+            $res->value = $this->replaceTabs($this->result);
             $res->language = $this->language->name;
             $res->top = $this->top;
             
@@ -376,4 +449,18 @@ class Highlighter
         
         return $res;
     }
+
+    /**
+     * Return a list of all supported languages. Using this list in 
+     * setAutodetectLanguages will turn on autodetection for all supported
+     * languages.
+     *
+     * @return array
+     *      An array of language names (strings).
+     */
+    public function listLanguages()
+    {
+        return self::$languages;
+    }
+
 }

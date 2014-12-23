@@ -33,7 +33,7 @@
  * Extract code snippets from highlight.js test page.
  */
 
-define("HIGHLIGHT_JS", "/var/www/html/highlight.js-8.2");
+define("HIGHLIGHT_JS", "/var/www/html/highlight.js");
 define("SNIPPETS_DIR", "../test/snippets");
 
 $doc = new DOMDocument();
