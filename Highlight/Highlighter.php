@@ -54,6 +54,9 @@ class Highlighter
         "xml", "json", "javascript", "css", "php", "http"
     );
     
+    /**
+     * 
+     */
     public function __construct()
     {
         $this->registerLanguages();
@@ -309,11 +312,11 @@ class Highlighter
      * Set the set of languages used for autodetection. When using 
      * autodetection the code to highlight will be probed for every language
      * in this set. Limiting this set to only the languages you want to use 
-     * will greatly improve highlighting speed.
+     * will greatly improve highlighting speed. Therefore the default value
+     * for this setting is limited to a typical set Web development languages.
      *  
      * @param array $set
-     *      An array of language games to use for autodetection. This defaults
-     *      to a typical set Web development languages.
+     *      An array of language names to use for autodetection.
      */
     public function setAutodetectLanguages(array $set) 
     {
@@ -322,7 +325,7 @@ class Highlighter
     }
 
     /**
-     * Get the tab replacement string.
+     * Get the string used for tab replacement.
      * 
      * @return string 
      *      The tab replacement string.
@@ -333,8 +336,8 @@ class Highlighter
     }
 
     /**
-     * Set the tab replacement string. This defaults to NULL: no tabs 
-     * will be replaced.
+     * Set the string to use for tab replacement. This defaults to NULL: no 
+     * tabs will be replaced.
      * 
      * @param string $tabReplace 
      *      The tab replacement string.
@@ -349,12 +352,21 @@ class Highlighter
             self::$classMap[$name] : self::$classMap[self::$aliases[$name]];
     }
 
-    /**
+    /*
      * Core highlighting function. Accepts a language name, or an alias, and a
      * string with the code to highlight. Returns an object with the following
      * properties:
      * - relevance (int)
      * - value (an HTML string with highlighting markup)
+     */
+    /**
+     * 
+     * @param unknown $language
+     * @param unknown $code
+     * @param string $ignoreIllegals
+     * @param string $continuation
+     * @throws Exception
+     * @return \stdClass
      */    
     public function highlight(
             $language, $code, $ignoreIllegals=true, $continuation=null) 
@@ -424,6 +436,11 @@ class Highlighter
         }
     }
     
+    /**
+     * 
+     * @param unknown $code
+     * @return Ambigous <\stdClass, unknown>
+     */
     public function highlightAuto($code) 
     {
         $res = new \stdClass;
