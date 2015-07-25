@@ -33,12 +33,12 @@
 
 namespace Highlight;
 
-class Language 
+class Language
 {
     public $caseInsensitive = false;
     public $aliases = null;
-    
-    public function complete(&$e) 
+
+    public function complete(&$e)
     {
         $patch = array(
             "begin" => true,
@@ -87,26 +87,26 @@ class Language
         }
     }
 
-    public function __construct($lang) 
+    public function __construct($lang)
     {
         $json = file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . "languages" .
             DIRECTORY_SEPARATOR . "{$lang}.json");
         $this->mode = json_decode($json);
-        
+
         $this->name = $lang;
-        $this->aliases = 
+        $this->aliases =
             isset($this->mode->aliases) ? $this->mode->aliases : null;
-        
+
         $this->caseInsensitive = isset($this->mode->case_insensitive) ?
             $this->mode->case_insensitive : false;
     }
-    
-    private function langRe($value, $global=false) 
+
+    private function langRe($value, $global=false)
     {
         return "/{$value}/um" . ($this->caseInsensitive ? "i" : "");
     }
 
-    private function processKeyWords($kw) 
+    private function processKeyWords($kw)
     {
         if (is_string($kw)) {
             if ($this->caseInsensitive) {
@@ -126,17 +126,17 @@ class Language
         return $kw;
     }
 
-    private function compileMode($mode, $parent=null) 
+    private function compileMode($mode, $parent=null)
     {
         if (isset($mode->compiled)) {
             return;
         }
         $this->complete($mode);
         $mode->compiled = true;
-        
-        $mode->keywords = 
-            $mode->keywords ? $mode->keywords : $mode->beginKeywords; 
-        
+
+        $mode->keywords =
+            $mode->keywords ? $mode->keywords : $mode->beginKeywords;
+
         /* Note: JsonRef method creates different references as those in the
          * original source files. Two modes may refer to the same keywors
          * set, so only testing if the mode has keywords is not enough: the
@@ -147,7 +147,7 @@ class Language
 
             $compiledKeywords = array();
 
-            $mode->lexemesRe = $this->langRe($mode->lexemes 
+            $mode->lexemesRe = $this->langRe($mode->lexemes
                     ? $mode->lexemes : "\b[A-Za-z0-9_]+\b", true);
 
             foreach ($this->processKeyWords($mode->keywords) as $clsNm => $dat) {
@@ -156,7 +156,7 @@ class Language
                 }
                 foreach ($dat as $kw) {
                     $pair = explode("|", $kw);
-                    $compiledKeywords[$pair[0]] = 
+                    $compiledKeywords[$pair[0]] =
                         array($clsNm, isset($pair[1]) ? intval($pair[1]) : 1);
                 }
             }
@@ -165,7 +165,7 @@ class Language
 
         if ($parent) {
             if ($mode->beginKeywords) {
-                $mode->begin = "\\b(" . 
+                $mode->begin = "\\b(" .
                     implode("|",explode(" ", $mode->beginKeywords)) . ")\\b";
             }
             if (!$mode->begin) {
@@ -180,7 +180,7 @@ class Language
             }
             $mode->terminatorEnd = $mode->end;
             if ($mode->endsWithParent && $parent->terminatorEnd) {
-                $mode->terminatorEnd .= 
+                $mode->terminatorEnd .=
                     ($mode->end ? "|" : "") . $parent->terminatorEnd;
             }
         }
@@ -194,7 +194,7 @@ class Language
             if (isset($mode->contains[$i]->variants)) {
                 foreach ($mode->contains[$i]->variants as $v) {
                     $x = (object)((array)$v + (array)$mode->contains[$i]);
-                    unset($x->variants);         
+                    unset($x->variants);
                     $expanded_contains[] = $x;
                 }
             } else {
@@ -207,15 +207,15 @@ class Language
         for ($i=0; $i<count($mode->contains); $i++) {
             $this->compileMode($mode->contains[$i], $mode);
         }
-        
+
         if ($mode->starts) {
             $this->compileMode($mode->starts, $parent);
         }
-        
+
         $terminators = array();
 
         for ($i=0; $i<count($mode->contains); $i++) {
-            $terminators[] = $mode->contains[$i]->beginKeywords 
+            $terminators[] = $mode->contains[$i]->beginKeywords
                 ? "\.?(" . $mode->contains[$i]->begin . ")\.?"
                 : $mode->contains[$i]->begin;
         }
@@ -229,7 +229,7 @@ class Language
             ? $this->langRe(implode("|", $terminators), true) : null;
     }
 
-    public function compile() 
+    public function compile()
     {
         if (!isset($this->mode->compiled)) {
             $jr = new JsonRef();

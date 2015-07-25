@@ -36,15 +36,15 @@ namespace Highlight;
 
 /**
  * Class to decode JSON data that contains path-based references.
- * 
+ *
  * The language data file for highlight.js are written as JavaScript classes
  * and therefore may contain variables. This allows for inner references in
  * the language data. This kind of data can be converterd to JSON using the
- * path based references. This class can be used to decode such JSON 
- * structures. It follows the conventions for path based referencing as 
+ * path based references. This class can be used to decode such JSON
+ * structures. It follows the conventions for path based referencing as
  * used in dojox.json.ref form the Dojo toolkit (Javascript). A typical
  * example of such a structure is as follows:
- * 
+ *
  * {
  *   "name":"Kris Zyp",
  *   "children":[{"name":"Jennika Zyp"},{"name":"Korban Zyp"}],
@@ -55,33 +55,33 @@ namespace Highlight;
  *   },
  *   "oldestChild":{"$ref":"#children.0"}
  * }
- * 
+ *
  * Usage example:
- * 
+ *
  * $jr = new JsonRef();
  * $data = $jr->decode(file_get_contents("data.json"));
- * echo $data->spouse->spouse->name; // echos 'Kris Zyp' 
- * echo $data->oldestChild->name; // echos 'Jennika Zyp' 
+ * echo $data->spouse->spouse->name; // echos 'Kris Zyp'
+ * echo $data->oldestChild->name; // echos 'Jennika Zyp'
  *
  */
-class JsonRef 
+class JsonRef
 {
     /**
-     * Array to hold all data paths in the given JSON data. 
+     * Array to hold all data paths in the given JSON data.
      * @var array
      */
     private $paths = null;
-    
+
     /**
      * Recurse through the data tree and fill an array of paths that reference
      * the nodes in the decoded JSON data structure.
-     *  
+     *
      * @param mixed $s
      *     Decoded JSON data (decoded with json_decode).
      * @param string $r
      *     The current path key (for example: '#children.0').
      */
-    private function getPaths(&$s, $r="#") 
+    private function getPaths(&$s, $r="#")
     {
         $this->paths[$r] = &$s;
         if (is_array($s) || is_object($s)) {
@@ -92,14 +92,14 @@ class JsonRef
             }
         }
     }
-    
+
     /**
      * Recurse through the data tree and resolve all path references.
-     *  
+     *
      * @param mixed $s
      *     Decoded JSON data (decoded with json_decode).
      */
-    private function resolvePathReferences(&$s) 
+    private function resolvePathReferences(&$s)
     {
         if (is_array($s) || is_object($s)) {
             foreach ($s as $k => &$v) {
@@ -111,16 +111,16 @@ class JsonRef
             }
         }
     }
-    
+
     /**
      * Decode JSON data that may contain path based references.
-     * 
-     * @param string|object $json 
+     *
+     * @param string|object $json
      *     JSON data string or JSON data object.
-     * @return mixed 
+     * @return mixed
      *     The decoded JSON data.
      */
-    public function decode($json) 
+    public function decode($json)
     {
         // Clear the path array.
         $this->paths = array();
