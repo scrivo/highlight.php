@@ -76,6 +76,7 @@ class MarkupTest extends PHPUnit_Framework_TestCase
     {
         foreach ($this->tests as $lng => $tests) {
             foreach ($tests as $test) {
+                echo "$lng\n";
                 $data = $this->getTestData($lng, $test);
                 $this->assertEquals($data->expected, 
                     $this->hl->highlight($lng, $data->code)->value);

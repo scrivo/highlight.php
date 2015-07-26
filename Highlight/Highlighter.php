@@ -63,6 +63,8 @@ class Highlighter
 
         // XML takes precedence in the classMap array.
         $this->createLanguage("xml");
+        // Django over Twigs.
+        $this->createLanguage("django");
 
         $d = dir(__DIR__.DIRECTORY_SEPARATOR."languages");
         while (false !== ($entry = $d->read())) {
@@ -95,7 +97,11 @@ class Highlighter
         if (!$re) {
             return false;
         }
-        preg_match($re, $lexeme, $match, PREG_OFFSET_CAPTURE);
+        $test = preg_match($re, $lexeme, $match, PREG_OFFSET_CAPTURE); 
+        if ($test === false) {
+            throw new \Exception("Invalid regexp: " .
+                var_export($re, true));
+        }
         return count($match) && ($match[0][1] == 0);
     }
 
@@ -150,7 +156,7 @@ class Highlighter
 
     private function processKeywords()
     {
-        if (!$this->top->keywords) {
+        if (empty($this->top->keywords)) {
             return $this->escape($this->modeBuffer);
         }
 
@@ -214,7 +220,7 @@ class Highlighter
 
     private function processBuffer()
     {
-        return $this->top->subLanguage!==null
+        return !is_null($this->top->subLanguage)
             ? $this->processSubLanguage() : $this->processKeywords();
     }
 
@@ -388,9 +394,13 @@ class Highlighter
             $count = 0;
             $index = 0;
 
-            while ($this->top->terminators) {
-                if (!preg_match($this->top->terminators, $code, $match,
-                        PREG_OFFSET_CAPTURE, $index)) {
+            while ($this->top && $this->top->terminators) {
+                $test = preg_match($this->top->terminators, $code, $match,
+                        PREG_OFFSET_CAPTURE, $index);
+                if ($test === false) {
+                     throw new \Exception("Invalid regExp ".
+                         var_export($this->top->terminators, true));
+                } else if ($test === 0) {
                     break;
                 }
                 $count = $this->processLexeme(

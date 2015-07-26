@@ -33,8 +33,6 @@ $start = microtime(true);
 require_once("../Highlight/Autoloader.php");
 spl_autoload_register("Highlight\\Autoloader::load");
 
-$test = json_decode(file_get_contents("snippets.json"), true);
-
 $hl = new Highlight\Highlighter();
 $hl->setAutodetectLanguages($hl->listLanguages());
 

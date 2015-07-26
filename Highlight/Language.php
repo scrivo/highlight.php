@@ -40,6 +40,10 @@ class Language
 
     public function complete(&$e)
     {
+        if (!isset($e)) {
+            $e = new \stdClass();
+        }
+        
         $patch = array(
             "begin" => true,
             "end" => true,

@@ -28,6 +28,12 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+function custom_warning_handler($errno, $errstr, $errfile, $errline, $errcontext) {
+      throw new Exception("GB: $errno, $errstr, $errfile, $errline");
+}
+
+set_error_handler("custom_warning_handler");
+
 require_once("../Highlight/Autoloader.php");
 spl_autoload_register("Highlight\\Autoloader::load");
 
@@ -38,9 +44,11 @@ class HighlightAutoTest extends PHPUnit_Framework_TestCase
         $hl = new Highlight\Highlighter();
         $lngs = $hl->listLanguages();
         $hl->setAutodetectLanguages($lngs);
+        $failed = Array();
 
         foreach($lngs as $language) {
 
+            echo "$language\n";
             $path = __DIR__ . DIRECTORY_SEPARATOR . "detect" . 
                 DIRECTORY_SEPARATOR . $language;
             $this->assertTrue(file_exists($path));
@@ -56,10 +64,14 @@ class HighlightAutoTest extends PHPUnit_Framework_TestCase
                     $r = $hl->highlightAuto($content);
                     $actual = $r->language;
 
-                    $this->assertEquals($expected, $actual);
+                    if ($expected !== $actual) {
+                        $failed[] = "$expected was detected as $actual";
+                    }
                 }
             }
             $d->close();
         }
+    
+        $this->assertEquals(Array(), $failed);
     }
 }
