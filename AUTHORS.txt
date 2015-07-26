@@ -42,6 +42,9 @@ applescript.json
 asciidoc.json
 	Author(s): Dan Allen <dan.j.allen@gmail.com>
 
+aspectj.json
+	Author(s): Hakan Ozler <ozler.hakan@gmail.com>
+
 autohotkey.json
 	Author(s): Seongwon Lee <dlimpid@gmail.com>
 
@@ -60,6 +63,9 @@ brainfuck.json
 capnproto.json
 	Author(s): Oleg Efimov <efimovov@gmail.com>
 
+clojure-repl.json
+	Author(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
+
 clojure.json
 	Author(s): mfornos
 
@@ -68,13 +74,14 @@ cmake.json
 
 coffeescript.json
 	Author(s): Dmytrii Nagirniak <dnagir@gmail.com>
-	Contributor(s): Oleg Efimov <efimovov@gmail.com>, 
+	Contributor(s): Oleg Efimov <efimovov@gmail.com>,
 		Cédric Néhémie <cedric.nehemie@gmail.com>
 
 cpp.json
 	Author(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
-	Contributor(s): Evgeny Stepanischev <imbolk@gmail.com>, 
-		Zaven Muradyan <megalivoithos@gmail.com>
+	Contributor(s): Evgeny Stepanischev <imbolk@gmail.com>,
+		Zaven Muradyan <megalivoithos@gmail.com>,
+		Roel Deckers <admin@codingcat.nl>
 
 cs.json
 	Author(s): Jason Diamond <jason@diamond.name>
@@ -116,7 +123,7 @@ erlang-repl.json
 	Author(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
 
 erlang.json
-	Author(s): Nikolay Zakharov <nikolay.desh@gmail.com>, 
+	Author(s): Nikolay Zakharov <nikolay.desh@gmail.com>,
 		Dmitry Kovega <arhibot@gmail.com>
 
 fix.json
@@ -209,8 +216,11 @@ matlab.json
 mel.json
 	Author(s): Shuen-Huei Guan <drake.guan@gmail.com>
 
+mercury.json
+	Author(s): mucaho <mkucko@gmail.com>
+
 mizar.json
-	Author(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
+	Author(s): Kelley van Evert <kelleyvanevert@gmail.com>
 
 monkey.json
 	Author(s): Arthur Bikmullin <devolonter@gmail.com>
@@ -230,12 +240,13 @@ nsis.json
 
 objectivec.json
 	Author(s): Valerii Hiora <valerii.hiora@gmail.com>
-	Contributor(s): Angel G. Olloqui <angelgarcia.mail@gmail.com>, 
+	Contributor(s): Angel G. Olloqui <angelgarcia.mail@gmail.com>,
 		Matt Diephouse <matt@diephouse.com>
 
 ocaml.json
 	Author(s): Mehdi Dogguy <mehdi@dogguy.org>
-	Contributor(s): Nicolas Braud-Santoni <nicolas.braud-santoni@ens-cachan.fr>
+	Contributor(s): Nicolas Braud-Santoni <nicolas.braud-santoni@ens-cachan.fr>,
+		Mickael Delahaye <mickael.delahaye@gmail.com>
 
 oxygene.json
 	Author(s): Carlo Kok <ck@remobjects.com>
@@ -248,7 +259,7 @@ perl.json
 
 php.json
 	Author(s): Victor Karamzin <Victor.Karamzin@enterra-inc.com>
-	Contributor(s): Evgeny Stepanischev <imbolk@gmail.com>, 
+	Contributor(s): Evgeny Stepanischev <imbolk@gmail.com>,
 		Ivan Sagalaev <maniac@softwaremaniacs.org>
 
 powershell.json
@@ -280,15 +291,20 @@ rib.json
 	Author(s): Konstantin Evdokimenko <qewerty@gmail.com>
 	Contributor(s): Shuen-Huei Guan <drake.guan@gmail.com>
 
+roboconf.json
+	Author(s): Vincent Zurczak <vzurczak@linagora.com>
+
 rsl.json
 	Author(s): Konstantin Evdokimenko <qewerty@gmail.com>
 	Contributor(s): Shuen-Huei Guan <drake.guan@gmail.com>
 
 ruby.json
 	Author(s): Anton Kovalyov <anton@kovalyov.net>
-	Contributor(s): Peter Leonov <gojpeg@yandex.ru>, 
-		Vasily Polovnyov <vast@whiteants.net>, Loren Segal <lsegal@soen.ca>, 
-		Pascal Hurni <phi@ruby-reactive.org>
+	Contributor(s): Peter Leonov <gojpeg@yandex.ru>,
+		Vasily Polovnyov <vast@whiteants.net>,
+		Loren Segal <lsegal@soen.ca>,
+		Pascal Hurni <phi@ruby-reactive.org>,
+		Cedric Sohrauer <sohrauer@googlemail.com>
 
 ruleslanguage.json
 	Author(s): Jason Jacobson <jason.a.jacobson@gmail.com>
@@ -311,11 +327,25 @@ scilab.json
 scss.json
 	Author(s): Kurt Emch <kurt@kurtemch.com>
 
+smali.json
+	Author(s): Dennis Titze <dennis.titze@gmail.com>
+
 smalltalk.json
 	Author(s): Vladimir Gubarkov <xonixx@gmail.com>
 
+sml.json
+	Author(s): Edwin Dalorzo <edwin@dalorzo.org>
+
 sql.json
 	Author(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
+
+stata.json
+	Author(s): Brian Quistorff <bquistorff@gmail.com>
+	Contributor(s): Drew McDonald <drewmcdo@gmail.com>
+
+step21.json
+	Author(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
+	Contributor(s): Adam Joseph Cook <adam.joseph.cook@gmail.com>
 
 stylus.json
 	Author(s): Bryant Williams <b.n.williams@gmail.com>
@@ -351,6 +381,9 @@ vbscript-html.json
 vbscript.json
 	Author(s): Nikita Ledyaev <lenikita@yandex.ru>
 	Contributor(s): Michal Gabrukiewicz <mgabru@gmail.com>
+
+verilog.json
+	Author(s): Jon Evans <jon@craftyjon.com>
 
 vhdl.json
 	Author(s): Igor Kalnitsky <igor@kalnitsky.org>
