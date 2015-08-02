@@ -36,7 +36,7 @@ apache.json
 	Contributor(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
 
 applescript.json
-	Author(s): Nathan Grigg <nathan@nathanamy.org>, 
+	Author(s): Nathan Grigg <nathan@nathanamy.org>,
 		Dr. Drang <drdrang@gmail.com>
 
 asciidoc.json
@@ -105,6 +105,9 @@ django.json
 	Author(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
 	Contributor(s): Ilya Baryshev <baryshev@gmail.com>
 
+dockerfile.json
+	Author(s): Alexis Hénaut <alexis@henaut.net>
+
 dos.json
 	Author(s): Alexander Makarov <sam@rmcreative.ru>
 	Contributor(s): Anton Kochkov <anton.kochkov@gmail.com>
@@ -128,6 +131,9 @@ erlang.json
 
 fix.json
 	Author(s): Brent Bradbury <brent@brentium.com>
+
+fortran.json
+	Author(s): Anthony Scemama <scemama@irsamc.ups-tlse.fr>
 
 fsharp.json
 	Author(s): Jonas Follesø <jonas@follesoe.no>
@@ -180,6 +186,12 @@ javascript.json
 
 json.json
 	Author(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
+
+julia.json
+	Author(s): Kenta Sato <bicycle1885@gmail.com>
+
+kotlin.json
+	Author(s): Sergey Mashkov <cy6erGn0m@gmail.com>
 
 lasso.json
 	Author(s): Eric Knibbe <eric@lassosoft.com>
@@ -241,7 +253,8 @@ nsis.json
 objectivec.json
 	Author(s): Valerii Hiora <valerii.hiora@gmail.com>
 	Contributor(s): Angel G. Olloqui <angelgarcia.mail@gmail.com>,
-		Matt Diephouse <matt@diephouse.com>
+		Matt Diephouse <matt@diephouse.com>,
+		Andrew Farmer <ahfarmer@gmail.com>
 
 ocaml.json
 	Author(s): Mehdi Dogguy <mehdi@dogguy.org>
@@ -257,6 +270,9 @@ parser3.json
 perl.json
 	Author(s): Peter Leonov <gojpeg@yandex.ru>
 
+pf.json
+	Author(s): Peter Piwowarski <oldlaptop654@aol.com>
+
 php.json
 	Author(s): Victor Karamzin <Victor.Karamzin@enterra-inc.com>
 	Contributor(s): Evgeny Stepanischev <imbolk@gmail.com>,
@@ -271,6 +287,9 @@ processing.json
 
 profile.json
 	Author(s): Brian Beck <exogen@gmail.com>
+
+prolog.json
+	Author(s): Raivo Laanemets <raivo@infdot.com>
 
 protobuf.json
 	Author(s): Dan Tao <daniel.tao@gmail.com>
@@ -387,7 +406,8 @@ verilog.json
 
 vhdl.json
 	Author(s): Igor Kalnitsky <igor@kalnitsky.org>
-	Contributor(s): Daniel C.K. Kho <daniel.kho@gmail.com>
+	Contributor(s): Daniel C.K. Kho <daniel.kho@gmail.com>,
+		Guillaume Savaton <guillaume.savaton@eseo.fr>
 
 vim.json
 	Author(s): Jun Yang <yangjvn@126.com>
@@ -404,6 +424,12 @@ xml.json
 -------------------------------------------------------------------------------
 
 CSS files (copied from the highlight.js project)
+
+agate
+	Author(s): Taufik Nurrohman <https://github.com/tovic>
+
+androidstudio.css
+	Author(s): Pedro Oliveira <kanytu@gmail.com>
 
 arta
 	Author(s): pumbur <pumbur@pumbur.net>
@@ -425,6 +451,9 @@ color-brewer
 
 dark
 	Author(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
+
+darkula
+	Author(s): Chris chriskiehl <audionautic@gmail.com> 
 
 default
 	Author(s): Ivan Sagalaev <maniac@softwaremaniacs.org>

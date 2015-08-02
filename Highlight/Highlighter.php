@@ -65,6 +65,8 @@ class Highlighter
         $this->createLanguage("xml");
         // Django over Twigs.
         $this->createLanguage("django");
+        // Javascript over typescript.
+        $this->createLanguage("javascript");
 
         $d = dir(__DIR__.DIRECTORY_SEPARATOR."languages");
         while (false !== ($entry = $d->read())) {
@@ -117,6 +119,9 @@ class Highlighter
     private function endOfMode($mode, $lexeme)
     {
         if ($this->testRe($mode->endRe, $lexeme)) {
+            while ($mode->endsParent && $mode->parent) {
+                $mode = $mode->parent;
+            }
             return $mode;
         }
         if ($mode->endsWithParent) {

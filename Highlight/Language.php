@@ -59,6 +59,7 @@ class Language
             "returnBegin" => "",
             "end" => "",
             "endRe" => "",
+            "endsParent" => "",
             "endsWithParent" => "",
             "excludeEnd" => "",
             "returnEnd" => "",
@@ -152,7 +153,7 @@ class Language
             $compiledKeywords = array();
 
             $mode->lexemesRe = $this->langRe($mode->lexemes
-                    ? $mode->lexemes : "\b[A-Za-z0-9_]+\b", true);
+                    ? $mode->lexemes : "\b\w+\b", true);
 
             foreach ($this->processKeyWords($mode->keywords) as $clsNm => $dat) {
                 if (!is_array($dat)) {
