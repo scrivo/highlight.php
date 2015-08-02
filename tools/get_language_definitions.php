@@ -1,6 +1,7 @@
-<?php
+<?php 
 /* Copyright (c)
  * - 2013-2014, Geert Bergman (geert@scrivo.nl), highlight.php
+ * - 2014,      Daniel Lynge, highlight.php (contributor)
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,94 +30,29 @@
  */
 
 /**
- * Extract language definions in JSON format from highlight.js test page.
+ * Extract language definitions (JSON strings) from the large file that was
+ * created using 'get_language_definitions.php' and create a JSON file for 
+ * each language.
  */
 
-define("HIGHLIGHT_JS", "/var/www/html/highlight.js-8.4");
+$f = file("languages.dat");
 
-function echoFile($name) 
-{
-    $f = file_get_contents(HIGHLIGHT_JS."/src/languages/{$name}");
-    $f = str_replace("'</script>'", "\"<\\/script>\"", $f);
-    echo $f;
-}
-
-?>
-<!DOCTYPE html>
-<head>
-  <title>highlight.js test</title>
-  <meta charset="utf-8">
-  <script src="//yandex.st/dojo/1.9.1/dojo/dojo.js"></script>
-  <script>
-
-require(["dojox/json/ref"], function(){
-
-    <?php include HIGHLIGHT_JS."/src/highlight.js"; ?>
-    var lang = [];
-
-<?php
-
-foreach (new DirectoryIterator(HIGHLIGHT_JS."/src/languages") as $fileInfo) {
-    if ($fileInfo->isDot()) {
-        continue;
-    }
-    echo "\nlang[\"".str_replace(".js", "", $fileInfo->getFilename())."\"] = ";
-    echoFile($fileInfo->getFilename());
-}
-
-?>
-
-    var refs = [];
-    function regExpsRep(l,p) {
-        refs.push(l);
-        for (x in {"begin":1, "end":2, "lexemes":3, "illegal":4}) {
-            if (l[x] && l[x].source) {
-                l[x] = l[x].source;
-            }
+for ($i=0; $i<count($f); $i+=2) {
+    if (isset($f[$i+1])) {
+    	
+        $fl = trim($f[$i]);
+        $json = $f[$i+1];
+        
+        if (!$fl) {
+            die("ERROR: No language name on line ".($i+1).".<br />\n");
         }
-        for (var i in l) {
-            var doneIt = false;
-            for (var j=0; j<refs.length; j++) {
-                if (refs[j] == l[i]) {
-                    doneIt = true;
-                }
-            }
-            if (l[i] && typeof l[i] == 'object' && !doneIt) {
-                regExpsRep(l[i], l[i]);
-            }
+        if (!@json_decode($json)) {
+            die("ERROR: invalid JSON data on line ".($i+2).".<br />\n");
+        }
+        
+        echo "Creating language file '{$fl}.json'.<br />\n";
+        if (!file_put_contents("../Highlight/languages/{$fl}.json", $json)) {
+            die("ERROR: Couldn't write to file.<br />\n");;
         }
     }
-
-    function patch1(o, m) {
- 		if (o[m]) {
- 			o[m] = o[m].replace("\/", "/");
- 			o[m] = o[m].replace("/", "\/");
- 		}
- 	}
- 	
-    function patch(s) {
-        return s.replace(/\\u(\d+)/g, "\\x{$1}");
-    }
-
-    var res = "";
-    for (var p in lang) {
-        res += p + "\n";
-        var l = eval("lang[\""+p+"\"](hljs)");
-        refs = [];
-        regExpsRep(l);
-//        for (i in {"begin":1, "end":2, "lexems":3, "illegal":4}) {
-//            patch1(l, i);
-//        }
-        hljs.registerLanguage(p, lang[p]);
-        res += patch(dojox.json.ref.toJson(l)) + "\n";
-
-    }
-
-    // This is the output to capture
-    console.log(res);
-
-});
-
-</script>
-
-<body>
+}
