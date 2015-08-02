@@ -46,7 +46,7 @@ $failed = array();
 
 foreach ($hl->listLanguages() as $name) {
     $sn = $name;
-    $snippet = file_get_contents("detect/{$sn}/default.txt");
+    $snippet = file_get_contents("../test/detect/{$sn}/default.txt");
     $r = $hl->highlightAuto($snippet);
     $passed = ($r->language === $name);
     $res = "<div class=\"test\"><var class=\"".($passed?"passed":"failed").

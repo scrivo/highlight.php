@@ -67,10 +67,12 @@ function testDetection() {
                  || p1a.innerHTML != p2a.innerHTML
 //                 || p1b.innerHTML != p2b.innerHTML
         ) {
+            console.log(code1.innerHTML);
+            console.log(code2.innerHTML);
 
             rws[i].style.backgroundColor = "#ffcccc"; 
             tds[0].style.backgroundColor = "#ffcccc";
-            tds[0].innerHTML = "failed"; 
+            tds[0].lastChild.innerHTML = "failed"; 
         }
     }
 }
@@ -104,11 +106,11 @@ pre { margin: 0px; }
     </tr>
 <?php
 foreach ($hl->listLanguages() as $languageId) {
-  $snippet = file_get_contents("detect/{$languageId}/default.txt");
+  $snippet = file_get_contents("../test/detect/{$languageId}/default.txt");
   $r = $hl->highlightAuto($snippet);
 ?>
     <tr>
-      <td class="signal">pass</td>
+      <td class="signal"><p><?=$r->language?></p><p>pass</p></td>
       <td>
         <p><?=$r->language?>: <?=$r->relevance?></p>
         <p><?=$r->secondBest->language?>: <?=$r->secondBest->relevance?></p>
