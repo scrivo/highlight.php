@@ -1,6 +1,6 @@
 <?php
 /* Copyright (c)
- * - 2013-2014, Geert Bergman (geert@scrivo.nl), highlight.php
+ * - 2013-2015, Geert Bergman (geert@scrivo.nl), highlight.php
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -76,7 +76,6 @@ class MarkupTest extends PHPUnit_Framework_TestCase
     {
         foreach ($this->tests as $lng => $tests) {
             foreach ($tests as $test) {
-                echo "$lng\n";
                 $data = $this->getTestData($lng, $test);
                 $this->assertEquals($data->expected, 
                     $this->hl->highlight($lng, $data->code)->value);

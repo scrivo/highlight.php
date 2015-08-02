@@ -3,12 +3,12 @@ Syntax highlighting with language autodetection in PHP.
 -------------------------------------------------------------------------------
 
 Author(s):
-	Geert Bergman (geert@scrivo.nl)
+	Geert Bergman <geert@scrivo.nl>
 	
 Contributer(s):
-	Carsten Brandt (mail@cebe.cc)
+	Carsten Brandt <mail@cebe.cc>
 	Daniel Lynge
-	Daniel Gómez Pan (pana_1990@hotmail.com)
+	Daniel Gómez Pan <pana_1990@hotmail.com>
 
 -------------------------------------------------------------------------------
 
@@ -22,513 +22,168 @@ Core developers (in order of appearance):
 
 -------------------------------------------------------------------------------
 
-Language definitions (automatically created from the highlight.js project)
-
-1c.json
-	Author(s): Yuri Ivanov <ivanov@supersoft.ru>
-	Contributor(s): Sergey Baranov <segyrn@yandex.ru>
-
-actionscript.json
-	Author(s): Alexander Myadzel <myadzel@gmail.com>
-
-apache.json
-	Author(s): Ruslan Keba <rukeba@gmail.com>
-	Contributor(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
-
-applescript.json
-	Author(s): Nathan Grigg <nathan@nathanamy.org>,
-		Dr. Drang <drdrang@gmail.com>
-
-asciidoc.json
-	Author(s): Dan Allen <dan.j.allen@gmail.com>
-
-aspectj.json
-	Author(s): Hakan Ozler <ozler.hakan@gmail.com>
-
-autohotkey.json
-	Author(s): Seongwon Lee <dlimpid@gmail.com>
-
-avrasm.json
-	Author(s): Vladimir Ermakov <vooon341@gmail.com>
-
-axapta.json
-	Author(s): Dmitri Roudakov <dmitri@roudakov.ru>
-
-bash.json
-	Author(s): vah <vahtenberg@gmail.com>
-
-brainfuck.json
-	Author(s): Evgeny Stepanischev <imbolk@gmail.com>
-
-capnproto.json
-	Author(s): Oleg Efimov <efimovov@gmail.com>
-
-clojure-repl.json
-	Author(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
-
-clojure.json
-	Author(s): mfornos
-
-cmake.json
-	Author(s): Igor Kalnitsky <igor@kalnitsky.org>
-
-coffeescript.json
-	Author(s): Dmytrii Nagirniak <dnagir@gmail.com>
-	Contributor(s): Oleg Efimov <efimovov@gmail.com>,
-		Cédric Néhémie <cedric.nehemie@gmail.com>
-
-cpp.json
-	Author(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
-	Contributor(s): Evgeny Stepanischev <imbolk@gmail.com>,
-		Zaven Muradyan <megalivoithos@gmail.com>,
-		Roel Deckers <admin@codingcat.nl>
-
-cs.json
-	Author(s): Jason Diamond <jason@diamond.name>
-
-css.json
-	Author(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
-
-d.json
-	Author(s): Aleksandar Ruzicic <aleksandar@ruzicic.info>
-
-dart.json
-	Author(s): Maxim Dikun <dikmax@gmail.com>
-
-delphi.json
-	Author(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
-
-diff.json
-	Author(s): Vasily Polovnyov <vast@whiteants.net>
-
-django.json
-	Author(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
-	Contributor(s): Ilya Baryshev <baryshev@gmail.com>
-
-dockerfile.json
-	Author(s): Alexis Hénaut <alexis@henaut.net>
-
-dos.json
-	Author(s): Alexander Makarov <sam@rmcreative.ru>
-	Contributor(s): Anton Kochkov <anton.kochkov@gmail.com>
-
-dust.json
-	Author(s): Michael Allen <michael.allen@benefitfocus.com>
-
-elixir.json
-	Author(s): Josh Adams <josh@isotope11.com>
-
-erb.json
-	Author(s): Lucas Mazza <lucastmazza@gmail.com>
-	Contributor(s): Kassio Borges <kassioborgesm@gmail.com>
-
-erlang-repl.json
-	Author(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
-
-erlang.json
-	Author(s): Nikolay Zakharov <nikolay.desh@gmail.com>,
-		Dmitry Kovega <arhibot@gmail.com>
-
-fix.json
-	Author(s): Brent Bradbury <brent@brentium.com>
-
-fortran.json
-	Author(s): Anthony Scemama <scemama@irsamc.ups-tlse.fr>
-
-fsharp.json
-	Author(s): Jonas Follesø <jonas@follesoe.no>
-	Contributor(s): Troy Kershaw <hello@troykershaw.com>,
-		Henrik Feldt <henrik@haf.se>
-
-gcode.json
-	Author(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
-
-gherkin.json
-	Author(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
-
-glsl.json
-	Author(s): Sergey Tikhomirov <me@stikhomirov.com>
-
-go.json
-	Author(s): Stephan Kountso aka StepLg <steplg@gmail.com>
-	Contributor(s): Evgeny Stepanischev <imbolk@gmail.com>
-
-gradle.json
-	Author(s): Damian Mee <mee.damian@gmail.com>
-
-groovy.json
-	Author(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
-
-haml.json
-	Author(s): Dan Allen <dan.j.allen@gmail.com>
-
-handlebars.json
-	Author(s): Robin Ward <robin.ward@gmail.com>
-
-haskell.json
-	Author(s): Jeremy Hull <sourdrums@gmail.com>
-	Contributor(s): Zena Treep <zena.treep@gmail.com>
-
-haxe.json
-	Author(s): Christopher Kaster <ikasoki@gmail.com>
-
-http.json
-	Author(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
-
-ini.json
-	Author(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
-
-java.json
-	Author(s): Vsevolod Solovyov <vsevolod.solovyov@gmail.com>
-
-javascript.json
-	Author(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
-
-json.json
-	Author(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
-
-julia.json
-	Author(s): Kenta Sato <bicycle1885@gmail.com>
-
-kotlin.json
-	Author(s): Sergey Mashkov <cy6erGn0m@gmail.com>
-
-lasso.json
-	Author(s): Eric Knibbe <eric@lassosoft.com>
-
-less.json
-	Author(s): Max Mikhailov <seven.phases.max@gmail.com>
-
-lisp.json
-	Author(s): Vasily Polovnyov <vast@whiteants.net>
-
-livecodeserver.json
-	Author(s): Ralf Bitter <rabit@revigniter.com>
-
-livescript.json
-	Author(s): Taneli Vatanen <taneli.vatanen@gmail.com>
-	Contributor(s): Jen Evers-Corvina <jen@sevvie.net>
-
-lua.json
-	Author(s): Andrew Fedorov <dmmdrs@mail.ru>
-
-makefile.json
-	Author(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
-
-markdown.json
-	Author(s): John Crepezzi <john.crepezzi@gmail.com>
-
-mathematica.json
-	Author(s): Daniel Kvasnicka <dkvasnicka@vendavo.com>
-
-matlab.json
-	Author(s): Denis Bardadym <bardadymchik@gmail.com>
-	Contributor(s): Eugene Nizhibitsky <nizhibitsky@ya.ru>
-
-mel.json
-	Author(s): Shuen-Huei Guan <drake.guan@gmail.com>
-
-mercury.json
-	Author(s): mucaho <mkucko@gmail.com>
-
-mizar.json
-	Author(s): Kelley van Evert <kelleyvanevert@gmail.com>
-
-monkey.json
-	Author(s): Arthur Bikmullin <devolonter@gmail.com>
-
-nginx.json
-	Author(s): Peter Leonov <gojpeg@yandex.ru>
-	Contributor(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
-
-nimrod.json
-	Author(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
-
-nix.json
-	Author(s): Domen Kožar <domen@dev.si>
-
-nsis.json
-	Author(s): Jan T. Sott <jan.sott@gmail.com>
-
-objectivec.json
-	Author(s): Valerii Hiora <valerii.hiora@gmail.com>
-	Contributor(s): Angel G. Olloqui <angelgarcia.mail@gmail.com>,
-		Matt Diephouse <matt@diephouse.com>,
-		Andrew Farmer <ahfarmer@gmail.com>
-
-ocaml.json
-	Author(s): Mehdi Dogguy <mehdi@dogguy.org>
-	Contributor(s): Nicolas Braud-Santoni <nicolas.braud-santoni@ens-cachan.fr>,
-		Mickael Delahaye <mickael.delahaye@gmail.com>
-
-oxygene.json
-	Author(s): Carlo Kok <ck@remobjects.com>
-
-parser3.json
-	Author(s): Oleg Volchkov <oleg@volchkov.net>
-
-perl.json
-	Author(s): Peter Leonov <gojpeg@yandex.ru>
-
-pf.json
-	Author(s): Peter Piwowarski <oldlaptop654@aol.com>
-
-php.json
-	Author(s): Victor Karamzin <Victor.Karamzin@enterra-inc.com>
-	Contributor(s): Evgeny Stepanischev <imbolk@gmail.com>,
-		Ivan Sagalaev <maniac@softwaremaniacs.org>
-
-powershell.json
-	Author(s): David Mohundro <david@mohundro.com>
-	Contributor(s): Nicholas Blumhardt <nblumhardt@nblumhardt.com>
-
-processing.json
-	Author(s): Erik Paluka <erik.paluka@gmail.com>
-
-profile.json
-	Author(s): Brian Beck <exogen@gmail.com>
-
-prolog.json
-	Author(s): Raivo Laanemets <raivo@infdot.com>
-
-protobuf.json
-	Author(s): Dan Tao <daniel.tao@gmail.com>
-
-puppet.json
-	Author(s): Jose Molina Colmenero <gaudy41@gmail.com>
-
-python.json
-	Author(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
-
-q.json
-	Author(s): Sergey Vidyuk <svidyuk@gmail.com>
-
-r.json
-	Author(s): Joe Cheng <joe@rstudio.org>
-
-rib.json
-	Author(s): Konstantin Evdokimenko <qewerty@gmail.com>
-	Contributor(s): Shuen-Huei Guan <drake.guan@gmail.com>
-
-roboconf.json
-	Author(s): Vincent Zurczak <vzurczak@linagora.com>
-
-rsl.json
-	Author(s): Konstantin Evdokimenko <qewerty@gmail.com>
-	Contributor(s): Shuen-Huei Guan <drake.guan@gmail.com>
-
-ruby.json
-	Author(s): Anton Kovalyov <anton@kovalyov.net>
-	Contributor(s): Peter Leonov <gojpeg@yandex.ru>,
-		Vasily Polovnyov <vast@whiteants.net>,
-		Loren Segal <lsegal@soen.ca>,
-		Pascal Hurni <phi@ruby-reactive.org>,
-		Cedric Sohrauer <sohrauer@googlemail.com>
-
-ruleslanguage.json
-	Author(s): Jason Jacobson <jason.a.jacobson@gmail.com>
-
-rust.json
-	Author(s): Andrey Vlasovskikh <andrey.vlasovskikh@gmail.com>
-	Contributor(s): Roman Shmatov <romanshmatov@gmail.com>
-
-scala.json
-	Author(s): Jan Berkel <jan.berkel@gmail.com>
-	Contributor(s): Erik Osheim <d_m@plastic-idolatry.com>
-
-scheme.json
-	Author(s): JP Verkamp <me@jverkamp.com>
-	Contributor(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
-
-scilab.json
-	Author(s): Sylvestre Ledru <sylvestre.ledru@scilab-enterprises.com>
-
-scss.json
-	Author(s): Kurt Emch <kurt@kurtemch.com>
-
-smali.json
-	Author(s): Dennis Titze <dennis.titze@gmail.com>
-
-smalltalk.json
-	Author(s): Vladimir Gubarkov <xonixx@gmail.com>
-
-sml.json
-	Author(s): Edwin Dalorzo <edwin@dalorzo.org>
-
-sql.json
-	Author(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
-
-stata.json
-	Author(s): Brian Quistorff <bquistorff@gmail.com>
-	Contributor(s): Drew McDonald <drewmcdo@gmail.com>
-
-step21.json
-	Author(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
-	Contributor(s): Adam Joseph Cook <adam.joseph.cook@gmail.com>
-
-stylus.json
-	Author(s): Bryant Williams <b.n.williams@gmail.com>
-
-swift.json
-	Author(s): Chris Eidhof <chris@eidhof.nl>
-	Contributor(s): Nate Cook <natecook@gmail.com>
-
-tcl.json
-	Author(s): Radek Liska <radekliska@gmail.com>
-
-tex.json
-	Author(s): Vladimir Moskva <vladmos@gmail.com>
-
-thrift.json
-	Author(s): Oleg Efimov <efimovov@gmail.com>
-
-twig.json
-	Author(s): Luke Holder <lukemh@gmail.com>
-
-typescript.json
-	Author(s): Panu Horsmalahti <panu.horsmalahti@iki.fi>
-
-vala.json
-	Author(s): Antono Vasiljev <antono.vasiljev@gmail.com>
-
-vbnet.json
-	Author(s): Poren Chiang <ren.chiang@gmail.com>
-
-vbscript-html.json
-	Author(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
-
-vbscript.json
-	Author(s): Nikita Ledyaev <lenikita@yandex.ru>
-	Contributor(s): Michal Gabrukiewicz <mgabru@gmail.com>
-
-verilog.json
-	Author(s): Jon Evans <jon@craftyjon.com>
-
-vhdl.json
-	Author(s): Igor Kalnitsky <igor@kalnitsky.org>
-	Contributor(s): Daniel C.K. Kho <daniel.kho@gmail.com>,
-		Guillaume Savaton <guillaume.savaton@eseo.fr>
-
-vim.json
-	Author(s): Jun Yang <yangjvn@126.com>
-
-x86asm.json
-	Author(s): innocenat <innocenat@gmail.com>
-
-xl.json
-	Author(s): Christophe de Dinechin <christophe@taodyne.com>
-
-xml.json
-	Author(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
-
--------------------------------------------------------------------------------
-
-CSS files (copied from the highlight.js project)
-
-agate
-	Author(s): Taufik Nurrohman <https://github.com/tovic>
-
-androidstudio.css
-	Author(s): Pedro Oliveira <kanytu@gmail.com>
-
-arta
-	Author(s): pumbur <pumbur@pumbur.net>
-
-ascetic
-	Author(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
-	
-atelier
-	Author(s): Bram de Haan, Chris Kempson
-
-brown_paper
-	Author(s): Zaripov Yura <yur4ik7@ukr.net>
-	
-codepen-embed
-	Author(s): Justin Perry
-
-color-brewer
-	Author(s): Mike Bostock <mike@ocks.org>
-
-dark
-	Author(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
-
-darkula
-	Author(s): Chris chriskiehl <audionautic@gmail.com> 
-
-default
-	Author(s): Ivan Sagalaev <maniac@softwaremaniacs.org>
-
-docco
-	Author(s): Simon Madine
-
-far
-	Author(s): MajestiC <majestic2k@gmail.com>
-
-foundation
-	Author(s): Dan Allen <dan.j.allen@gmail.com>
-
-github
-	Author(s): Vasily Polovnyov <vast@whiteants.net>
-
-googlecode
-	Author(s): Aahan Krish <geekpanth3r@gmail.com>
-
-hybrid
-	Author(s): Andrew Wong <wongadev@gmail.com>, Nic West
-	
-idea
-	Author(s): Vasily Polovnyov <vast@whiteants.net>
-
-ir_black
-	Author(s): Vasily Mikhailitchenko <vaskas@programica.ru>
-
-kimbie
-	Author(s): Jan T. Sott
-
-magula
-	Author(s): Ruslan Keba <rukeba@gmail.com>
-
-monokai
-	Author(s): Luigi Maselli
-	
-monokai_sublime
-	Author(s): i@noformnocontent.com
-	 
-obsidian
-	Author(s): Alexander Marenin
-
-paraiso
-	Author(s): Jan T. Sott
-
-pojoaque
-	Author(s): Jason Tate
-	
-railscasts
-	Author(s): Visoft, Inc. (Damien White)
-
-rainbow
-	Author(s): Marc Fornos <marc.fornos@gmail.com>
-
-school_book
-	Author(s): Zaripov Yura <yur4ik7@ukr.net>
-	
-solarized
-	Author(s): Jeremy Hull <sourdrums@gmail.com>
-	
-sunburst
-	Author(s): Vasily Polovnyov <vast@whiteants.net>
-
-tomorrow
-	Authors(s): Yoshihide Jimbo <yjimbo@gmail.com>
-
-vs
-	Author(s): Jason Diamond <jason@diamond.name>
-
-xcode
-	Author(s): Angel Garcia <angelgarcia.mail@gmail.com>
-
-zenburn
-	Author(s): Vladimir Epifanov <voldmar@voldmar.ru>,
-		Ivan Sagalaev <maniac@softwaremaniacs.org>
-
+Language and style definitions (copied from the highlight.js project)
+
+	Aahan Krish <geekpanth3r@gmail.com>
+	Adam Joseph Cook <adam.joseph.cook@gmail.com>
+	Alberto Gimeno <gimenete@gmail.com>
+	Aleksandar Ruzicic <aleksandar@ruzicic.info>
+	Alexander Makarov <sam@rmcreative.ru>
+	Alexander Marenin <great_muchacho@mail.ru>
+	Alexander Myadzel <myadzel@gmail.com>
+	Alexis Hénaut <alexis@henaut.net>
+	Andrew Farmer <ahfarmer@gmail.com>
+	Andrew Fedorov <dmmdrs@mail.ru>
+	Andrey Vlasovskikh <andrey.vlasovskikh@gmail.com>
+	Angel G. Olloqui <angelgarcia.mail@gmail.com>
+	Anthony Scemama <scemama@irsamc.ups-tlse.fr>
+	Anton Kochkov <anton.kochkov@gmail.com>
+	Anton Kovalyov <anton@kovalyov.net>
+	Antono Vasiljev <self@antono.info>
+	Arthur Bikmullin <devolonter@gmail.com>
+	Benjamin Pannell <contact@sierrasoftworks.com>
+	Bram de Haan <info@atelierbramdehaan.nl>
+	Brent Bradbury <brent@brentium.com>
+	Brian Beck <exogen@gmail.com>
+	Brian Quistorff <bquistorff@gmail.com>
+	Bruno Dias <bruno.r.dias@gmail.com>
+	Bryant Williams <b.n.williams@gmail.com>
+	Carlo Kok <ck@remobjects.com>
+	Casey Duncan <casey.duncan@gmail.com>
+	Cédric Néhémie <cedric.nehemie@gmail.com>
+	Cedric Sohrauer <sohrauer@googlemail.com>
+	Chris Eidhof <chris@eidhof.nl>
+	Chris Kiehl <audionautic@gmail.com>
+	Christophe de Dinechin <christophe@taodyne.com>
+	Christopher Kaster <ikasoki@gmail.com>
+	Damian Mee <mee.damian@gmail.com>
+	Damien White <damien.white@visoftinc.com>
+	Dan Allen <dan.j.allen@gmail.com>
+	Daniel Kvasnicka <dkvasnicka@vendavo.com>
+	Dan Panzarella <alsoelp@gmail.com>
+	Dan Tao <daniel.tao@gmail.com>
+	David Anson <david@dlaa.me>
+	David Mohundro <david@mohundro.com>
+	Denis Bardadym <bardadymchik@gmail.com>
+	Dennis Titze <dennis.titze@gmail.com>
+	Dmitri Roudakov <dmitri@roudakov.ru>
+	Dmitry Kovega <arhibot@gmail.com>
+	Dmitry Medvinsky <me@dmedvinsky.name>
+	Dmytrii Nagirniak <dnagir@gmail.com>
+	Domen Kožar <domen@dev.si>
+	Dr. Drang <drdrang@gmail.com>
+	Edwin Dalorzo <edwin@dalorzo.org>
+	Eric Knibbe <eric@lassosoft.com>
+	Erik Osheim <d_m@plastic-idolatry.com>
+	Erik Paluka <erik.paluka@gmail.com>
+	Eugene Nizhibitsky <nizhibitsky@gmail.com>
+	Evgeny Stepanischev <imbolk@gmail.com>
+	Flaviu Tamas <tamas.flaviu@gmail.com>
+	Guillaume Laforge <glaforge@gmail.com>
+	Gu Yiling <justice360@gmail.com>
+	Hakan Özler <ozler.hakan@gmail.com>
+	Heiko August <post@auge8472.de>
+	Henrik Feldt <henrik@haf.se>
+	Igor Kalnitsky <igor@kalnitsky.org>
+	Ilya Baryshev <baryshev@gmail.com>
+	Ilya Vassilevsky <vassilevsky@gmail.com>
+	innocenat <innocenat@gmail.com>
+	Jan Berkel <jan.berkel@gmail.com>
+	Jan T. Sott <git@idleberg.com>
+	Jason Diamond <jason@diamond.name>
+	Jason Jacobson <jason.a.jacobson@gmail.com>
+	Jason Tate <adminz@web-cms-designs.com>
+	Jay Strybis <jay.strybis@gmail.com>
+	Jeff Escalante <hello@jenius.me>
+	Jen Evers-Corvina <jen@sevvie.net>
+	Joe Cheng <joe@rstudio.org>
+	John Crepezzi <john.crepezzi@gmail.com>
+	Jonas Follesø <jonas@follesoe.no>
+	Jonathan Suever <suever@gmail.com>
+	Jon Evans <jon@craftyjon.com>
+	Jose Molina Colmenero <gaudy41@gmail.com>
+	Josh Adams <josh@isotope11.com>
+	JP Verkamp <me@jverkamp.com>
+	Jun Yang <yangjvn@126.com>
+	Kassio Borges <kassioborgesm@gmail.com>
+	Kelley van Evert <kelleyvanevert@gmail.com>
+	Kenneth Fuglsang <kfuglsang@gmail.com>
+	Kenta Sato <bicycle1885@gmail.com>
+	Kirk Kimmel <kimmel.k.programmer@gmail.com>
+	Konstantin Evdokimenko <qewerty@gmail.com>
+	Kurt Emch <kurt@kurtemch.com>
+	Loren Segal <lsegal@soen.ca>
+	Louis Barranqueiro <louis.barranqueiro@gmail.com>
+	Lucas Mazza <lucastmazza@gmail.com>
+	Lucas Werkmeister <mail@lucaswerkmeister.de>
+	Luigi Maselli <grigio.org@gmail.com>
+	Luke Holder <lukemh@gmail.com>
+	MajestiC <majestic2k@gmail.com>
+	Marc Fornos <marc.fornos@gmail.com>
+	Martin Dilling-Hansen <martindlling@gmail.com>
+	Matt Diephouse <matt@diephouse.com>
+	Maxim Dikun <dikmax@gmail.com>
+	Max Mikhailov <seven.phases.max@gmail.com>
+	Mehdi Dogguy <mehdi@dogguy.org>
+	Michael Allen <Michael.Allen@benefitfocus.com>
+	Michal Gabrukiewicz <mgabru@gmail.com>
+	Mickaël Delahaye <mickael.delahaye@gmail.com>
+	mucaho <mkucko@gmail.com>
+	Nate Cook <natecook@gmail.com>
+	Nathan Grigg <nathan@nathanamy.org>
+	Nicholas Blumhardt <nblumhardt@nblumhardt.com>
+	Nicolas Braud-Santoni <nicolas.braud-santoni@ens-cachan.fr>
+	Nic West <nic@letolab.com>
+	Nikita Ledyaev <lenikita@yandex.ru>
+	Nikolay Lisienko <info@neor.ru>
+	Nikolay Zakharov <nikolay.desh@gmail.com>
+	noformnocontent <i@noformnocontent.com>
+	Oleg Volchkov <oleg@volchkov.net>
+	Panu Horsmalahti <panu.horsmalahti@iki.fi>
+	Pascal Hurni <phi@ruby-reactive.org>
+	Pedro Oliveira <kanytu@gmail.com>
+	Peter Leonov <gojpeg@gmail.com>
+	Peter Piwowarski <oldlaptop654@aol.com>
+	Poren Chiang <ren.chiang@gmail.com>
+	pumbur <pumbur@pumbur.net>
+	Radek Liska <radekliska@gmail.com>
+	Raivo Laanemets <raivo@infdot.com>
+	Raivo Laanemets <raivo@infdot.com>
+	Ralf Bitter <rabit@revigniter.com>
+	Robin Ward <robin.ward@gmail.com>
+	Roman Shmatov <romanshmatov@gmail.com>
+	Ruslan Keba <rukeba@gmail.com>
+	Seongwon Lee <dlimpid@gmail.com>
+	Sergey Baranov <segyrn@yandex.ru>
+	Sergey Ignatov <sergey@ignatov.spb.su>
+	Sergey Mashkov <cy6erGn0m@gmail.com>
+	Sergey Tikhomirov <me@stikhomirov.com>
+	Sergey Vidyuk <svidyuk@gmail.com>
+	Shuen-Huei Guan <drake.guan@gmail.com>
+	Simon Madine <simon@angryrobotzombie.com>
+	Stephan Kountso <steplg@gmail.com>
+	Sylvestre Ledru <sylvestre.ledru@scilab-enterprises.com>
+	Taneli Vatanen <taneli.vatanen@gmail.com>
+	Taufik Nurrohman <latitudu.latitudu@gmail.com>
+	Thomas Applencourt <thomas.applencourt@irsamc.ups-tlse.fr>
+	Tim Schumacher <tim@datenknoten.me>
+	Travis Odom <travis.a.odom@gmail.com>
+	Trey Shugart <treshugart@gmail.com>
+	Troy Kershaw <hello@troykershaw.com>
+	Vah <vahtenberg@gmail.com>
+	Valerii Hiora <valerii.hiora@gmail.com>
+	Vasily Mikhailitchenko <vaskas@programica.ru>
+	Vasily Polovnyov <vast@whiteants.net>
+	Victor Karamzin <Victor.Karamzin@enterra-inc.com>
+	Vincent Zurczak <vzurczak@linagora.com>
+	Vladimir Epifanov <voldmar@voldmar.ru>
+	Vladimir Ermakov <vooon341@mail.ru>
+	Vladimir Gubarkov <xonixx@gmail.com>
+	Vladimir Moskva <vladmos@gmail.com>
+	Vsevolod Solovyov <vsevolod.solovyov@gmail.com>
+	Yoshihide Jimbo <yjimbo@gmail.com>
+	Yuri Ivanov <ivanov@supersoft.ru>
+	Zaripov Yura <yur4ik7@ukr.net>
+	Zaven Muradyan <megalivoithos@gmail.com>
+	Zena Treep <zena.treep@gmail.com>
 	
