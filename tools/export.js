@@ -2,7 +2,9 @@ require(["dojo/node!fs", "dojox/json/ref", "dojo/_base/kernel"], function(fs, re
 
 	var nodeRequire = kernel.global.require && kernel.global.require.nodeRequire;
 
-	hljs = nodeRequire("../highlight.js");
+	var HIGHLIGHT_DIR = "/home/www/highlight.php/tools/lib_highlight/";
+	
+	hljs = nodeRequire(HIGHLIGHT_DIR + "highlight.js");
 
 	var refs = [];
 
@@ -26,20 +28,12 @@ require(["dojo/node!fs", "dojox/json/ref", "dojo/_base/kernel"], function(fs, re
 		}
 	}
 
-	function patch1(o, m) {
-		if (o[m]) {
-			o[m] = o[m].replace("\/", "/");
-			o[m] = o[m].replace("/", "\/");
-		}
-	}
-
 	function patch(s) {
 		return s.replace(/\\u([0-9A-Fa-f]+)/g, "\\x{$1}");
-		//return s.replace(/\\u(\d+)/g, "\\x{$1}");
 	}
 
 	function exportLang(lang) {
-		var x = nodeRequire("../languages/" + lang + ".js");
+		var x = nodeRequire(HIGHLIGHT_DIR + "languages/" + lang + ".js");
 		var l = x(hljs);
 		refs = [];
 		regExpsRep(l);
@@ -49,7 +43,7 @@ require(["dojo/node!fs", "dojox/json/ref", "dojo/_base/kernel"], function(fs, re
 
 	}
 
-	fs.readdir('./lib/languages/',function(err,files){
+	fs.readdir(HIGHLIGHT_DIR + "languages/",function(err,files){
 		if(err) {
 			throw err;
 		}

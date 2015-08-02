@@ -2,7 +2,7 @@
 /* Copyright (c)
  * - 2006-2013, Ivan Sagalaev (maniac@softwaremaniacs.org), highlight.js
  *              (original author)
- * - 2013-2014, Geert Bergman (geert@scrivo.nl), highlight.php
+ * - 2013-2015, Geert Bergman (geert@scrivo.nl), highlight.php
  * - 2014,      Daniel Lynge, highlight.php (contributor)
  * All rights reserved.
  *
@@ -61,12 +61,11 @@ class Highlighter
 
     private function registerLanguages() {
 
-        // XML takes precedence in the classMap array.
-        $this->createLanguage("xml");
-        // Django over Twigs.
-        $this->createLanguage("django");
-        // Javascript over typescript.
-        $this->createLanguage("javascript");
+        // Languages that take precedence in the classMap array.
+        foreach(Array("xml", "django", "javascript", "matlab") as $l) {
+            $this->createLanguage($l);
+        }
+        
 
         $d = dir(__DIR__.DIRECTORY_SEPARATOR."languages");
         while (false !== ($entry = $d->read())) {

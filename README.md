@@ -107,11 +107,11 @@ The project contains the following folders:
 
 1. [Highlight](#1-highlight)
 2. [styles](#2-styles)
-3. [test](#3-test)
-4. [tools](#4-tools)
+3. [demo](#3-demo)
+4. [test](#4-test)
+5. [tools](#5-tools)
 
-1. Highlight
-------------
+##1. Highlight
 
 This folder contains the main source and the following files (classes):
 
@@ -152,73 +152,96 @@ This folder contains all language definitions: one JSON file for each language.
 These files are not hand coded but extracted from the original 
 [highlight.js](http://www.highlightjs.org) project. 
 
-2. styles
----------
+##2. styles
 
 These are the the CSS files needed to actually color the code. Not much to 
 say about: these are just copied from the [highlight.js]
 (https://github.com/isagalaev/highlight.js/tree/master/src/styles)
 project.
 
-3. test
--------
+##3. demo
 
-This folder contains two tests that can be accessed through your browser (thus
-not through the CLI or PHPUnit).
+This folder contains two demo pages that can be accessed through your browser.
 
-### test.php
+### demo.php
 
-A test page showing all supported languages and styles. It is a copy of
-the [test page](http://highlightjs.org/static/test.html) from the original 
-project but now using the PHP highlighter instead of the JavaScript one. 
+A test page showing all supported languages and styles. 
 
 ### compare.php
 
-Much like [test.php](#testphp) but this page focuses on the comparison between 
-_highlight.php_ and _highlight.js_. Both should yield the same results.
+Much like [demo.php](#demo-php) but this page focuses on the comparison 
+between _highlight.php_ and _highlight.js_. Both should yield the same results.
 
-### highlight.pack.js
+##4. test
 
-The minified source of [highlight.js](http://www.highlightjs.org) used in 
-the tests.
+This folder contains the unit test for _highlight.php_. To run them run 
+_phpunit_ from this directory:
+
+```bash
+	phpnunit .
+```
+Note that the following tests for _highlight.js_ are not rewritten for 
+_highlight.php_:
+
+### special explicitLanguage
+
+Controlling language selection by setting an attribute to the containing DIV
+is irrelevant for _highlight.php_
+
+### special customMarkup
+
+In highlight.js code may contain additional HTML markup like in the following
+PHP fragment: '$sum = <b>$a</b> + $b;'. Currently this is not supported by
+_highlight.php_. _highlight.php_ can only highlight (unescaped) code. Also 
+HTML breaks <br> code to highlight is not supported. _highlight.php_ does 
+support tab replacement (defaults to 4 spaces).
+
+### special noHighlight
+
+There is no need to turn off highlighting through a class name on the code
+container.
+
+### special buildClassName
+
+_highlight.php_ does not modify class names of code containers.
+
 
 ### the snippets folder
 
-This folder contains the code snippets used for the test pages. 
 
-4. tools
---------
+##5. tools
 
 A collection of scripts that are used to extract data from the original 
 [highlight.js](http://www.highlightjs.org) project.
 
-Note that these scripts assume the installation of _highlight.js_ on your box.
+Note that these scripts require the installation of the following software 
+on your box: _highlight.js_, dojo and node.js.
 
-### get_language_definitions.php
+To export the language definitions from _highlight.js_ continue as follows:
 
-A page that should be rendered in your browser with javascript debugging on.
-If so you'll be able to retrieve all language definitions in a large string and
-save those to a file named "languages.dat" using your favorite text editor.
+Download a source distribution of 
+[_highlight.js_](https://github.com/isagalaev/highlight.js/releases), and 
+create a node build:
 
-### get_language_definitions_2.php
+```bash
+	nodejs tools/build.js -t node
+```	
 
-This script will read forementioned "languages.dat" file and (re-)generate
-(and overwrite) all JSON language definition files in the folder 
-[Highlight/languages](#the-languages-folder) for you. 
+Download a source distribution of [dojo](http://download.dojotoolkit.org/).
 
-### get_snippets.php
+Make sure that the path references in launcer.js are correct and run it:
 
-This script extracts all code snippets from the [highlight.js]
-(https://github.com/isagalaev/highlight.js/tree/master/src) test
-file and saves (overwrites) them in the folder [test/snippets]
-(#the-snippets-folder).
+```bash
+	nodejs launcher.js > languages.dat
+```	
+	
+If all went right you'll now have a file with all language definitions. Run
+get_language_defintions.php to generate the json files for the individual
+lauagues:
 
-### get_snippets.php
-
-This script extracts the author and contributor names from the language
-[definition files]
-(https://github.com/isagalaev/highlight.js/tree/master/src/languages) in 
-_highlight.js_.
+```bash
+	php get_language_definitions.php
+```	
 
 Some History
 ============

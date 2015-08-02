@@ -2,7 +2,7 @@
 /* Copyright (c)
  * - 2006-2013, Ivan Sagalaev (maniacsoftwaremaniacs.org), highlight.js
  *              (original author)
- * - 2013-2014, Geert Bergman (geertscrivo.nl), highlight.php
+ * - 2013-2015, Geert Bergman (geertscrivo.nl), highlight.php
  * - 2014,      Daniel Lynge, highlight.php (contributor)
  * All rights reserved.
  *

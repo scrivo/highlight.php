@@ -1,12 +1,9 @@
 dojoConfig = {
   async: true,
-  baseUrl: "lib/",
+  baseUrl: "lib_dojo/",
   packages: [{
     name: "dojo",
     location: "dojo"
-  },{
-    name: "dijit",
-    location: "dijit"
   },{
     name: "dojox",
     location: "dojox"
@@ -14,6 +11,6 @@ dojoConfig = {
   deps: ["export"]
 };
 
-require("./lib/dojo/dojo.js");
+require("./lib_dojo/dojo/dojo.js");
 
 

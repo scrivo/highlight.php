@@ -37,19 +37,38 @@
 
 $f = file("languages.dat");
 
+$patches = Array(
+    // Somehwere somehow the first percentage sign was lost
+    "dos" => Array(Array("\"%[^ ]", "\"%%[^ ]")),
+    // WTF, any ideas anyone?
+    "mercury" => Array(Array("\\\\\\\/", "\\\\\\\\\\\/")),
+    // The expression [^] is not allowed in PREG
+    "lisp" => Array(Array("[^]", "[^|]")),
+    // Just being plain lazy
+    "xml" => Array(Array("subLanguage\":\"\"", "subLanguage\":\"javascript\"")),
+    
+);
+
 for ($i=0; $i<count($f); $i+=2) {
     if (isset($f[$i+1])) {
-    	
+
         $fl = trim($f[$i]);
         $json = $f[$i+1];
-        
+
         if (!$fl) {
             die("ERROR: No language name on line ".($i+1).".<br />\n");
         }
         if (!@json_decode($json)) {
             die("ERROR: invalid JSON data on line ".($i+2).".<br />\n");
         }
-        
+
+        if (isset($patches[$fl])) {
+            foreach ($patches[$fl] as $patch) {
+                $json = str_replace($patch[0], $patch[1], $json);
+                echo "{$patch[0]}, {$patch[1]}\n{$json}";
+            }
+        }
+
         echo "Creating language file '{$fl}.json'.<br />\n";
         if (!file_put_contents("../Highlight/languages/{$fl}.json", $json)) {
             die("ERROR: Couldn't write to file.<br />\n");;

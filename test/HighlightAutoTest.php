@@ -48,7 +48,6 @@ class HighlightAutoTest extends PHPUnit_Framework_TestCase
 
         foreach($lngs as $language) {
 
-            echo "$language\n";
             $path = __DIR__ . DIRECTORY_SEPARATOR . "detect" . 
                 DIRECTORY_SEPARATOR . $language;
             $this->assertTrue(file_exists($path));

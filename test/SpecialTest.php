@@ -1,6 +1,6 @@
 <?php
 /* Copyright (c)
- * - 2013-2014, Geert Bergman (geert@scrivo.nl), highlight.php
+ * - 2013-2015, Geert Bergman (geert@scrivo.nl), highlight.php
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -39,6 +39,8 @@ class SpecialTest extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->hl = new Highlight\Highlighter();
+  //      var_dump($this->hl->listLanguages());
+        
     }
 
     private function getTestData($name)
@@ -74,7 +76,7 @@ class SpecialTest extends PHPUnit_Framework_TestCase
     public function testSubLanguage()
     {
         $data = $this->getTestData("sublanguages");
-        
+
         $this->assertEquals($data->expected, 
             $this->hl->highlight("xml", $data->code)->value);
     }
