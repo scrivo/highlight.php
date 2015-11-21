@@ -354,9 +354,19 @@ class Highlighter
         $this->tabReplace = $tabReplace;
     }
 
+    /**
+     * @throws
+     *      A DomainException if the requested language was not in this 
+     *      Highlighter's language set. 
+     */
     private function getLanguage($name) {
-        return isset(self::$classMap[$name]) ?
-            self::$classMap[$name] : self::$classMap[self::$aliases[$name]];
+        if (isset(self::$classMap[$name])) {
+            return self::$classMap[$name];
+        } elseif (isset(self::$aliases[$name]) && 
+                isset(self::$classMap[self::$aliases[$name]])) {
+            return self::$classMap[self::$aliases[$name]];
+        }
+        throw new \DomainException("Unknown language: $name");
     }
 
     /**
@@ -365,6 +375,9 @@ class Highlighter
      * properties:
      * - relevance (int)
      * - value (an HTML string with highlighting markup)
+     * @throws
+     *      A DomainException if the requested language was not in this 
+     *      Highlighter's language set. 
      */
     public function highlight(
             $language, $code, $ignoreIllegals=true, $continuation=null)

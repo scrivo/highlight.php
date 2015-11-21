@@ -205,10 +205,6 @@ container.
 
 _highlight.php_ does not modify class names of code containers.
 
-
-### the snippets folder
-
-
 ##5. tools
 
 A collection of scripts that are used to extract data from the original 

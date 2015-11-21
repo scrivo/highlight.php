@@ -8,7 +8,8 @@ dojoConfig = {
     name: "dojox",
     location: "dojox"
   }],
-  deps: ["export"]
+  deps: ["export"],
+  highlightJsDir: "/home/www/highlight.php/tools/lib_highlight/"
 };
 
 require("./lib_dojo/dojo/dojo.js");
