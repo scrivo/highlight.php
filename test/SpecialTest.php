@@ -39,8 +39,7 @@ class SpecialTest extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->hl = new Highlight\Highlighter();
-  //      var_dump($this->hl->listLanguages());
-        
+//      var_dump($this->hl->listLanguages());
     }
 
     private function getTestData($name)
@@ -76,7 +75,7 @@ class SpecialTest extends PHPUnit_Framework_TestCase
     public function testSubLanguage()
     {
         $data = $this->getTestData("sublanguages");
-
+        
         $this->assertEquals($data->expected, 
             $this->hl->highlight("xml", $data->code)->value);
     }

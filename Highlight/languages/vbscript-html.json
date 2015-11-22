@@ -1,1 +1,1 @@
-{"subLanguage":"xml","subLanguageMode":"continuous","contains":[{"begin":"<%","end":"%>","subLanguage":"vbscript"}]}
+{"subLanguage":"xml","contains":[{"begin":"<%","end":"%>","subLanguage":"vbscript"}]}

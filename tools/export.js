@@ -2,7 +2,7 @@ require(["dojo/node!fs", "dojox/json/ref", "dojo/_base/kernel"], function(fs, re
 
 	var nodeRequire = kernel.global.require && kernel.global.require.nodeRequire;
 
-	var HIGHLIGHT_DIR = dojo.config.highlightJsDir;"/home/www/highlight.php/tools/lib_highlight/";
+	var HIGHLIGHT_DIR = dojo.config.highlightJsDir;
 	
 	hljs = nodeRequire(HIGHLIGHT_DIR + "highlight.js");
 

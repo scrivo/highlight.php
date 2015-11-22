@@ -194,16 +194,21 @@ class Highlighter
             $hl = new Highlighter();
             $hl->autodetectSet = $this->autodetectSet;
 
-            $slm = isset($this->top->subLanguageMode) ?
-                $this->top->subLanguageMode : null;
+            $explicit = is_string($this->top->subLanguage);
+            if ($explicit && !isset(
+                    array_flip(self::$languages)[$this->top->subLanguage])) {
+                return $this->escape($this->modeBuffer);
+            }
 
-            if ($this->top->subLanguage) {
+            if ($explicit) {
                 $res = $hl->highlight($this->top->subLanguage,
                     $this->modeBuffer, true,
                     isset($this->continuations[$this->top->subLanguage])
                     ? $this->continuations[$this->top->subLanguage] : null);
             } else {
-                $res = $hl->highlightAuto($this->modeBuffer);
+                $res = $hl->highlightAuto($this->modeBuffer,
+                    count($this->top->subLanguage) ? $this->top->subLanguage 
+                    : null);
             }
             // Counting embedded language score towards the host language may
             // be disabled with zeroing the containing mode relevance. Usecase
@@ -212,12 +217,14 @@ class Highlighter
             if ($this->top->relevance > 0) {
                 $this->relevance += $res->relevance;
             }
-            if ($this->top->subLanguageMode == "continuous") {
+            if ($explicit) {
                 $this->continuations[$this->top->subLanguage] = $res->top;
             }
             return $this->buildSpan($res->language, $res->value, false, true);
 
         } catch (\Exception $e) {
+            error_log("TODO, is this a relevant catch?");
+            error_log($e);
             return $this->escape($this->modeBuffer);
         }
     }
@@ -451,15 +458,17 @@ class Highlighter
         }
     }
 
-    public function highlightAuto($code)
+    public function highlightAuto($code, $languageSubset = null)
     {
         $res = new \stdClass;
         $res->relevance = 0;
         $res->value = $this->escape($code);
         $res->language = "";
         $scnd = clone $res;
+        
+        $tmp = $languageSubset ? $languageSubset : $this->autodetectSet;
 
-        foreach ($this->autodetectSet as $l) {
+        foreach ($tmp as $l) {
             $current = $this->highlight($l, $code, false);
             if ($current->relevance > $scnd->relevance) {
                 $scnd = $current;

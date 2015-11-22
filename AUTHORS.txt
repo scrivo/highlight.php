@@ -41,6 +41,7 @@ Language and style definitions (copied from the highlight.js project)
 	Anton Kovalyov <anton@kovalyov.net>
 	Antono Vasiljev <self@antono.info>
 	Arthur Bikmullin <devolonter@gmail.com>
+	Benjamin Auder <benjamin.auder@gmail.com>
 	Benjamin Pannell <contact@sierrasoftworks.com>
 	Bram de Haan <info@atelierbramdehaan.nl>
 	Brent Bradbury <brent@brentium.com>
@@ -66,11 +67,13 @@ Language and style definitions (copied from the highlight.js project)
 	David Mohundro <david@mohundro.com>
 	Denis Bardadym <bardadymchik@gmail.com>
 	Dennis Titze <dennis.titze@gmail.com>
+	Dirk Kirsten <dk@basex.org>
 	Dmitri Roudakov <dmitri@roudakov.ru>
 	Dmitry Kovega <arhibot@gmail.com>
 	Dmitry Medvinsky <me@dmedvinsky.name>
 	Dmytrii Nagirniak <dnagir@gmail.com>
 	Domen Kožar <domen@dev.si>
+	Dotan Dimet <dotan@corky.net>
 	Dr. Drang <drdrang@gmail.com>
 	Edwin Dalorzo <edwin@dalorzo.org>
 	Eric Knibbe <eric@lassosoft.com>
@@ -79,6 +82,7 @@ Language and style definitions (copied from the highlight.js project)
 	Eugene Nizhibitsky <nizhibitsky@gmail.com>
 	Evgeny Stepanischev <imbolk@gmail.com>
 	Flaviu Tamas <tamas.flaviu@gmail.com>
+	Guillaume Gomez <guillaume1.gomez@gmail.com>
 	Guillaume Laforge <glaforge@gmail.com>
 	Gu Yiling <justice360@gmail.com>
 	Hakan Özler <ozler.hakan@gmail.com>
@@ -89,6 +93,7 @@ Language and style definitions (copied from the highlight.js project)
 	Ilya Vassilevsky <vassilevsky@gmail.com>
 	innocenat <innocenat@gmail.com>
 	Jan Berkel <jan.berkel@gmail.com>
+	Janis Voigtländer <janis.voigtlaender@gmail.com>
 	Jan T. Sott <git@idleberg.com>
 	Jason Diamond <jason@diamond.name>
 	Jason Jacobson <jason.a.jacobson@gmail.com>
@@ -119,6 +124,7 @@ Language and style definitions (copied from the highlight.js project)
 	Luigi Maselli <grigio.org@gmail.com>
 	Luke Holder <lukemh@gmail.com>
 	MajestiC <majestic2k@gmail.com>
+	Manh Tuan <junookyo@gmail.com>
 	Marc Fornos <marc.fornos@gmail.com>
 	Martin Dilling-Hansen <martindlling@gmail.com>
 	Matt Diephouse <matt@diephouse.com>
@@ -129,6 +135,7 @@ Language and style definitions (copied from the highlight.js project)
 	Michal Gabrukiewicz <mgabru@gmail.com>
 	Mickaël Delahaye <mickael.delahaye@gmail.com>
 	mucaho <mkucko@gmail.com>
+	MY Sun <simonmysun@gmail.com>
 	Nate Cook <natecook@gmail.com>
 	Nathan Grigg <nathan@nathanamy.org>
 	Nicholas Blumhardt <nblumhardt@nblumhardt.com>
@@ -147,7 +154,6 @@ Language and style definitions (copied from the highlight.js project)
 	Poren Chiang <ren.chiang@gmail.com>
 	pumbur <pumbur@pumbur.net>
 	Radek Liska <radekliska@gmail.com>
-	Raivo Laanemets <raivo@infdot.com>
 	Raivo Laanemets <raivo@infdot.com>
 	Ralf Bitter <rabit@revigniter.com>
 	Robin Ward <robin.ward@gmail.com>
@@ -170,6 +176,7 @@ Language and style definitions (copied from the highlight.js project)
 	Travis Odom <travis.a.odom@gmail.com>
 	Trey Shugart <treshugart@gmail.com>
 	Troy Kershaw <hello@troykershaw.com>
+	Vadimtro <vadimtro@yahoo.com>
 	Vah <vahtenberg@gmail.com>
 	Valerii Hiora <valerii.hiora@gmail.com>
 	Vasily Mikhailitchenko <vaskas@programica.ru>
