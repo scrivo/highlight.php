@@ -193,4 +193,3 @@ Language and style definitions (copied from the highlight.js project)
 	Zaripov Yura <yur4ik7@ukr.net>
 	Zaven Muradyan <megalivoithos@gmail.com>
 	Zena Treep <zena.treep@gmail.com>
-	

@@ -2,7 +2,7 @@ highlight.php
 =============
 
 *highlight.php* is a server side code highlighter written in PHP that currently
-supports over 70 languages. It's a port of [highlight.js]
+supports over 135 languages. It's a port of [highlight.js]
 (http://www.highlightjs.org) by Ivan Sagalaev that makes full use of the 
 language and style definitions of the original JavaScript project.
 
