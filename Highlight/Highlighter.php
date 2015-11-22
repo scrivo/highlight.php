@@ -167,22 +167,28 @@ class Highlighter
         $result = "";
         $lastIndex = 0;
 
-        while (preg_match($this->top->lexemesRe, $this->modeBuffer, $match,
-                PREG_OFFSET_CAPTURE, $lastIndex)) {
-
-            $result .= $this->escape(substr(
-                $this->modeBuffer, $lastIndex, $match[0][1] - $lastIndex));
-            $keyword_match = $this->keywordMatch($this->top, $match[0]);
-
-            if ($keyword_match) {
-                $this->relevance += $keyword_match[1];
-                $result .= $this->buildSpan(
-                    $keyword_match[0], $this->escape($match[0][0]));
-            } else {
-                $result .= $this->escape($match[0][0]);
+        /* TODO: when using the crystal language file on django and twigs code
+         * the values of $this->top->lexemesRe can become "" (empty). Check
+         * if this behaviour is consistent with highlight.js.  
+         */
+        if ($this->top->lexemesRe) {
+            while (preg_match($this->top->lexemesRe, $this->modeBuffer, $match,
+                    PREG_OFFSET_CAPTURE, $lastIndex)) {
+    
+                $result .= $this->escape(substr(
+                    $this->modeBuffer, $lastIndex, $match[0][1] - $lastIndex));
+                $keyword_match = $this->keywordMatch($this->top, $match[0]);
+    
+                if ($keyword_match) {
+                    $this->relevance += $keyword_match[1];
+                    $result .= $this->buildSpan(
+                        $keyword_match[0], $this->escape($match[0][0]));
+                } else {
+                    $result .= $this->escape($match[0][0]);
+                }
+    
+                $lastIndex = strlen($match[0][0]) + $match[0][1];
             }
-
-            $lastIndex = strlen($match[0][0]) + $match[0][1];
         }
 
         return $result . $this->escape(substr($this->modeBuffer, $lastIndex));
@@ -465,7 +471,7 @@ class Highlighter
         $res->value = $this->escape($code);
         $res->language = "";
         $scnd = clone $res;
-        
+
         $tmp = $languageSubset ? $languageSubset : $this->autodetectSet;
 
         foreach ($tmp as $l) {

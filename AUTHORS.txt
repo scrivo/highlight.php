@@ -151,6 +151,7 @@ Language and style definitions (copied from the highlight.js project)
 	Pedro Oliveira <kanytu@gmail.com>
 	Peter Leonov <gojpeg@gmail.com>
 	Peter Piwowarski <oldlaptop654@aol.com>
+	Philippe Charrière <ph.charriere@gmail.com>
 	Poren Chiang <ren.chiang@gmail.com>
 	pumbur <pumbur@pumbur.net>
 	Radek Liska <radekliska@gmail.com>
@@ -159,6 +160,7 @@ Language and style definitions (copied from the highlight.js project)
 	Robin Ward <robin.ward@gmail.com>
 	Roman Shmatov <romanshmatov@gmail.com>
 	Ruslan Keba <rukeba@gmail.com>
+	Samuel Reed <sam@bitmex.com>
 	Seongwon Lee <dlimpid@gmail.com>
 	Sergey Baranov <segyrn@yandex.ru>
 	Sergey Ignatov <sergey@ignatov.spb.su>
@@ -167,6 +169,7 @@ Language and style definitions (copied from the highlight.js project)
 	Sergey Vidyuk <svidyuk@gmail.com>
 	Shuen-Huei Guan <drake.guan@gmail.com>
 	Simon Madine <simon@angryrobotzombie.com>
+	Stefan Bechert <stefan.bechert@gmx.net>
 	Stephan Kountso <steplg@gmail.com>
 	Sylvestre Ledru <sylvestre.ledru@scilab-enterprises.com>
 	Taneli Vatanen <taneli.vatanen@gmail.com>
@@ -176,6 +179,7 @@ Language and style definitions (copied from the highlight.js project)
 	Travis Odom <travis.a.odom@gmail.com>
 	Trey Shugart <treshugart@gmail.com>
 	Troy Kershaw <hello@troykershaw.com>
+	Tsuyusato Kitsune <make.just.on@gmail.com>
 	Vadimtro <vadimtro@yahoo.com>
 	Vah <vahtenberg@gmail.com>
 	Valerii Hiora <valerii.hiora@gmail.com>
@@ -190,7 +194,7 @@ Language and style definitions (copied from the highlight.js project)
 	Vsevolod Solovyov <vsevolod.solovyov@gmail.com>
 	Yoshihide Jimbo <yjimbo@gmail.com>
 	Yuri Ivanov <ivanov@supersoft.ru>
+	Yury Selivanov <yselivanov@gmail.com>
 	Zaripov Yura <yur4ik7@ukr.net>
 	Zaven Muradyan <megalivoithos@gmail.com>
 	Zena Treep <zena.treep@gmail.com>
-	
