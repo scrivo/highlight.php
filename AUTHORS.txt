@@ -61,6 +61,7 @@ Language and style definitions (copied from the highlight.js project)
 	Damien White <damien.white@visoftinc.com>
 	Dan Allen <dan.j.allen@gmail.com>
 	Daniel Kvasnicka <dkvasnicka@vendavo.com>
+	Daniel Rosenwasser <DanielRosenwasser@users.noreply.github.com>
 	Dan Panzarella <alsoelp@gmail.com>
 	Dan Tao <daniel.tao@gmail.com>
 	David Anson <david@dlaa.me>
@@ -116,7 +117,9 @@ Language and style definitions (copied from the highlight.js project)
 	Kenta Sato <bicycle1885@gmail.com>
 	Kirk Kimmel <kimmel.k.programmer@gmail.com>
 	Konstantin Evdokimenko <qewerty@gmail.com>
+	Kristoffer Gronlund <kgronlund@suse.com>
 	Kurt Emch <kurt@kurtemch.com>
+	Ladislav Prskavec: <ladislav@prskavec.net>
 	Loren Segal <lsegal@soen.ca>
 	Louis Barranqueiro <louis.barranqueiro@gmail.com>
 	Lucas Mazza <lucastmazza@gmail.com>
@@ -134,6 +137,7 @@ Language and style definitions (copied from the highlight.js project)
 	Michael Allen <Michael.Allen@benefitfocus.com>
 	Michal Gabrukiewicz <mgabru@gmail.com>
 	Mickaël Delahaye <mickael.delahaye@gmail.com>
+	Mick MacCallum <micksmaccallum@gmail.com>
 	mucaho <mkucko@gmail.com>
 	MY Sun <simonmysun@gmail.com>
 	Nate Cook <natecook@gmail.com>
@@ -169,6 +173,7 @@ Language and style definitions (copied from the highlight.js project)
 	Sergey Vidyuk <svidyuk@gmail.com>
 	Shuen-Huei Guan <drake.guan@gmail.com>
 	Simon Madine <simon@angryrobotzombie.com>
+	Søren Enevoldsen <senevoldsen90@gmail.com>
 	Stefan Bechert <stefan.bechert@gmx.net>
 	Stephan Kountso <steplg@gmail.com>
 	Sylvestre Ledru <sylvestre.ledru@scilab-enterprises.com>
