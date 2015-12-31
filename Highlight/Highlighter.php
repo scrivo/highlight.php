@@ -62,7 +62,7 @@ class Highlighter
     private function registerLanguages() {
 
         // Languages that take precedence in the classMap array.
-        foreach(Array("xml", "django", "javascript", "matlab") as $l) {
+        foreach(Array("xml", "django", "javascript", "matlab", "cpp") as $l) {
             $this->createLanguage($l);
         }
         
