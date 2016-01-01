@@ -37,7 +37,7 @@ require_once("Highlight/Autoloader.php");
 spl_autoload_register("Highlight\\Autoloader::load");
 
 $hl = new Highlight\Highlighter();
-$r = $hl->highlight("php", file_get_contents(__FILE__));
+$r = $hl->highlight("html", file_get_contents(__FILE__));
 
 ?>
 <html>
