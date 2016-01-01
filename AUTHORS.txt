@@ -95,6 +95,7 @@ Language and style definitions (copied from the highlight.js project)
 	innocenat <innocenat@gmail.com>
 	Jan Berkel <jan.berkel@gmail.com>
 	Janis Voigtländer <janis.voigtlaender@gmail.com>
+	Jan Kühle <jkuehle90@gmail.com>
 	Jan T. Sott <git@idleberg.com>
 	Jason Diamond <jason@diamond.name>
 	Jason Jacobson <jason.a.jacobson@gmail.com>
@@ -119,7 +120,7 @@ Language and style definitions (copied from the highlight.js project)
 	Konstantin Evdokimenko <qewerty@gmail.com>
 	Kristoffer Gronlund <kgronlund@suse.com>
 	Kurt Emch <kurt@kurtemch.com>
-	Ladislav Prskavec: <ladislav@prskavec.net>
+	Ladislav Prskavec <ladislav@prskavec.net>
 	Loren Segal <lsegal@soen.ca>
 	Louis Barranqueiro <louis.barranqueiro@gmail.com>
 	Lucas Mazza <lucastmazza@gmail.com>
@@ -142,10 +143,12 @@ Language and style definitions (copied from the highlight.js project)
 	MY Sun <simonmysun@gmail.com>
 	Nate Cook <natecook@gmail.com>
 	Nathan Grigg <nathan@nathanamy.org>
+	Nebuleon Fumika <nebuleon.fumika@gmail.com>
 	Nicholas Blumhardt <nblumhardt@nblumhardt.com>
 	Nicolas Braud-Santoni <nicolas.braud-santoni@ens-cachan.fr>
 	Nic West <nic@letolab.com>
 	Nikita Ledyaev <lenikita@yandex.ru>
+	Nikita Savchenko <zitros.lab@gmail.com>
 	Nikolay Lisienko <info@neor.ru>
 	Nikolay Zakharov <nikolay.desh@gmail.com>
 	noformnocontent <i@noformnocontent.com>
@@ -157,6 +160,7 @@ Language and style definitions (copied from the highlight.js project)
 	Peter Piwowarski <oldlaptop654@aol.com>
 	Philippe Charrière <ph.charriere@gmail.com>
 	Poren Chiang <ren.chiang@gmail.com>
+	prince <MC.prince.0203@gmail.com>
 	pumbur <pumbur@pumbur.net>
 	Radek Liska <radekliska@gmail.com>
 	Raivo Laanemets <raivo@infdot.com>
@@ -169,12 +173,13 @@ Language and style definitions (copied from the highlight.js project)
 	Sergey Baranov <segyrn@yandex.ru>
 	Sergey Ignatov <sergey@ignatov.spb.su>
 	Sergey Mashkov <cy6erGn0m@gmail.com>
-	Sergey Tikhomirov <me@stikhomirov.com>
+	Sergey Tikhomirov <sergey@tikhomirov.io>
 	Sergey Vidyuk <svidyuk@gmail.com>
 	Shuen-Huei Guan <drake.guan@gmail.com>
 	Simon Madine <simon@angryrobotzombie.com>
 	Søren Enevoldsen <senevoldsen90@gmail.com>
 	Stefan Bechert <stefan.bechert@gmx.net>
+	Stefan Wienert <stwienert@gmail.com>
 	Stephan Kountso <steplg@gmail.com>
 	Sylvestre Ledru <sylvestre.ledru@scilab-enterprises.com>
 	Taneli Vatanen <taneli.vatanen@gmail.com>
