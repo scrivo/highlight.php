@@ -92,10 +92,9 @@ class Language
         }
     }
 
-    public function __construct($lang)
+    public function __construct($lang, $filePath)
     {
-        $json = file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . "languages" .
-            DIRECTORY_SEPARATOR . "{$lang}.json");
+        $json = file_get_contents($filePath);
         $this->mode = json_decode($json);
 
         $this->name = $lang;
