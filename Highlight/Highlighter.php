@@ -81,15 +81,28 @@ class Highlighter
 
     private function createLanguage($languageId)
     {
-        if (!isset(self::$classMap[$languageId])) {
-            $lang = new Language($languageId);
-            self::$classMap[$languageId] = $lang;
-            if (isset($lang->mode->aliases)) {
-                foreach ($lang->mode->aliases as $alias) {
-                    self::$aliases[$alias] = $languageId;
-                }
+        if (!isset(self::$classMap[$languageId]))
+        {
+            $this->registerLanguage(
+                $languageId,
+                __DIR__ . DIRECTORY_SEPARATOR . 'languages' . DIRECTORY_SEPARATOR . "$languageId.json"
+            );
+        }
+
+        return self::$classMap[$languageId];
+    }
+
+    public function registerLanguage($languageId, $absoluteFilePath)
+    {
+        $lang = new Language($languageId, $absoluteFilePath);
+        self::$classMap[$languageId] = $lang;
+
+        if (isset($lang->mode->aliases)) {
+            foreach ($lang->mode->aliases as $alias) {
+                self::$aliases[$alias] = $languageId;
             }
         }
+
         return self::$classMap[$languageId];
     }
 
