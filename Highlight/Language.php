@@ -43,7 +43,7 @@ class Language
         if (!isset($e)) {
             $e = new \stdClass();
         }
-        
+
         $patch = array(
             "begin" => true,
             "end" => true,

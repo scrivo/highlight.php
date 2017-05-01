@@ -65,7 +65,7 @@ class Highlighter
         foreach(Array("xml", "django", "javascript", "matlab", "cpp") as $l) {
             $this->createLanguage($l);
         }
-        
+
 
         $d = dir(__DIR__.DIRECTORY_SEPARATOR."languages");
         while (false !== ($entry = $d->read())) {
@@ -111,7 +111,7 @@ class Highlighter
         if (!$re) {
             return false;
         }
-        $test = preg_match($re, $lexeme, $match, PREG_OFFSET_CAPTURE); 
+        $test = preg_match($re, $lexeme, $match, PREG_OFFSET_CAPTURE);
         if ($test === false) {
             throw new \Exception("Invalid regexp: " .
                 var_export($re, true));
@@ -182,16 +182,16 @@ class Highlighter
 
         /* TODO: when using the crystal language file on django and twigs code
          * the values of $this->top->lexemesRe can become "" (empty). Check
-         * if this behaviour is consistent with highlight.js.  
+         * if this behaviour is consistent with highlight.js.
          */
         if ($this->top->lexemesRe) {
             while (preg_match($this->top->lexemesRe, $this->modeBuffer, $match,
                     PREG_OFFSET_CAPTURE, $lastIndex)) {
-    
+
                 $result .= $this->escape(substr(
                     $this->modeBuffer, $lastIndex, $match[0][1] - $lastIndex));
                 $keyword_match = $this->keywordMatch($this->top, $match[0]);
-    
+
                 if ($keyword_match) {
                     $this->relevance += $keyword_match[1];
                     $result .= $this->buildSpan(
@@ -199,7 +199,7 @@ class Highlighter
                 } else {
                     $result .= $this->escape($match[0][0]);
                 }
-    
+
                 $lastIndex = strlen($match[0][0]) + $match[0][1];
             }
         }
@@ -226,7 +226,7 @@ class Highlighter
                     ? $this->continuations[$this->top->subLanguage] : null);
             } else {
                 $res = $hl->highlightAuto($this->modeBuffer,
-                    count($this->top->subLanguage) ? $this->top->subLanguage 
+                    count($this->top->subLanguage) ? $this->top->subLanguage
                     : null);
             }
             // Counting embedded language score towards the host language may
@@ -382,13 +382,13 @@ class Highlighter
 
     /**
      * @throws
-     *      A DomainException if the requested language was not in this 
-     *      Highlighter's language set. 
+     *      A DomainException if the requested language was not in this
+     *      Highlighter's language set.
      */
     private function getLanguage($name) {
         if (isset(self::$classMap[$name])) {
             return self::$classMap[$name];
-        } elseif (isset(self::$aliases[$name]) && 
+        } elseif (isset(self::$aliases[$name]) &&
                 isset(self::$classMap[self::$aliases[$name]])) {
             return self::$classMap[self::$aliases[$name]];
         }
@@ -402,8 +402,8 @@ class Highlighter
      * - relevance (int)
      * - value (an HTML string with highlighting markup)
      * @throws
-     *      A DomainException if the requested language was not in this 
-     *      Highlighter's language set. 
+     *      A DomainException if the requested language was not in this
+     *      Highlighter's language set.
      */
     public function highlight(
             $language, $code, $ignoreIllegals=true, $continuation=null)
