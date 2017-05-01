@@ -205,7 +205,7 @@ container.
 
 _highlight.php_ does not modify class names of code containers.
 
-##5. tools
+## 5. tools
 
 A collection of scripts that are used to extract data from the original 
 [highlight.js](http://www.highlightjs.org) project.
@@ -215,21 +215,23 @@ on your box: _highlight.js_, dojo and node.js.
 
 To export the language definitions from _highlight.js_ continue as follows:
 
-Download a source distribution of 
-[_highlight.js_](https://github.com/isagalaev/highlight.js/releases), and 
-create a node build:
+Download a source distribution of [_highlight.js_](https://github.com/isagalaev/highlight.js/releases), and create a node build:
 
 ```bash
-	nodejs tools/build.js -t node
-```	
+node tools/build.js -t node
+```
 
-Download a source distribution of [dojo](http://download.dojotoolkit.org/).
+After you've built the node build of highlight.js, copy the `build/lib/` folder to `tools/lib_highlight`. Also, remove the `arduino.js` file since this'll cause problems for now.
+
+Download a source distribution of [dojo](http://download.dojotoolkit.org/). Be sure it's called something like `dojo-release-X.X.X-src`, we need to work with the source and not the already built library.
 
 Make sure that the path references in launcer.js are correct and run it:
 
 ```bash
-	nodejs launcher.js > languages.dat
+node launcher.js > languages.dat
 ```	
+
+The `highlightJsDir` value must be the absolute path to the `lib_highlight` folder you just created.
 	
 If all went right you'll now have a file with all language definitions. Run
 get_language_defintions.php to generate the json files for the individual
