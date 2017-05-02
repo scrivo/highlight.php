@@ -92,13 +92,15 @@ class Highlighter
         return self::$classMap[$languageId];
     }
 
-    public function registerLanguage($languageId, $absoluteFilePath)
+    public static function registerLanguage($languageId, $absoluteFilePath)
     {
         $lang = new Language($languageId, $absoluteFilePath);
         self::$classMap[$languageId] = $lang;
 
-        if (isset($lang->mode->aliases)) {
-            foreach ($lang->mode->aliases as $alias) {
+        if (isset($lang->mode->aliases))
+        {
+            foreach ($lang->mode->aliases as $alias)
+            {
                 self::$aliases[$alias] = $languageId;
             }
         }
