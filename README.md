@@ -27,23 +27,29 @@ CSS class set on the PRE element:
 
 ```php
 <?php
-// Initialize your autoloader (this example is using composer)
-require 'vendor/autoload.php';
-// Instantiate the Highlighter. 
-$hl = new Highlight\Highlighter();
-// Highlight some code. 
-$r = $hl->highlight("ruby", file_get_contents("a_ruby_script.rb"));
-// Output the code using the default stylesheet:
+  // Initialize your autoloader (this example is using composer)
+  require 'vendor/autoload.php';
+  
+  // Instantiate the Highlighter. 
+  $hl = new Highlight\Highlighter();
+  
+  // Highlight some code. 
+  $r = $hl->highlight('ruby', file_get_contents('some_ruby_script.rb'));
+  
+  // Output the code using the default stylesheet:
 ?>
+
 <html>
-    <head>
-        <!-- Link to the stylesheets: -->
-        <link rel="stylesheet" type="text/css" href="styles/default.css">
-    </head>
-    <body>
-        <!-- Print the highlighted code: -->
-        <pre class="hljs <?=$r->language?>"><?=$r->value?></pre>
-    </body>
+  <head>
+    <!-- Link to the stylesheets: -->
+    <link rel="stylesheet" type="text/css" href="styles/default.css">
+  </head>
+  <body>
+    <!-- Print the highlighted code: -->
+    <pre class="hljs <?= $r->language ?>">
+      <?= $r->value ?>
+    </pre>
+  </body>
 </html>
 ```
 
@@ -56,25 +62,32 @@ limit this set to just those languages that are relevant for your project.
 
 ```php
 <?php
-// Initialize your autoloader (this example is using composer)
-require 'vendor/autoload.php';
-// Instantiate the Highlighter. 
-$hl = new Highlight\Highlighter();
-// Set the languages you want to detect automatically. 
-$hl->setAutodetectLanguages(array("ruby", "python", "perl"));
-// Highlight some code. 
-$r = $hl->highlightAuto(file_get_contents("a_ruby_script.rb"));
-// Output the code using the default stylesheet:
+  // Initialize your autoloader (this example is using composer)
+  require 'vendor/autoload.php';
+
+  // Instantiate the Highlighter. 
+  $hl = new Highlight\Highlighter();
+
+  // Set the languages you want to detect automatically. 
+  $hl->setAutodetectLanguages(array('ruby', 'python', 'perl'));
+
+  // Highlight some code. 
+  $r = $hl->highlightAuto(file_get_contents('some_ruby_script.rb'));
+  
+  // Output the code using the default stylesheet:
 ?>
+
 <html>
-    <head>
-        <!-- Link to the stylesheets: -->
-        <link rel="stylesheet" type="text/css" href="styles/default.css">
-    </head>
-    <body>
-        <!-- Print the highlighted code: -->
-        <pre class="hljs <?=$r->language?>"><?=$r->value?></pre>
-    </body>
+  <head>
+    <!-- Link to the stylesheets: -->
+    <link rel="stylesheet" type="text/css" href="styles/default.css">
+  </head>
+  <body>
+    <!-- Print the highlighted code: -->
+    <pre class="hljs <?= $r->language ?>">
+      <?= $r->value ?>
+    </pre>
+  </body>
 </html>
 ```
 
@@ -82,20 +95,23 @@ Installation using Composer
 ===========================
 
 Run _composer require_ from your command line:
+
 ```bash
 composer require scrivo/highlight.php:8.*
 ```
 
 Or add this to your _composer.json_ and run _composer install_:
+
 ```json
 {
-    "require": {
-        "scrivo/highlight.php": "8.*"
-    }
+  "require": {
+    "scrivo/highlight.php": "8.*"
+  }
 }
 ```
 
 Add the from Composer prepared autoload file to your php file:
+
 ```php
 require 'vendor/autoload.php';
 ```
@@ -111,7 +127,7 @@ The project contains the following folders:
 4. [test](#4-test)
 5. [tools](#5-tools)
 
-##1. Highlight
+## 1. Highlight
 
 This folder contains the main source and the following files (classes):
 
@@ -152,14 +168,14 @@ This folder contains all language definitions: one JSON file for each language.
 These files are not hand coded but extracted from the original 
 [highlight.js](http://www.highlightjs.org) project. 
 
-##2. styles
+## 2. styles
 
 These are the the CSS files needed to actually color the code. Not much to 
 say about: these are just copied from the [highlight.js]
 (https://github.com/isagalaev/highlight.js/tree/master/src/styles)
 project.
 
-##3. demo
+## 3. demo
 
 This folder contains two demo pages that can be accessed through your browser.
 
@@ -172,7 +188,7 @@ A test page showing all supported languages and styles.
 Much like [demo.php](#demo-php) but this page focuses on the comparison 
 between _highlight.php_ and _highlight.js_. Both should yield the same results.
 
-##4. test
+## 4. test
 
 This folder contains the unit test for _highlight.php_. To run them run 
 _phpunit_ from this directory:
@@ -180,6 +196,7 @@ _phpunit_ from this directory:
 ```bash
 	phpnunit .
 ```
+
 Note that the following tests for _highlight.js_ are not rewritten for 
 _highlight.php_:
 
@@ -205,7 +222,7 @@ container.
 
 _highlight.php_ does not modify class names of code containers.
 
-##5. tools
+## 5. tools
 
 A collection of scripts that are used to extract data from the original 
 [highlight.js](http://www.highlightjs.org) project.
@@ -220,7 +237,7 @@ Download a source distribution of
 create a node build:
 
 ```bash
-	nodejs tools/build.js -t node
+nodejs tools/build.js -t node
 ```	
 
 Download a source distribution of [dojo](http://download.dojotoolkit.org/).
@@ -228,7 +245,7 @@ Download a source distribution of [dojo](http://download.dojotoolkit.org/).
 Make sure that the path references in launcer.js are correct and run it:
 
 ```bash
-	nodejs launcher.js > languages.dat
+nodejs launcher.js > languages.dat
 ```	
 	
 If all went right you'll now have a file with all language definitions. Run
@@ -236,7 +253,7 @@ get_language_defintions.php to generate the json files for the individual
 lauagues:
 
 ```bash
-	php get_language_definitions.php
+php get_language_definitions.php
 ```	
 
 Some History
