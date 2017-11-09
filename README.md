@@ -189,9 +189,10 @@ A collection of scripts that are used to extract data from the original [highlig
 Note that these scripts require the installation of the following software on your box: _highlight.js_, dojo and node.js.
 
 To export the language definitions from _highlight.js_ continue as follows:
-Download a source distribution of [_highlight.js_](https://github.com/isagalaev/highlight.js/releases) and create a node build:
+Download a source distribution of [_highlight.js_](https://github.com/isagalaev/highlight.js/releases), install its dependencies and create a node build:
 
 ```bash
+npm install
 nodejs tools/build.js -t node
 ```
 
@@ -199,7 +200,7 @@ After you've built the node build of highlight.js, copy the `build/lib/` folder 
 
 Download a source distribution of [dojo](http://download.dojotoolkit.org). Be sure it's called something like `dojo-release-X.X.X-src`, we need to work with its source, not the pre-built library.
 
-Make sure that the path references in launcer.js are correct and run it:
+Make sure that the path references in launcher.js are correct and run it:
 
 ```bash
 nodejs launcher.js > languages.dat
