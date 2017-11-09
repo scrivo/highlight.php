@@ -120,10 +120,10 @@ Project structure
 The project contains the following folders:
 
 1. [Highlight](#1-highlight)
-2. [Styles](#2-styles)
-3. [Demo](#3-demo)
-4. [Test](#4-test)
-5. [Tools](#5-tools)
+2. [styles](#2-styles)
+3. [demo](#3-demo)
+4. [test](#4-test)
+5. [tools](#5-tools)
 
 ## 1. Highlight
 
@@ -173,7 +173,7 @@ say about: these are just copied from the [highlight.js]
 (https://github.com/isagalaev/highlight.js/tree/master/src/styles)
 project.
 
-## 3. Demo
+## 3. demo
 
 This folder contains two demo pages that can be accessed through your browser.
 
@@ -186,7 +186,7 @@ A test page showing all supported languages and styles.
 Much like [demo.php](#demo-php) but this page focuses on the comparison
 between _highlight.php_ and _highlight.js_. Both should yield the same results.
 
-## 4. Test
+## 4. test
 
 This folder contains the unit test for _highlight.php_. To run them run
 _phpunit_ from this directory:
@@ -220,7 +220,7 @@ container.
 
 _highlight.php_ does not modify class names of code containers.
 
-## 5. Tools
+## 5. tools
 
 A collection of scripts that are used to extract data from the original
 [highlight.js](http://www.highlightjs.org) project.
