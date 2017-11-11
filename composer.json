@@ -1,26 +1,26 @@
 {
-	"name": "scrivo/highlight.php",
-	"description": "Server side syntax highlighter that supports 176 languages.",
-	"keywords": ["code", "syntax", "highlight", "highlight.js", "highlight.php"],
-	"type": "library",
-	"license": "BSD-3-Clause",
-	"support": {
-		"issues": "https://github.com/scrivo/highlight.php/issues",
-		"source": "https://github.com/scrivo/highlight.php"
-	},
-	"autoload": {
-		"psr-0": { "Highlight\\": "" }
-	},
-	"authors": [
-		{
-			"name": "Geert Bergman",
-			"homepage": "http://www.scrivo.org/",
-			"role": "Project Author"
-		},
-		{
-			"name": "Vladimir Jimenez",
-			"homepage": "https://allejo.io",
-			"role": "Fork Maintainer"
-		}
-	]
+  "name": "scrivo/highlight.php",
+  "description": "Server side syntax highlighter that supports 176 languages.",
+  "keywords": ["code", "syntax", "highlight", "highlight.js", "highlight.php"],
+  "type": "library",
+  "license": "BSD-3-Clause",
+  "support": {
+    "issues": "https://github.com/scrivo/highlight.php/issues",
+    "source": "https://github.com/scrivo/highlight.php"
+  },
+  "autoload": {
+    "psr-0": { "Highlight\\": "" }
+  },
+  "authors": [
+    {
+      "name": "Geert Bergman",
+      "homepage": "http://www.scrivo.org/",
+      "role": "Project Author"
+    },
+    {
+      "name": "Vladimir Jimenez",
+      "homepage": "https://allejo.io",
+      "role": "Fork Maintainer"
+    }
+  ]
 }
