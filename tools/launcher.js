@@ -9,9 +9,7 @@ dojoConfig = {
     location: "dojox"
   }],
   deps: ["export"],
-  highlightJsDir: "/home/www/highlight.php/tools/lib_highlight/"
+  highlightJsDir: __dirname + "/lib_highlight/build/lib/"
 };
 
 require("./lib_dojo/dojo/dojo.js");
-
-
