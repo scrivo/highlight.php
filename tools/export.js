@@ -1,8 +1,8 @@
 require(["dojo/node!fs", "dojox/json/ref", "dojo/_base/kernel"], function(fs, ref, kernel){
 
 	var nodeRequire = kernel.global.require && kernel.global.require.nodeRequire;
-
 	var HIGHLIGHT_DIR = dojo.config.highlightJsDir;
+	var LANGS_W_DEPS = ['arduino.js']
 	
 	hljs = nodeRequire(HIGHLIGHT_DIR + "highlight.js");
 
@@ -40,16 +40,25 @@ require(["dojo/node!fs", "dojox/json/ref", "dojo/_base/kernel"], function(fs, re
 		hljs.registerLanguage(lang, x);
 		console.log(lang);
 		console.log(patch(dojox.json.ref.toJson(l)));
-
 	}
 
 	fs.readdir(HIGHLIGHT_DIR + "languages/",function(err,files){
 		if(err) {
 			throw err;
 		}
-		files.forEach(function(file){
+
+		// Load all of the languages that don't extend other languages
+		files.forEach(function(file) {
+			if (file == ".DS_Store" || LANGS_W_DEPS.indexOf(file) >= 0) {
+				return;
+			}
+			exportLang(file.replace(/\.js$/, ""));
+		});
+
+		// These languages extend other languages, so we need to make sure that
+		// they are loaded *after* all the standard languages are loaded.
+		LANGS_W_DEPS.forEach(function(file) {
 			exportLang(file.replace(/\.js$/, ""));
 		});
 	});
-
 });
