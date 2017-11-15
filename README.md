@@ -1,13 +1,8 @@
-highlight.php
-=============
+# highlight.php
 
-*highlight.php* is a server side code highlighter written in PHP that currently
-supports over 135 languages. It's a port of [highlight.js]
-(http://www.highlightjs.org) by Ivan Sagalaev that makes full use of the 
-language and style definitions of the original JavaScript project.
+*highlight.php* is a server side code highlighter written in PHP that currently supports over 135 languages. It's a port of [highlight.js](http://www.highlightjs.org) by Ivan Sagalaev that makes full use of the language and style definitions of the original JavaScript project.
 
-Get started
-===========
+## Get started
 
 Make sure that the classes defined in _scrivo/Highlight_ can be found either
 by inclusion or by an autoloader. A trivial autoloader for this purpose is 
@@ -78,40 +73,25 @@ $r = $hl->highlightAuto(file_get_contents("a_ruby_script.rb"));
 </html>
 ```
 
-Installation using Composer
-===========================
+## Installation using Composer
 
 Run _composer require_ from your command line:
+
 ```bash
-composer require scrivo/highlight.php:8.*
+composer require stakx/highlight.php
 ```
 
-Or add this to your _composer.json_ and run _composer install_:
-```json
-{
-    "require": {
-        "scrivo/highlight.php": "8.*"
-    }
-}
-```
-
-Add the from Composer prepared autoload file to your php file:
-```php
-require 'vendor/autoload.php';
-```
-
-Project structure
-=================
+## Project structure
 
 The project contains the following folders:
 
 1. [Highlight](#1-highlight)
-2. [styles](#2-styles)
-3. [demo](#3-demo)
-4. [test](#4-test)
-5. [tools](#5-tools)
+1. [styles](#2-styles)
+1. [demo](#3-demo)
+1. [test](#4-test)
+1. [tools](#5-tools)
 
-##1. Highlight
+## 1. Highlight
 
 This folder contains the main source and the following files (classes):
 
@@ -133,8 +113,7 @@ You don't need this class.
 Auxiliary class to decode JSON files that contain path based references. The 
 language definition data from [highlight.js](http://www.highlightjs.org) is 
 to complex to describe in ordinary JSON files. Therefore it was chosen to 
-use [dojox.json.ref]
-(https://dojotoolkit.org/reference-guide/1.9/dojox/json/ref.html) to export 
+use [dojox.json.ref](https://dojotoolkit.org/reference-guide/1.9/dojox/json/ref.html) to export 
 them. This class is able (to a very limited extend) to decode JSON data that
 was created with this [dojo](https://dojotoolkit.org) toolkit.
 
@@ -152,14 +131,13 @@ This folder contains all language definitions: one JSON file for each language.
 These files are not hand coded but extracted from the original 
 [highlight.js](http://www.highlightjs.org) project. 
 
-##2. styles
+## 2. styles
 
 These are the the CSS files needed to actually color the code. Not much to 
-say about: these are just copied from the [highlight.js]
-(https://github.com/isagalaev/highlight.js/tree/master/src/styles)
+say about: these are just copied from the [highlight.js](https://github.com/isagalaev/highlight.js/tree/master/src/styles)
 project.
 
-##3. demo
+## 3. demo
 
 This folder contains two demo pages that can be accessed through your browser.
 
@@ -172,14 +150,15 @@ A test page showing all supported languages and styles.
 Much like [demo.php](#demo-php) but this page focuses on the comparison 
 between _highlight.php_ and _highlight.js_. Both should yield the same results.
 
-##4. test
+## 4. test
 
 This folder contains the unit test for _highlight.php_. To run them run 
 _phpunit_ from this directory:
 
 ```bash
-	phpnunit .
+phpnunit .
 ```
+
 Note that the following tests for _highlight.js_ are not rewritten for 
 _highlight.php_:
 
@@ -205,42 +184,18 @@ container.
 
 _highlight.php_ does not modify class names of code containers.
 
-##5. tools
+## 5. tools
 
-A collection of scripts that are used to extract data from the original 
-[highlight.js](http://www.highlightjs.org) project.
+A collection of scripts that are used to extract data from the original [highlight.js](http://www.highlightjs.org) project.
 
-Note that these scripts require the installation of the following software 
-on your box: _highlight.js_, dojo and node.js.
-
-To export the language definitions from _highlight.js_ continue as follows:
-
-Download a source distribution of 
-[_highlight.js_](https://github.com/isagalaev/highlight.js/releases), and 
-create a node build:
+The process of bringing in languages from highlight.js has been put into a single script. This script requires that you have cURL, PHP, and node.js installed on your machine. This is only necessary if you'd like to update languages or bring in new languages, it's **not** required for using this library in your application.
 
 ```bash
-	nodejs tools/build.js -t node
-```	
+cd tools
+bash process.sh
+```
 
-Download a source distribution of [dojo](http://download.dojotoolkit.org/).
-
-Make sure that the path references in launcer.js are correct and run it:
-
-```bash
-	nodejs launcher.js > languages.dat
-```	
-	
-If all went right you'll now have a file with all language definitions. Run
-get_language_defintions.php to generate the json files for the individual
-lauagues:
-
-```bash
-	php get_language_definitions.php
-```	
-
-Some History
-============
+## Some History
 
 Geert Bergman  
 Sep 30, 2013
