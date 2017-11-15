@@ -9,6 +9,8 @@ Contributer(s):
 	Carsten Brandt <mail@cebe.cc>
 	Daniel Lynge
 	Daniel Gómez Pan <pana_1990@hotmail.com>
+	Vladimir Jimenez <me@allejo.io>
+	Martin Folkers <hello@twobrain.io>
 
 -------------------------------------------------------------------------------
 
