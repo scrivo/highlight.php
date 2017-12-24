@@ -28,25 +28,15 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-require_once ("../Highlight/Autoloader.php");
-spl_autoload_register("Highlight\\Autoloader::load");
+use Highlight\Highlighter;
 
 class HighlightTest extends PHPUnit_Framework_TestCase
 {
-    
-    protected $hl;
-
-    protected function setUp()
+    public function testUnknownLanguageThrowsDomainException()
     {
-        $this->hl = new Highlight\Highlighter();
-    }
+        $this->setExpectedException(DomainException::class);
 
-    /**
-     * @expectedException DomainException
-     */    
-    public function testUnknownLanguage()
-    {
-        $this->hl->highlight("blah++", "als blurp eq z dan zeg 'flipper'");
+        $hl = new Highlighter();
+        $hl->highlight("blah++", "als blurp eq z dan zeg 'flipper'");
     }
-
 }

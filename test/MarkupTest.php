@@ -28,58 +28,61 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-require_once ("../Highlight/Autoloader.php");
-spl_autoload_register("Highlight\\Autoloader::load");
+use Highlight\Highlighter;
+use Symfony\Component\Finder\Finder;
 
 class MarkupTest extends PHPUnit_Framework_TestCase
 {
-
-    protected $hl;
-
-    protected $tests;
-
-    protected function setUp()
+    public static function markupTestProvider()
     {
-        $this->hl = new Highlight\Highlighter();
-        
-        $this->tests = array();
-        $d = dir(__DIR__ . DIRECTORY_SEPARATOR . "markup");
-        while (false !== ($lang = $d->read())) {
-            if ($lang[0] !== ".") {
-                $this->tests[$lang] = array();
-                $d2 = dir(__DIR__ . DIRECTORY_SEPARATOR . "markup" . 
-                    DIRECTORY_SEPARATOR . $lang);
-                while (false !== ($test = $d2->read())) {
-                    if (substr($test, - 11) == ".expect.txt") {
-                        $this->tests[$lang][] = substr($test, 0, - 11);
-                    }
-                }
-                $d2->close();
+        $testData = array();
+
+        $markupTests = new Finder();
+        $markupTests
+            ->in(__DIR__ . '/markup/')
+            ->name('*.txt')
+            ->sortByName()
+            ->files()
+        ;
+
+        $workspace = array();
+
+        foreach ($markupTests as $markupTest) {
+            $language = $markupTest->getRelativePath();
+
+            if (!isset($workspace[$language])) {
+                $workspace[$language] = array();
+            }
+
+            if (strpos($markupTest->getFilename(), '.expect.txt') !== false) {
+                $workspace[$language][$markupTest->getBasename('.expect.txt')]['expected'] = $markupTest->getContents();
+            } else {
+                $workspace[$language][$markupTest->getBasename('.txt')]['raw'] = $markupTest->getContents();
             }
         }
-        $d->close();
+
+        foreach ($workspace as $language => $tests) {
+            foreach ($tests as $name => $definition) {
+                $testData[] = [$language, $name, $definition['raw'], $definition['expected']];
+            }
+        }
+
+        return $testData;
     }
 
-    private function getTestData($language, $test)
+    /**
+     * @dataProvider markupTestProvider
+     */
+    public function testHighlighter($language, $testName, $raw, $expected)
     {
-        return (object) array(
-            "code" => file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . 
-                "markup" . DIRECTORY_SEPARATOR . $language . 
-                DIRECTORY_SEPARATOR . "$test.txt"),
-            "expected" => file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . 
-                "markup" . DIRECTORY_SEPARATOR . $language . 
-                DIRECTORY_SEPARATOR . "$test.expect.txt")
+        $hl = new Highlighter();
+        $actual = $hl->highlight($language, $raw);
+
+        $this->assertEquals($language, $actual->language);
+        $this->assertEquals(
+            trim($expected),
+            trim($actual->value),
+            sprintf('The "%s" markup test failed for the "%s" language', $testName, $language)
         );
-    }
-
-    public function testMarkup()
-    {
-        foreach ($this->tests as $lng => $tests) {
-            foreach ($tests as $test) {
-                $data = $this->getTestData($lng, $test);
-                $this->assertEquals($data->expected, 
-                    $this->hl->highlight($lng, $data->code)->value);
-            }
-        }
     }
 }

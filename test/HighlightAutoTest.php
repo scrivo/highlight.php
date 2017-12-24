@@ -28,49 +28,39 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-function custom_warning_handler($errno, $errstr, $errfile, $errline, $errcontext) {
-      throw new Exception("GB: $errno, $errstr, $errfile, $errline");
-}
-
-set_error_handler("custom_warning_handler");
-
-require_once("../Highlight/Autoloader.php");
-spl_autoload_register("Highlight\\Autoloader::load");
+use Highlight\Highlighter;
+use Symfony\Component\Finder\Finder;
 
 class HighlightAutoTest extends PHPUnit_Framework_TestCase
 {
-    public function testAutoDetection() {
+    public static function detectableLanguagesProvider()
+    {
+        $testData = array();
 
-        $hl = new Highlight\Highlighter();
-        $lngs = $hl->listLanguages();
-        $hl->setAutodetectLanguages($lngs);
-        $failed = Array();
+        $languages = new Finder();
+        $languages
+            ->in(__DIR__ . '/detect/')
+            ->sortByName()
+            ->files()
+        ;
 
-        foreach($lngs as $language) {
-
-            $path = __DIR__ . DIRECTORY_SEPARATOR . "detect" . 
-                DIRECTORY_SEPARATOR . $language;
-            $this->assertTrue(file_exists($path));
-
-            $d = dir($path);
-            while (false !== ($entry = $d->read())) {
-                if ($entry[0] !== ".") {
-
-                    $filePath = $path . DIRECTORY_SEPARATOR . $entry;
-                    $content = file_get_contents($filePath);
-
-                    $expected = $language;
-                    $r = $hl->highlightAuto($content);
-                    $actual = $r->language;
-
-                    if ($expected !== $actual) {
-                        $failed[] = "$expected was detected as $actual";
-                    }
-                }
-            }
-            $d->close();
+        foreach ($languages as $language) {
+            $testData[] = [$language->getRelativePath(), $language->getContents()];
         }
-    
-        $this->assertEquals(Array(), $failed);
+
+        return $testData;
+    }
+
+    /**
+     * @dataProvider detectableLanguagesProvider
+     */
+    public function testAutomaticDetection($language, $raw)
+    {
+        $hl = new Highlighter();
+        $hl->setAutodetectLanguages($hl->listLanguages());
+
+        $actual = $hl->highlightAuto($raw);
+
+        $this->assertEquals($language, $actual->language);
     }
 }

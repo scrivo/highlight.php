@@ -28,55 +28,48 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-require_once ("../Highlight/Autoloader.php");
-spl_autoload_register("Highlight\\Autoloader::load");
+use Highlight\Highlighter;
 
 class SpecialTest extends PHPUnit_Framework_TestCase
 {
-
-    protected $hl;
-
-    protected function setUp()
-    {
-        $this->hl = new Highlight\Highlighter();
-//      var_dump($this->hl->listLanguages());
-    }
-
     private function getTestData($name)
     {
         return (object) array(
-            "code" => file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . 
+            "code" => file_get_contents(__DIR__ . DIRECTORY_SEPARATOR .
                 "special" . DIRECTORY_SEPARATOR . "{$name}.txt"),
-            "expected" => file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . 
+            "expected" => file_get_contents(__DIR__ . DIRECTORY_SEPARATOR .
                 "special" . DIRECTORY_SEPARATOR . "{$name}.expect.txt")
         );
     }
 
     public function testTabReplace()
     {
-        $this->hl->setTabReplace("    ");
-        
+        $hl = new Highlighter();
+        $hl->setTabReplace("    ");
+
         $data = $this->getTestData("tabreplace");
-        
-        $this->assertEquals($data->expected, 
-            $this->hl->highlight("python", $data->code)->value);
-        
-        $this->hl->setTabReplace(null);
+        $actual = $hl->highlight("python", $data->code);
+
+        $this->assertEquals($data->expected, $actual->value);
     }
 
     public function testLanguageAlias()
     {
+        $hl = new Highlighter();
+
         $data = $this->getTestData("languagealias");
-        
-        $this->assertEquals($data->expected, 
-            $this->hl->highlight("js", $data->code)->value);
+        $actual = $hl->highlight("js", $data->code);
+
+        $this->assertEquals($data->expected, $actual->value);
     }
 
     public function testSubLanguage()
     {
+        $hl = new Highlighter();
+
         $data = $this->getTestData("sublanguages");
-        
-        $this->assertEquals($data->expected, 
-            $this->hl->highlight("xml", $data->code)->value);
+        $actual = $hl->highlight("xml", $data->code);
+
+        $this->assertEquals($data->expected, $actual->value);
     }
 }
