@@ -383,6 +383,28 @@ class Highlighter
     }
 
     /**
+     * Get the class prefix string.
+     *
+     * @return string
+     *      The class prefix string.
+     */
+    public function getClassPrefix()
+    {
+        return $this->classPrefix;
+    }
+
+    /**
+     * Set the class prefix string.
+     *
+     * @param string $classPrefix
+     *      The class prefix string.
+     */
+    public function setClassPrefix($classPrefix)
+    {
+        $this->classPrefix = $classPrefix;
+    }
+
+    /**
      * @throws
      *      A DomainException if the requested language was not in this
      *      Highlighter's language set.
