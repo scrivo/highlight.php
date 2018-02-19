@@ -20,6 +20,10 @@ cd lib_highlight
 npm install
 node tools/build.js -t node
 
+# Translate language definitions to something Highlight.php can handle
 cd ..
 node launcher.js > languages.dat
 php get_language_definitions.php
+
+# Copy styles from highlight.js to our own styles directory
+cp -a lib_highlight/src/styles/. ../styles/
