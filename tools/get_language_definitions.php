@@ -1,4 +1,4 @@
-<?php 
+<?php
 /* Copyright (c)
  * - 2013-2014, Geert Bergman (geert@scrivo.nl), highlight.php
  * - 2014,      Daniel Lynge, highlight.php (contributor)
@@ -31,22 +31,30 @@
 
 /**
  * Extract language definitions (JSON strings) from the large file that was
- * created using 'get_language_definitions.php' and create a JSON file for 
+ * created using 'get_language_definitions.php' and create a JSON file for
  * each language.
  */
 
 $f = file("languages.dat");
 
-$patches = Array(
-    // Somehwere somehow the first percentage sign was lost
-    "dos" => Array(Array("\"%[^ ]", "\"%%[^ ]")),
+$patches = array(
+    // The expression \\/: causes issues for PREG due to the / and the : having special meaning, therefore we use \Q and
+    // \E to have PREG treat them as literal characters
+    "1c" => array(
+        array("\\\\\\\\/:", "\\\\Q\\\\/:\\\\E")
+    ),
+
+    // The expression []{}%#'" should be treated as a list of invalid characters, however the [] is special in PREG so
+    // we use \Q and \E to have PREG treat them as literal characters
+    "ada" => array(
+        array("[]{}%#'\\\"", "\\\\Q[]{}%#'\\\"\\\\E")
+    ),
+
     // WTF, any ideas anyone?
-    "mercury" => Array(Array("\\\\\\\/", "\\\\\\\\\\\/")),
+    "mercury" => array(array("\\\\\\\/", "\\\\\\\\\\\/")),
+
     // The expression [^] is not allowed in PREG
-    "lisp" => Array(Array("[^]", "[^|]")),
-    // Just being plain lazy
-    "xml" => Array(Array("subLanguage\":\"\"", "subLanguage\":\"javascript\"")),
-    
+    "lisp" => array(array("[^]", "[^|]")),
 );
 
 for ($i=0; $i<count($f); $i+=2) {
@@ -56,10 +64,10 @@ for ($i=0; $i<count($f); $i+=2) {
         $json = $f[$i+1];
 
         if (!$fl) {
-            die("ERROR: No language name on line ".($i+1).".<br />\n");
+            die(sprintf("ERROR: No language name on line %d\n", ($i+1)));
         }
         if (!@json_decode($json)) {
-            die("ERROR: invalid JSON data on line ".($i+2).".<br />\n");
+            die(sprintf("ERROR: Invalid JSON data on line %d\n", ($i+2)));
         }
 
         if (isset($patches[$fl])) {
@@ -69,9 +77,9 @@ for ($i=0; $i<count($f); $i+=2) {
             }
         }
 
-        echo "Creating language file '{$fl}.json'.<br />\n";
+        echo "Creating language file '{$fl}.json'\n";
         if (!file_put_contents("../Highlight/languages/{$fl}.json", $json)) {
-            die("ERROR: Couldn't write to file.<br />\n");;
+            die("ERROR: Couldn't write to file.\n");
         }
     }
 }
