@@ -83,7 +83,7 @@ class Highlighter
     {
         if (!isset(self::$classMap[$languageId]))
         {
-            $this->registerLanguage(
+            self::registerLanguage(
                 $languageId,
                 __DIR__ . DIRECTORY_SEPARATOR . 'languages' . DIRECTORY_SEPARATOR . "$languageId.json"
             );
@@ -92,6 +92,20 @@ class Highlighter
         return self::$classMap[$languageId];
     }
 
+    /**
+     * Register a language definition with the Highlighter's internal language
+     * storage.
+     *
+     * - If a language with the same $languageID already exists, it will be
+     *   overwritten.
+     * - Languages are stored in a static variable, so they'll be available
+     *   across all instances. You only need to register a language once.
+     *
+     * @param string $languageId       The unique name of a language
+     * @param string $absoluteFilePath The file path to the language definition
+     *
+     * @return Language The object containing the definition for a language's markup
+     */
     public static function registerLanguage($languageId, $absoluteFilePath)
     {
         $lang = new Language($languageId, $absoluteFilePath);
@@ -405,8 +419,7 @@ class Highlighter
     }
 
     /**
-     * @throws
-     *      A DomainException if the requested language was not in this
+     * @throws \DomainException if the requested language was not in this
      *      Highlighter's language set.
      */
     private function getLanguage($name) {
@@ -425,9 +438,10 @@ class Highlighter
      * properties:
      * - relevance (int)
      * - value (an HTML string with highlighting markup)
-     * @throws
-     *      A DomainException if the requested language was not in this
+     *
+     * @throws \DomainException if the requested language was not in this
      *      Highlighter's language set.
+     * @throws \Exception if an invalid regex was given in a language file.
      */
     public function highlight(
             $language, $code, $ignoreIllegals=true, $continuation=null)
@@ -501,6 +515,21 @@ class Highlighter
         }
     }
 
+    /**
+     * Highlight the given code by highlighting the given code with each
+     * registered language and then finding the match with highest accuracy.
+     *
+     * @param string        $code
+     * @param string[]|null $languageSubset When set to null, this method will
+     *      attempt to highlight $code with each language (170+). Set this to
+     *      an array of languages of your choice to limit the amount of languages
+     *      to try.
+     *
+     * @throws \DomainException if the attempted language to check does not exist
+     * @throws \Exception if an invalid regex was given in a language file.
+     *
+     * @return \stdClass
+     */
     public function highlightAuto($code, $languageSubset = null)
     {
         $res = new \stdClass;
