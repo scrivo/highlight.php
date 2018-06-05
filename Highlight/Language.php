@@ -107,7 +107,12 @@ class Language
 
     private function langRe($value, $global=false)
     {
-        return "/{$value}/um" . ($this->caseInsensitive ? "i" : "");
+        // PCRE allows us to change the definition of "new line." The
+        // `(*ANYCRLF)` matches `\r`, `\n`, and `\r\n` for `$`
+        //
+        //   https://www.pcre.org/original/doc/html/pcrepattern.html
+
+        return "/(*ANYCRLF){$value}/um" . ($this->caseInsensitive ? "i" : "");
     }
 
     private function processKeyWords($kw)
