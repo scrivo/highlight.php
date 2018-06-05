@@ -72,4 +72,14 @@ class SpecialTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals($data->expected, $actual->value);
     }
+
+    public function testWindowsCRLF()
+    {
+        $hl = new Highlighter();
+
+        $data = $this->getTestData("line-endings.crlf");
+        $actual = $hl->highlight("js", $data->code);
+
+        $this->assertEquals($data->expected, $actual->value);
+    }
 }
