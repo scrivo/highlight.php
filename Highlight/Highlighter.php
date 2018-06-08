@@ -563,12 +563,49 @@ class Highlighter
      * setAutodetectLanguages will turn on autodetection for all supported
      * languages.
      *
+     * @param bool $include_aliase Specify whether language aliases
+     *      should be included as well.
+     *
      * @return array
      *      An array of language names (strings).
      */
-    public function listLanguages()
+    public function listLanguages($include_aliases = false)
     {
+        if ($include_aliases === true ) {
+            return array_merge(self::$languages, array_keys(self::$aliases));
+        }
+
         return self::$languages;
     }
 
+    /**
+     * Returns list of all available aliases for given language name.
+     *
+     * @param string $language Name or alias of language to look-up.
+     *
+     * @return array
+     *      An array of all aliases associated with the requested
+     *      language name language. Passed-in name is included as
+     *      well.
+     */
+    public function getAliasesForLanguage($language)
+    {
+        if (!in_array($language, self::$languages)) {
+            if (array_key_exists($language, self::$aliases)) {
+                $language = self::$aliases[$language];
+            } else {
+                throw new \DomainException("Unknown language: $language");
+            }
+        }
+
+        $aliases = [$language];
+
+        foreach (self::$aliases as $alias => $alias_for) {
+            if ($alias_for === $language) {
+                $aliases[] = $alias;
+            }
+        }
+
+        return $aliases;
+    }
 }

@@ -29,6 +29,7 @@
  */
 
 use Highlight\Highlighter;
+use Highlight\Language;
 
 class HighlightTest extends PHPUnit_Framework_TestCase
 {
@@ -38,5 +39,71 @@ class HighlightTest extends PHPUnit_Framework_TestCase
 
         $hl = new Highlighter();
         $hl->highlight("blah++", "als blurp eq z dan zeg 'flipper'");
+    }
+
+    public function testListLanguagesWithoutAliases()
+    {
+        $expectedLanguageCount = count(glob(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR .
+                                            'Highlight' . DIRECTORY_SEPARATOR . 'languages' . DIRECTORY_SEPARATOR .
+                                            '*.json'));
+
+        $hl = new Highlighter();
+
+        $availableLanguages = $hl->listLanguages();
+        $this->assertEquals($expectedLanguageCount, count($availableLanguages));
+
+        $availableLanguages = $hl->listLanguages(false);
+        $this->assertEquals($expectedLanguageCount, count($availableLanguages));
+    }
+
+    public function testListLanguagesWithAliases()
+    {
+        $minimumLanguageCount = count(glob(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR .
+                                           'Highlight' . DIRECTORY_SEPARATOR . 'languages' . DIRECTORY_SEPARATOR .
+                                           '*.json'));
+
+        $hl = new Highlighter();
+        $availableLanguages = $hl->listLanguages(true);
+        $this->assertGreaterThan($minimumLanguageCount, count($availableLanguages));
+    }
+
+    public function testGetAliasesForLanguageWhenUsingMainLanguageName()
+    {
+        $languageDefinitionFile = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR .
+                                'Highlight' . DIRECTORY_SEPARATOR . 'languages' . DIRECTORY_SEPARATOR . "php.json";
+        $language = new Language('php', $languageDefinitionFile);
+        $expected_aliases = $language->aliases;
+        $expected_aliases[] = 'php';
+        sort($expected_aliases);
+
+        $hl = new Highlighter();
+        $aliases = $hl->getAliasesForLanguage('php');
+        sort($aliases);
+
+        $this->assertEquals($expected_aliases, $aliases);
+    }
+
+    public function testGetAliasesForLanguageWhenUsingLanguageAlias()
+    {
+        $languageDefinitionFile = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR .
+                                'Highlight' . DIRECTORY_SEPARATOR . 'languages' . DIRECTORY_SEPARATOR . "php.json";
+        $language = new Language('php', $languageDefinitionFile);
+        $expected_aliases = $language->aliases;
+        $expected_aliases[] = 'php';
+        sort($expected_aliases);
+
+        $hl = new Highlighter();
+        $aliases = $hl->getAliasesForLanguage('php3');
+        sort($aliases);
+
+        $this->assertEquals($expected_aliases, $aliases);
+    }
+
+    public function testGetAliasesForLanguageRaisesExceptionForNonExistingLanguage()
+    {
+        $this->setExpectedException(DomainException::class);
+
+        $hl = new Highlighter();
+        $hl->getAliasesForLanguage('blah+');
     }
 }
