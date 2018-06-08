@@ -590,22 +590,13 @@ class Highlighter
      */
     public function getAliasesForLanguage($language)
     {
-        if (!in_array($language, self::$languages)) {
-            if (array_key_exists($language, self::$aliases)) {
-                $language = self::$aliases[$language];
-            } else {
-                throw new \DomainException("Unknown language: $language");
-            }
+        $language = self::getLanguage($language);
+
+        if ($language->aliases === null) {
+            return [$language->name];
         }
-
-        $aliases = [$language];
-
-        foreach (self::$aliases as $alias => $alias_for) {
-            if ($alias_for === $language) {
-                $aliases[] = $alias;
-            }
+        else {
+            return array_merge([$language->name], $language->aliases);
         }
-
-        return $aliases;
     }
 }

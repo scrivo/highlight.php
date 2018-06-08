@@ -83,6 +83,22 @@ class HighlightTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($expected_aliases, $aliases);
     }
 
+    public function testGetAliasesForLanguageWhenLanguageHasNoAliases()
+    {
+        $languageDefinitionFile = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR .
+                                'Highlight' . DIRECTORY_SEPARATOR . 'languages' . DIRECTORY_SEPARATOR . "ada.json";
+        $language = new Language('ada', $languageDefinitionFile);
+        $expected_aliases = $language->aliases;
+        $expected_aliases[] = 'ada';
+        sort($expected_aliases);
+
+        $hl = new Highlighter();
+        $aliases = $hl->getAliasesForLanguage('ada');
+        sort($aliases);
+
+        $this->assertEquals($expected_aliases, $aliases);
+    }
+
     public function testGetAliasesForLanguageWhenUsingLanguageAlias()
     {
         $languageDefinitionFile = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR .
