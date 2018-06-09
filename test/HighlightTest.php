@@ -31,6 +31,8 @@
 use Highlight\Highlighter;
 use Highlight\Language;
 
+use Symfony\Component\Finder\Finder;
+
 class HighlightTest extends PHPUnit_Framework_TestCase
 {
     public function testUnknownLanguageThrowsDomainException()
@@ -43,9 +45,8 @@ class HighlightTest extends PHPUnit_Framework_TestCase
 
     public function testListLanguagesWithoutAliases()
     {
-        $expectedLanguageCount = count(glob(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR .
-                                            'Highlight' . DIRECTORY_SEPARATOR . 'languages' . DIRECTORY_SEPARATOR .
-                                            '*.json'));
+        $languageFinder = new Finder();
+        $expectedLanguageCount = $languageFinder->in(__DIR__ . '/../Highlight/languages/')->name('*.json')->count();
 
         $hl = new Highlighter();
 
@@ -58,13 +59,19 @@ class HighlightTest extends PHPUnit_Framework_TestCase
 
     public function testListLanguagesWithAliases()
     {
-        $minimumLanguageCount = count(glob(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR .
-                                           'Highlight' . DIRECTORY_SEPARATOR . 'languages' . DIRECTORY_SEPARATOR .
-                                           '*.json'));
+        $languageFinder = new Finder();
+        $minimumLanguageCount = $languageFinder->in(__DIR__ . '/../Highlight/languages/')->name('*.json')->count();
 
         $hl = new Highlighter();
         $availableLanguages = $hl->listLanguages(true);
+
         $this->assertGreaterThan($minimumLanguageCount, count($availableLanguages));
+
+        // Verify some common aliases/names are present.
+        $this->assertEquals(true, in_array('yaml', $availableLanguages));
+        $this->assertEquals(true, in_array('yml', $availableLanguages));
+        $this->assertEquals(true, in_array('c++', $availableLanguages));
+        $this->assertEquals(true, in_array('cpp', $availableLanguages));
     }
 
     public function testGetAliasesForLanguageWhenUsingMainLanguageName()
