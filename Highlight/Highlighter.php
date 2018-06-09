@@ -566,7 +566,7 @@ class Highlighter
      * @param bool $include_aliases Specify whether language aliases
      *      should be included as well.
      *
-     * @return strings[]
+     * @return string[]
      *      An array of language names.
      */
     public function listLanguages($include_aliases = false)
@@ -595,8 +595,7 @@ class Highlighter
         if ($language->aliases === null) {
             return [$language->name];
         }
-        else {
-            return array_merge(array($language->name), $language->aliases);
-        }
+
+        return array_merge(array($language->name), $language->aliases);
     }
 }

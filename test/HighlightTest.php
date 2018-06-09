@@ -68,10 +68,10 @@ class HighlightTest extends PHPUnit_Framework_TestCase
         $this->assertGreaterThan($minimumLanguageCount, count($availableLanguages));
 
         // Verify some common aliases/names are present.
-        $this->assertEquals(true, in_array('yaml', $availableLanguages));
-        $this->assertEquals(true, in_array('yml', $availableLanguages));
-        $this->assertEquals(true, in_array('c++', $availableLanguages));
-        $this->assertEquals(true, in_array('cpp', $availableLanguages));
+        $this->assertContains('yaml', $availableLanguages);
+        $this->assertContains('yml', $availableLanguages);
+        $this->assertContains('c++', $availableLanguages);
+        $this->assertContains('cpp', $availableLanguages);
     }
 
     public function testGetAliasesForLanguageWhenUsingMainLanguageName()
