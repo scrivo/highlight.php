@@ -583,6 +583,9 @@ class Highlighter
      *
      * @param string $language Name or alias of language to look-up.
      *
+     * @throws \DomainException if the requested language was not in this
+     *      Highlighter's language set.
+     *
      * @return string[]
      *      An array of all aliases associated with the requested
      *      language name language. Passed-in name is included as
@@ -593,7 +596,7 @@ class Highlighter
         $language = self::getLanguage($language);
 
         if ($language->aliases === null) {
-            return [$language->name];
+            return array($language->name);
         }
 
         return array_merge(array($language->name), $language->aliases);
