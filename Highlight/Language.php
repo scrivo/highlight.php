@@ -137,6 +137,46 @@ class Language
         return $kw;
     }
 
+    private function inherit()
+    {
+        $result = new \stdClass();
+        $objects = func_get_args();
+        $parent = array_shift($objects);
+
+        foreach ($parent as $key => $value) {
+            $result->{$key} = $value;
+        }
+
+        foreach ($objects as $object) {
+            foreach ($object as $key => $value) {
+                $result->{$key} = $value;
+            }
+        }
+
+        return $result;
+    }
+
+    private function expandMode($mode)
+    {
+        if (isset($mode->variants) && !isset($mode->cachedVariants)) {
+            $mode->cachedVariants = array();
+
+            foreach ($mode->variants as $variant) {
+                $mode->cachedVariants[] = $this->inherit($mode, ['variants' => null], $variant);
+            }
+        }
+
+        if (isset($mode->cachedVariants)) {
+            return $mode->cachedVariants;
+        }
+
+        if (isset($mode->endsWithParent) && $mode->endsWithParent) {
+            return array($this->inherit($mode));
+        }
+
+        return array($mode);
+    }
+
     private function compileMode($mode, $parent=null)
     {
         if (isset($mode->compiled)) {
@@ -200,20 +240,14 @@ class Language
             $mode->illegalRe = $this->langRe($mode->illegal);
         }
 
-        $expanded_contains = array();
-        for ($i=0; $i<count($mode->contains); $i++) {
-            if (isset($mode->contains[$i]->variants)) {
-                foreach ($mode->contains[$i]->variants as $v) {
-                    $x = (object)((array)$v + (array)$mode->contains[$i]);
-                    unset($x->variants);
-                    $expanded_contains[] = $x;
-                }
-            } else {
-                $expanded_contains[] = "self" === $mode->contains[$i] ?
-                    $mode : $mode->contains[$i];
-            }
+        $expandedContains = array();
+        foreach ($mode->contains as $c) {
+            $expandedContains = array_merge($expandedContains, $this->expandMode(
+                $c === 'self'? $mode : $c
+            ));
         }
-        $mode->contains = $expanded_contains;
+
+        $mode->contains = $expandedContains;
 
         for ($i=0; $i<count($mode->contains); $i++) {
             $this->compileMode($mode->contains[$i], $mode);
