@@ -33,12 +33,12 @@
 set_time_limit(60);
 $start = microtime(true);
 
-require_once("../Highlight/Autoloader.php");
+require_once "../Highlight/Autoloader.php";
 spl_autoload_register("Highlight\\Autoloader::load");
 
-$styles = Array();
-$d = dir("..".DIRECTORY_SEPARATOR."styles");
-while (false !== ($e = $d->read())) {
+$styles = array();
+$d = dir(".." . DIRECTORY_SEPARATOR . "styles");
+while (($e = $d->read()) !== false) {
     if ($e[0] !== "." && $e !== "default.css" && strpos($e, ".css") !== false) {
         $styles[] = $e;
     }
@@ -58,10 +58,10 @@ foreach ($hl->listLanguages() as $name) {
     $snippet = file_get_contents("../test/detect/{$sn}/default.txt");
     $r = $hl->highlightAuto($snippet);
     $passed = ($r->language === $name);
-    $res = "<div class=\"test\"><var class=\"".($passed?"passed":"failed").
-        "\">{$r->language}</var>"." ({$r->relevance})<br>";
+    $res = "<div class=\"test\"><var class=\"" . ($passed ? "passed" : "failed") .
+        "\">{$r->language}</var>" . " ({$r->relevance})<br>";
     if (isset($r->secondBest)) {
-        $res .= "{$r->secondBest->language}"." ({$r->secondBest->relevance})";
+        $res .= "{$r->secondBest->language}" . " ({$r->secondBest->relevance})";
     }
     $tableRows .= "<tr><th>{$name}{$res}</th><td class=\"{$name}\">
         <pre><code class=\"hljs {$name}\">{$r->value}</code></pre></td></th>";
@@ -71,17 +71,16 @@ foreach ($hl->listLanguages() as $name) {
 }
 
 if (count($failed)) {
-    $testResult = "<p id=\"summary\" class=\"failed\">Failed tests: ".
+    $testResult = "<p id=\"summary\" class=\"failed\">Failed tests: " .
         implode(", ", $failed);
 } else {
     $testResult = "<p id=\"summary\" class=\"passed\">All tests passed";
 }
 
-$testResult .= "</p><p>Highlighting took ".
-    (microtime(true)-$start)." seconds</p>";
+$testResult .= "</p><p>Highlighting took " .
+    (microtime(true) - $start) . " seconds</p>";
 
 $d->close();
-
 
 ?>
 <!DOCTYPE html>
@@ -90,10 +89,12 @@ $d->close();
   <meta charset="utf-8">
 
   <link rel="stylesheet" title="Default" href="../styles/default.css">
-<?php foreach ($styles as $style) { ?>
-  <link rel="alternate stylesheet" title="<?php echo $style?>"
-    href="../styles/<?php echo $style?>">
-<?php } ?>
+<?php foreach ($styles as $style) {
+    ?>
+  <link rel="alternate stylesheet" title="<?php echo $style; ?>"
+    href="../styles/<?php echo $style; ?>">
+<?php
+} ?>
 
   <style>
     /* Base styles */
@@ -251,7 +252,7 @@ $d->close();
   </script>
 <body>
 
-<p>This is a demo/test page showing all languages supported by 
+<p>This is a demo/test page showing all languages supported by
 <a href="https://github.com/scrivo/highlight.php">highlight.php</a>.
 Most snippets do not contain working code :-).
 
@@ -261,7 +262,7 @@ Most snippets do not contain working code :-).
 
 <h2>Automatically detected languages</h2>
 
-<?php echo $testResult;?>
+<?php echo $testResult; ?>
 <table id="autotest"><?php echo $tableRows;?></table>
 
 </body>

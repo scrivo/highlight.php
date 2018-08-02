@@ -38,7 +38,7 @@ class SpecialTest extends PHPUnit_Framework_TestCase
             "code" => file_get_contents(__DIR__ . DIRECTORY_SEPARATOR .
                 "special" . DIRECTORY_SEPARATOR . "{$name}.txt"),
             "expected" => file_get_contents(__DIR__ . DIRECTORY_SEPARATOR .
-                "special" . DIRECTORY_SEPARATOR . "{$name}.expect.txt")
+                "special" . DIRECTORY_SEPARATOR . "{$name}.expect.txt"),
         );
     }
 

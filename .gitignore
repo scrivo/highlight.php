@@ -6,3 +6,4 @@ lib_highlight/
 vendor/
 composer.lock
 test/**/*.js
+.php_cs.cache
