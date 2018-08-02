@@ -159,7 +159,7 @@ class Language
             $compiledKeywords = array();
 
             $mode->lexemesRe = $this->langRe($mode->lexemes
-                    ? $mode->lexemes : "\b\w+\b", true);
+                    ? $mode->lexemes : "\w+", true);
 
             foreach ($this->processKeyWords($mode->keywords) as $clsNm => $dat) {
                 if (!is_array($dat)) {

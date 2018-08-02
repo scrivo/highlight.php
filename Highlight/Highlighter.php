@@ -544,7 +544,13 @@ class Highlighter
         $tmp = $languageSubset ? $languageSubset : $this->autodetectSet;
 
         foreach ($tmp as $l) {
-            $current = $this->highlight($l, $code, false);
+            // don't fail if we run into a non-existent language
+            try {
+                $current = $this->highlight($l, $code, false);
+            } catch (\DomainException $e) {
+                continue;
+            }
+
             if ($current->relevance > $scnd->relevance) {
                 $scnd = $current;
             }
