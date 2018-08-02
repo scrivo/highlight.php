@@ -35,6 +35,10 @@ namespace Highlight;
 
 class Highlighter
 {
+    const SPAN_END_TAG = "</span>";
+
+    private $options;
+
     private $modeBuffer = "";
     private $result = "";
     private $top = null;
@@ -47,15 +51,19 @@ class Highlighter
     private static $languages = null;
     private static $aliases = null;
 
-    private $tabReplace = null;
-    private $classPrefix = "hljs-";
-
     private $autodetectSet = array(
         "xml", "json", "javascript", "css", "php", "http"
     );
 
     public function __construct()
     {
+        $this->options = array(
+            'classPrefix' => 'hljs-',
+            'tabReplace' => null,
+            'useBR' => false,
+            'languages' => null
+        );
+
         $this->registerLanguages();
     }
 
@@ -174,9 +182,9 @@ class Highlighter
     private function buildSpan(
             $classname, $insideSpan, $leaveOpen=false, $noPrefix=false)
     {
-        $classPrefix = $noPrefix ? "" : $this->classPrefix;
+        $classPrefix = $noPrefix ? "" : $this->options['classPrefix'];
         $openSpan = "<span class=\"" . $classPrefix;
-        $closeSpan = $leaveOpen ? "" : "</span>";
+        $closeSpan = $leaveOpen ? "" : self::SPAN_END_TAG;
 
         $openSpan .= $classname . "\">";
 
@@ -270,7 +278,7 @@ class Highlighter
         $this->modeBuffer = '';
     }
 
-    private function startNewMode($mode, $lexeme)
+    private function startNewMode($mode)
     {
         $this->result .= $mode->className ? $this->buildSpan($mode->className, "", true) : "";
 
@@ -321,7 +329,7 @@ class Highlighter
             }
             do {
                 if ($this->top->className) {
-                    $this->result .= "</span>";
+                    $this->result .= self::SPAN_END_TAG;
                 }
                 if (!$this->top->skip) {
                     $this->relevance += $this->top->relevance;
@@ -354,8 +362,8 @@ class Highlighter
      * Replace tabs for something more usable.
      */
     private function replaceTabs($code) {
-        if ($this->tabReplace !== null) {
-            return str_replace("\t", $this->tabReplace, $code);
+        if ($this->options['tabReplace'] !== null) {
+            return str_replace("\t", $this->options['tabReplace'], $code);
         }
         return $code;
     }
@@ -384,7 +392,7 @@ class Highlighter
      */
     public function getTabReplace()
     {
-        return $this->tabReplace;
+        return $this->options['tabReplace'];
     }
 
     /**
@@ -396,7 +404,7 @@ class Highlighter
      */
     public function setTabReplace($tabReplace)
     {
-        $this->tabReplace = $tabReplace;
+        $this->options['tabReplace'] = $tabReplace;
     }
 
     /**
@@ -407,7 +415,7 @@ class Highlighter
      */
     public function getClassPrefix()
     {
-        return $this->classPrefix;
+        return $this->options['classPrefix'];
     }
 
     /**
@@ -418,7 +426,7 @@ class Highlighter
      */
     public function setClassPrefix($classPrefix)
     {
-        $this->classPrefix = $classPrefix;
+        $this->options['classPrefix'] = $classPrefix;
     }
 
     /**
@@ -496,7 +504,7 @@ class Highlighter
             for ($current = $this->top; $current != $this->language->mode;
                     $current = $current->parent) {
                 if ($current->className) {
-                    $this->result .= "</span>";
+                    $this->result .= self::SPAN_END_TAG;
                 }
             }
 
