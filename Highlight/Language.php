@@ -76,7 +76,9 @@ class Language
             "subLanguage" => null,
             "subLanguageMode" => "",
             "compiled" => false,
-            "relevance" => 1);
+            "relevance" => 1,
+            "skip" => false,
+        );
 
         foreach ($patch as $k =>  $v) {
             if (isset($e->$k)) {

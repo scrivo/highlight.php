@@ -266,25 +266,13 @@ class Highlighter
 
     private function processBuffer()
     {
-        return !is_null($this->top->subLanguage)
-            ? $this->processSubLanguage() : $this->processKeywords();
+        $this->result .= $this->top->subLanguage ? $this->processSubLanguage() : $this->processKeywords();
+        $this->modeBuffer = '';
     }
 
     private function startNewMode($mode, $lexeme)
     {
-        $markup = $mode->className
-            ? $this->buildSpan($mode->className, "", true) : "";
-
-        if ($mode->returnBegin) {
-            $this->result .= $markup;
-            $this->modeBuffer = "";
-        } elseif ($mode->excludeBegin) {
-            $this->result .= $this->escape($lexeme) . $markup;
-            $this->modeBuffer = "";
-        } else {
-            $this->result .= $markup;
-            $this->modeBuffer = $lexeme;
-        }
+        $this->result .= $mode->className ? $this->buildSpan($mode->className, "", true) : "";
 
         $t = clone $mode;
         $t->parent = $this->top;
@@ -296,13 +284,23 @@ class Highlighter
         $this->modeBuffer .= $buffer;
 
         if (null === $lexeme) {
-            $this->result .= $this->processBuffer();
+            $this->processBuffer();
             return 0;
         }
 
         $new_mode = $this->subMode($lexeme, $this->top);
         if ($new_mode) {
-            $this->result .= $this->processBuffer();
+            if ($new_mode->skip) {
+                $this->modeBuffer .= $lexeme;
+            } else {
+                if ($new_mode->excludeBegin) {
+                    $this->modeBuffer .= $lexeme;
+                }
+                $this->processBuffer();
+                if (!$new_mode->returnBegin && !$new_mode->excludeBegin) {
+                    $this->modeBuffer = $lexeme;
+                }
+            }
             $this->startNewMode($new_mode, $lexeme);
             return $new_mode->returnBegin ? 0 : strlen($lexeme);
         }
@@ -310,21 +308,26 @@ class Highlighter
         $end_mode = $this->endOfMode($this->top, $lexeme);
         if ($end_mode) {
             $origin = $this->top;
-            if (!($origin->returnEnd || $origin->excludeEnd)) {
+            if ($origin->skip) {
                 $this->modeBuffer .= $lexeme;
+            } else {
+                if (!($origin->returnEnd || $origin->excludeEnd)) {
+                    $this->modeBuffer .= $lexeme;
+                }
+                $this->processBuffer();
+                if ($origin->excludeEnd) {
+                    $this->modeBuffer = $lexeme;
+                }
             }
-            $this->result .= $this->processBuffer();
             do {
                 if ($this->top->className) {
                     $this->result .= "</span>";
                 }
-                $this->relevance += $this->top->relevance;
+                if (!$this->top->skip) {
+                    $this->relevance += $this->top->relevance;
+                }
                 $this->top = $this->top->parent;
             } while ($this->top != $end_mode->parent);
-            if ($origin->excludeEnd) {
-                $this->result .= $this->escape($lexeme);
-            }
-            $this->modeBuffer = "";
             if ($end_mode->starts) {
                 $this->startNewMode($end_mode->starts, "");
             }
