@@ -5,3 +5,4 @@ lib_highlight/
 *.tar.gz
 vendor/
 composer.lock
+test/**/*.js
