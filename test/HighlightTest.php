@@ -30,7 +30,6 @@
 
 use Highlight\Highlighter;
 use Highlight\Language;
-
 use Symfony\Component\Finder\Finder;
 
 class HighlightTest extends PHPUnit_Framework_TestCase

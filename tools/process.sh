@@ -26,4 +26,16 @@ node launcher.js > languages.dat
 php get_language_definitions.php
 
 # Copy styles from highlight.js to our own styles directory
-cp -a lib_highlight/src/styles/. ../styles/
+rm -r ../styles/ 2> /dev/null
+mkdir -p ../styles/
+cp -a lib_highlight/src/styles/ ../styles/
+
+# Copy unit tests
+rm -r ../test/detect/ 2> /dev/null
+rm -r ../test/markup/ 2> /dev/null
+
+mkdir -p ../test/{detect,markup}/
+cp -a lib_highlight/test/detect/ ../test/detect/
+cp -a lib_highlight/test/markup/ ../test/markup/
+
+rm ../test/{detect,markup}/index.js 2> /dev/null

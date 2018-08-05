@@ -45,7 +45,7 @@ class HighlightAutoTest extends PHPUnit_Framework_TestCase
         ;
 
         foreach ($languages as $language) {
-            $testData[] = [$language->getRelativePath(), $language->getContents()];
+            $testData[] = array($language->getRelativePath(), $language->getContents());
         }
 
         return $testData;

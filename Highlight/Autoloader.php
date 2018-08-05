@@ -48,7 +48,6 @@ namespace Highlight;
  * $hl = new Highlighter(...);
  * ...
  * ?>
- *
  */
 class Autoloader
 {
@@ -56,9 +55,9 @@ class Autoloader
      * The method to include the source file for a given class to use in
      * the PHP spl_autoload_register function.
      *
-     * @param string A name of a Scrivo class.
+     * @param string a name of a Scrivo class
      *
-     * @return boolean True if the source file was successfully included.
+     * @return bool true if the source file was successfully included
      */
     public static function load($class)
     {
@@ -66,9 +65,9 @@ class Autoloader
             return false;
         }
 
-        $c = str_replace("\\", "/", substr($class, 10)).".php";
-        $res = include(__DIR__."/$c");
+        $c = str_replace("\\", "/", substr($class, 10)) . ".php";
+        $res = include __DIR__ . "/$c";
 
-        return $res==1 ? true : false;
+        return $res == 1 ? true : false;
     }
 }

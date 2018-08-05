@@ -62,12 +62,12 @@ namespace Highlight;
  * $data = $jr->decode(file_get_contents("data.json"));
  * echo $data->spouse->spouse->name; // echos 'Kris Zyp'
  * echo $data->oldestChild->name; // echos 'Jennika Zyp'
- *
  */
 class JsonRef
 {
     /**
      * Array to hold all data paths in the given JSON data.
+     *
      * @var array
      */
     private $paths = null;
@@ -76,18 +76,16 @@ class JsonRef
      * Recurse through the data tree and fill an array of paths that reference
      * the nodes in the decoded JSON data structure.
      *
-     * @param mixed $s
-     *     Decoded JSON data (decoded with json_decode).
-     * @param string $r
-     *     The current path key (for example: '#children.0').
+     * @param mixed  $s Decoded JSON data (decoded with json_decode)
+     * @param string $r The current path key (for example: '#children.0').
      */
-    private function getPaths(&$s, $r="#")
+    private function getPaths(&$s, $r = "#")
     {
         $this->paths[$r] = &$s;
         if (is_array($s) || is_object($s)) {
             foreach ($s as $k => &$v) {
                 if ($k !== "\$ref") {
-                    $this->getPaths($v, $r=="#"?"#{$k}":"{$r}.{$k}");
+                    $this->getPaths($v, $r == "#" ? "#{$k}" : "{$r}.{$k}");
                 }
             }
         }
@@ -96,8 +94,7 @@ class JsonRef
     /**
      * Recurse through the data tree and resolve all path references.
      *
-     * @param mixed $s
-     *     Decoded JSON data (decoded with json_decode).
+     * @param mixed $s Decoded JSON data (decoded with json_decode)
      */
     private function resolvePathReferences(&$s)
     {
@@ -115,10 +112,9 @@ class JsonRef
     /**
      * Decode JSON data that may contain path based references.
      *
-     * @param string|object $json
-     *     JSON data string or JSON data object.
-     * @return mixed
-     *     The decoded JSON data.
+     * @param string|object $json JSON data string or JSON data object
+     *
+     * @return mixed The decoded JSON data
      */
     public function decode($json)
     {

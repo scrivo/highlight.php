@@ -1,5 +1,4 @@
-<? echo 'php'; /* ?>
+<? echo 'php'; /* ?> */ ?>
 <body>
-<script>function tf (x) { return typeof x; }</script>
+<script>document.write('Legacy code');</script>
 </body>
-<? end of comment */ ?>

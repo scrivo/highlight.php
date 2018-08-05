@@ -63,7 +63,7 @@ class MarkupTest extends PHPUnit_Framework_TestCase
 
         foreach ($workspace as $language => $tests) {
             foreach ($tests as $name => $definition) {
-                $testData[] = [$language, $name, $definition['raw'], $definition['expected']];
+                $testData[] = array($language, $name, $definition['raw'], $definition['expected']);
             }
         }
 
