@@ -71,7 +71,7 @@ class Highlighter
         // Languages that take precedence in the classMap array.
         $languagePath = __DIR__.DIRECTORY_SEPARATOR."languages".DIRECTORY_SEPARATOR;
         foreach(Array("xml", "django", "javascript", "matlab", "cpp") as $languageId) {
-            $filePath = $languagePath.$l.".json";
+            $filePath = $languagePath.$languageId.".json";
             if (is_readable($filePath)) $this->registerLanguage($languageId, $filePath);
         }
 
