@@ -64,62 +64,58 @@ class Highlighter
             'languages' => null,
         );
 
-        $this->registerLanguages();
+        self::registerLanguages();
     }
 
-    private function registerLanguages()
+    private static function registerLanguages()
     {
         // Languages that take precedence in the classMap array.
-        foreach (array("xml", "django", "javascript", "matlab", "cpp") as $l) {
-            $this->createLanguage($l);
-        }
-
-        $d = dir(__DIR__ . DIRECTORY_SEPARATOR . "languages");
-        while (($entry = $d->read()) !== false) {
-            if ($entry[0] !== ".") {
-                $lng = substr($entry, 0, -5);
-                $this->createLanguage($lng);
+        $languagePath = __DIR__ . DIRECTORY_SEPARATOR . "languages" . DIRECTORY_SEPARATOR;
+        foreach (array("xml", "django", "javascript", "matlab", "cpp") as $languageId) {
+            $filePath = $languagePath . $languageId . ".json";
+            if (is_readable($filePath)) {
+                self::registerLanguage($languageId, $filePath);
             }
         }
-        $d->close();
+
+        $d = @dir($languagePath);
+        if ($d) {
+            while (($entry = $d->read()) !== false) {
+                if (substr($entry, -5) === ".json") {
+                    $languageId = substr($entry, 0, -5);
+                    $filePath = $languagePath . $entry;
+                    if (is_readable($filePath)) {
+                        self::registerLanguage($languageId, $filePath);
+                    }
+                }
+            }
+            $d->close();
+        }
 
         self::$languages = array_keys(self::$classMap);
     }
 
-    private function createLanguage($languageId)
-    {
-        if (!isset(self::$classMap[$languageId])) {
-            self::registerLanguage(
-                $languageId,
-                __DIR__ . DIRECTORY_SEPARATOR . "languages" . DIRECTORY_SEPARATOR . "$languageId.json"
-            );
-        }
-
-        return self::$classMap[$languageId];
-    }
-
     /**
      * Register a language definition with the Highlighter's internal language
-     * storage.
+     * storage. Languages are stored in a static variable, so they'll be available
+     * across all instances. You only need to register a language once.
      *
-     * - If a language with the same $languageID already exists, it will be
-     *   overwritten.
-     * - Languages are stored in a static variable, so they'll be available
-     *   across all instances. You only need to register a language once.
-     *
-     * @param string $languageId       The unique name of a language
-     * @param string $absoluteFilePath The file path to the language definition
+     * @param string $languageId The unique name of a language
+     * @param string $filePath   The file path to the language definition
+     * @param bool   $overwrite  Overwrite language if it already exists
      *
      * @return Language The object containing the definition for a language's markup
      */
-    public static function registerLanguage($languageId, $absoluteFilePath)
+    public static function registerLanguage($languageId, $filePath, $overwrite = false)
     {
-        $lang = new Language($languageId, $absoluteFilePath);
-        self::$classMap[$languageId] = $lang;
+        if (!isset(self::$classMap[$languageId]) || $overwrite) {
+            $lang = new Language($languageId, $filePath);
+            self::$classMap[$languageId] = $lang;
 
-        if (isset($lang->mode->aliases)) {
-            foreach ($lang->mode->aliases as $alias) {
-                self::$aliases[$alias] = $languageId;
+            if (isset($lang->mode->aliases)) {
+                foreach ($lang->mode->aliases as $alias) {
+                    self::$aliases[$alias] = $languageId;
+                }
             }
         }
 
@@ -380,7 +376,7 @@ class Highlighter
     public function setAutodetectLanguages(array $set)
     {
         $this->autodetectSet = array_unique($set);
-        $this->registerLanguages();
+        self::registerLanguages();
     }
 
     /**
