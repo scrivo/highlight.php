@@ -63,7 +63,8 @@ class Highlighter
             'useBR' => false,
             'languages' => null,
         );
-        if (self::$languages === null) $this->registerLanguages();
+
+        $this->registerLanguages();
     }
 
     private function registerLanguages()
