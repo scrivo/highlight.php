@@ -263,7 +263,7 @@ Most snippets do not contain working code :-).
 <h2>Automatically detected languages</h2>
 
 <?php echo $testResult; ?>
-<table id="autotest"><?php echo $tableRows;?></table>
+<table id="autotest"><?php echo $tableRows; ?></table>
 
 </body>
 </html>

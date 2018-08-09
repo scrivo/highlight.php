@@ -6,9 +6,20 @@ php:
   - 5.6
   - 5.5
   - 5.4
+
 install:
   - composer install --no-interaction --no-progress
+
 script:
-  - vendor/bin/phpunit
+  - vendor/bin/phpunit -v
+
 notifications:
   email: false
+
+jobs:
+  include:
+    - stage: checks
+      php:
+        - 7.2
+      script:
+        bash .travis/hasGitChanges.sh
