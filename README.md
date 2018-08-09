@@ -1,5 +1,6 @@
 # highlight.php
 
+[![Build Status](https://travis-ci.org/scrivo/highlight.php.svg?branch=master)](https://travis-ci.org/scrivo/highlight.php)
 [![Latest Packagist release](https://img.shields.io/packagist/v/scrivo/highlight.php.svg)](https://packagist.org/packages/scrivo/highlight.php)
 [![Monthly downloads on Packagist](https://img.shields.io/packagist/dm/scrivo/highlight.php.svg)](https://packagist.org/packages/scrivo/highlight.php/stats)
 
@@ -34,7 +35,7 @@ $code = file_get_contents('some_ruby_script.rb');
 try {
     // Highlight some code.
     $highlighted = $hl->highlight('ruby', $code);
-    
+
     echo "<pre class=\"hljs {$highlighted->language}\">\n";
     echo $highlighted->value . "\n";
     echo "</pre>\n";
