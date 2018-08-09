@@ -36,7 +36,7 @@ class HighlightTest extends PHPUnit_Framework_TestCase
 {
     public function testUnknownLanguageThrowsDomainException()
     {
-        $this->setExpectedException(DomainException::class);
+        $this->setExpectedException('\DomainException');
 
         $hl = new Highlighter();
         $hl->highlight("blah++", "als blurp eq z dan zeg 'flipper'");
@@ -123,7 +123,7 @@ class HighlightTest extends PHPUnit_Framework_TestCase
 
     public function testGetAliasesForLanguageRaisesExceptionForNonExistingLanguage()
     {
-        $this->setExpectedException(DomainException::class);
+        $this->setExpectedException('\DomainException');
 
         $hl = new Highlighter();
         $hl->getAliasesForLanguage('blah+');
