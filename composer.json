@@ -1,6 +1,6 @@
 {
 	"name": "scrivo/highlight.php",
-	"description": "Server side syntax highlighter that supports 176 languages. It's a PHP port of highlight.js",
+	"description": "Server side syntax highlighter that supports 185 languages. It's a PHP port of highlight.js",
 	"keywords": ["code", "syntax", "highlight", "highlight.js", "highlight.php"],
 	"type": "library",
 	"license": "BSD-3-Clause",

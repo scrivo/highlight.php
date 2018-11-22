@@ -4,7 +4,7 @@
 [![Latest Packagist release](https://img.shields.io/packagist/v/scrivo/highlight.php.svg)](https://packagist.org/packages/scrivo/highlight.php)
 [![Monthly downloads on Packagist](https://img.shields.io/packagist/dm/scrivo/highlight.php.svg)](https://packagist.org/packages/scrivo/highlight.php/stats)
 
-*highlight.php* is a server side code highlighter written in PHP that currently supports 176 languages. It's a port of [highlight.js](http://www.highlightjs.org) by Ivan Sagalaev that makes full use of the language and style definitions of the original JavaScript project.
+*highlight.php* is a server side code highlighter written in PHP that currently supports 185 languages. It's a port of [highlight.js](http://www.highlightjs.org) by Ivan Sagalaev that makes full use of the language and style definitions of the original JavaScript project.
 
 ## Installation + Setup
 
@@ -54,6 +54,8 @@ catch (DomainException $e) {
 Alternatively you can use the automatic detection mode, which highlights your code with the language the library thinks is best.
 
 > **Warning:** You must supply a list of languages that the `Highlighter` will pick from. This occurs in a brute force fashion and the language with the most accurate result will be selected. This is extremely inefficient as you supply more languages and may not always be 100% accurate.
+>
+> It is highly recommended you explicitly choose the language or limit the number of languages to automatically detect to reduce the number of inaccuracies.
 
 ```php
 $hl = new Highlight\Highlighter();
