@@ -16,11 +16,19 @@ Contributer(s):
 
 highlight.js (the reference project)
 
-Core developers (in order of appearance):
+Current core developers (alphabetical):
 
-	Ivan Sagalaev (original author) <maniac@softwaremaniacs.org>
-	Jeremy Hull <sourdrums@gmail.com>
-	Oleg Efimov <efimovov@gmail.com>
+    Gidi Meir Morris <gidi@gidi.io>
+    Jan T. Sott <git@idleberg.com>
+    Li Xuanji <xuanji@gmail.com>
+    Marcos Cáceres <marcos@marcosc.com>
+    Sang Dang <sang.dang@polku.io>
+
+Former maintainers:
+
+    Ivan Sagalaev (original author) <maniac@softwaremaniacs.org>
+    Jeremy Hull <sourdrums@gmail.com>
+    Oleg Efimov <efimovov@gmail.com>
 
 -------------------------------------------------------------------------------
 
@@ -30,6 +38,7 @@ Language and style definitions (copied from the highlight.js project)
     Adam Joseph Cook <adam.joseph.cook@gmail.com>
     Ahmad Awais <me@AhmadAwais.com>
     Alberto Gimeno <gimenete@gmail.com>
+    Alejandro Isaza <al@isaza.ca>
     Aleksandar Ruzicic <aleksandar@ruzicic.info>
     Alex Arslan <ararslan@comcast.net>
     Alex McKibben <alex@nullscope.net>
@@ -45,6 +54,7 @@ Language and style definitions (copied from the highlight.js project)
     Angel G. Olloqui <angelgarcia.mail@gmail.com>
     Anthony Dugois <dev.anthonydugois@gmail.com>
     Anthony Scemama <scemama@irsamc.ups-tlse.fr>
+    Antoine Boisier-Michaud <aboisiermichaud@gmail.com>
     Anton Kochkov <anton.kochkov@gmail.com>
     Anton Kovalyov <anton@kovalyov.net>
     Antono Vasiljev <self@antono.info>
@@ -104,7 +114,6 @@ Language and style definitions (copied from the highlight.js project)
     Evgeny Stepanischev <imbolk@gmail.com>
     Flaviu Tamas <tamas.flaviu@gmail.com>
     Gavin Siu <gavsiu@gmail.com>
-    Gidi Meir Morris <gidi@gidi.io>
     Google Inc. (David Benjamin) <davidben@google.com>
     Gu Yiling <justice360@gmail.com>
     Guannan Wei <guannanwei@outlook.com>
@@ -126,7 +135,6 @@ Language and style definitions (copied from the highlight.js project)
     Jacob Childress <jacobc@gmail.com>
     Jan Berkel <jan.berkel@gmail.com>
     Jan Kühle <jkuehle90@gmail.com>
-    Jan T. Sott <git@idleberg.com>
     Janis Voigtländer <janis.voigtlaender@gmail.com>
     Jason Diamond <jason@diamond.name>
     Jason Jacobson <jason.a.jacobson@gmail.com>
