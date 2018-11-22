@@ -37,7 +37,11 @@ class HighlightAutoTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->allowedFailures = array('http', 'livescript');
+        $this->allowedFailures = array(
+            'http',
+            'livescript',
+            'plaintext',
+        );
     }
 
     public static function detectableLanguagesProvider()
