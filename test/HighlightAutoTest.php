@@ -69,10 +69,6 @@ class HighlightAutoTest extends PHPUnit_Framework_TestCase
      */
     public function testAutomaticDetection($language, $raw)
     {
-        if (in_array($language, $this->allowedFailures)) {
-            $this->markTestSkipped("The $language auto-detection test is known to fail for unknown reasons...");
-        }
-
         $hl = new Highlighter();
         $hl->setAutodetectLanguages($hl->listLanguages());
 
@@ -86,6 +82,10 @@ class HighlightAutoTest extends PHPUnit_Framework_TestCase
             $actual->secondBest->language,
             $actual->secondBest->relevance
         );
+
+        if (in_array($language, $this->allowedFailures)) {
+            $this->markTestSkipped("The '$language' auto-detection test is known to fail: $errMessage");
+        }
 
         $this->assertEquals($language, $actual->language, $errMessage);
     }
