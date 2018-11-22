@@ -39,7 +39,9 @@ class HighlightAutoTest extends PHPUnit_Framework_TestCase
     {
         $this->allowedFailures = array(
             'http',
+            'java',
             'livescript',
+            'shell',
             'plaintext',
         );
     }
@@ -76,6 +78,15 @@ class HighlightAutoTest extends PHPUnit_Framework_TestCase
 
         $actual = $hl->highlightAuto($raw);
 
-        $this->assertEquals($language, $actual->language);
+        $errMessage = sprintf(
+            "Expected language: %s; [1. %s (%d%%); 2. %s (%d%%)]",
+            $language,
+            $actual->language,
+            $actual->relevance,
+            $actual->secondBest->language,
+            $actual->secondBest->relevance
+        );
+
+        $this->assertEquals($language, $actual->language, $errMessage);
     }
 }
