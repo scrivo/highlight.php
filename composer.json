@@ -1,9 +1,12 @@
 {
 	"name": "scrivo/highlight.php",
-	"description": "Server side syntax highlighter that supports 176 languages. It's a PHP port of highlight.js",
+	"description": "Server side syntax highlighter that supports 185 languages. It's a PHP port of highlight.js",
 	"keywords": ["code", "syntax", "highlight", "highlight.js", "highlight.php"],
 	"type": "library",
 	"license": "BSD-3-Clause",
+    "scripts": {
+        "test": "phpunit -v"
+    },
 	"support": {
 		"issues": "https://github.com/scrivo/highlight.php/issues",
 		"source": "https://github.com/scrivo/highlight.php"
@@ -31,5 +34,9 @@
 	"require-dev": {
 		"phpunit/phpunit": "^4.8",
 		"symfony/finder": "^2.8"
-	}
+	},
+    "require": {
+        "ext-json": "*",
+        "ext-mbstring": "*"
+    }
 }

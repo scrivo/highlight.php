@@ -16,11 +16,19 @@ Contributer(s):
 
 highlight.js (the reference project)
 
-Core developers (in order of appearance):
+Current core developers (alphabetical):
 
-	Ivan Sagalaev (original author) <maniac@softwaremaniacs.org>
-	Jeremy Hull <sourdrums@gmail.com>
-	Oleg Efimov <efimovov@gmail.com>
+    Gidi Meir Morris <gidi@gidi.io>
+    Jan T. Sott <git@idleberg.com>
+    Li Xuanji <xuanji@gmail.com>
+    Marcos Cáceres <marcos@marcosc.com>
+    Sang Dang <sang.dang@polku.io>
+
+Former maintainers:
+
+    Ivan Sagalaev (original author) <maniac@softwaremaniacs.org>
+    Jeremy Hull <sourdrums@gmail.com>
+    Oleg Efimov <efimovov@gmail.com>
 
 -------------------------------------------------------------------------------
 
@@ -28,15 +36,17 @@ Language and style definitions (copied from the highlight.js project)
 
     Aahan Krish <geekpanth3r@gmail.com>
     Adam Joseph Cook <adam.joseph.cook@gmail.com>
+    Ahmad Awais <me@AhmadAwais.com>
     Alberto Gimeno <gimenete@gmail.com>
+    Alejandro Isaza <al@isaza.ca>
     Aleksandar Ruzicic <aleksandar@ruzicic.info>
+    Alex Arslan <ararslan@comcast.net>
+    Alex McKibben <alex@nullscope.net>
     Alexander Lichter <manniL@gmx.net>
     Alexander Makarov <sam@rmcreative.ru>
     Alexander Marenin <great_muchacho@mail.ru>
     Alexander Myadzel <myadzel@gmail.com>
-    Alex Arslan <ararslan@comcast.net>
     Alexis Hénaut <alexis@henaut.net>
-    Alex McKibben <alex@nullscope.net>
     Andres Täht <andres.taht@gmail.com>
     Andrew Farmer <ahfarmer@gmail.com>
     Andrew Fedorov <dmmdrs@mail.ru>
@@ -44,9 +54,11 @@ Language and style definitions (copied from the highlight.js project)
     Angel G. Olloqui <angelgarcia.mail@gmail.com>
     Anthony Dugois <dev.anthonydugois@gmail.com>
     Anthony Scemama <scemama@irsamc.ups-tlse.fr>
+    Antoine Boisier-Michaud <aboisiermichaud@gmail.com>
     Anton Kochkov <anton.kochkov@gmail.com>
     Anton Kovalyov <anton@kovalyov.net>
     Antono Vasiljev <self@antono.info>
+    Arctic Ice Studio <development@arcticicestudio.com>
     Arthur Bikmullin <devolonter@gmail.com>
     Benjamin Auder <benjamin.auder@gmail.com>
     Benjamin Pannell <contact@sierrasoftworks.com>
@@ -73,11 +85,11 @@ Language and style definitions (copied from the highlight.js project)
     Damian Mee <mee.damian@gmail.com>
     Damien White <damien.white@visoftinc.com>
     Dan Allen <dan.j.allen@gmail.com>
+    Dan Panzarella <alsoelp@gmail.com>
+    Dan Tao <daniel.tao@gmail.com>
     Daniel Gamage <hellodanielgamage@gmail.com>
     Daniel Kvasnicka <dkvasnicka@vendavo.com>
     Daniel Rosenwasser <DanielRosenwasser@users.noreply.github.com>
-    Dan Panzarella <alsoelp@gmail.com>
-    Dan Tao <daniel.tao@gmail.com>
     David Anson <david@dlaa.me>
     David Mohundro <david@mohundro.com>
     Denis Bardadym <bardadymchik@gmail.com>
@@ -85,6 +97,7 @@ Language and style definitions (copied from the highlight.js project)
     Dennis Titze <dennis.titze@gmail.com>
     Dirk Kirsten <dk@basex.org>
     Dmitri Roudakov <dmitri@roudakov.ru>
+    Dmitriy Tarasov <dimatar@gmail.com>
     Dmitry Kovega <arhibot@gmail.com>
     Dmitry Medvinsky <me@dmedvinsky.name>
     Dmytrii Nagirniak <dnagir@gmail.com>
@@ -92,6 +105,8 @@ Language and style definitions (copied from the highlight.js project)
     Dotan Dimet <dotan@corky.net>
     Dr. Drang <drdrang@gmail.com>
     Edwin Dalorzo <edwin@dalorzo.org>
+    Egor Rogov <e.rogov@postgrespro.ru>
+    Eric Bailey <eric.w.bailey@gmail.com>
     Eric Knibbe <eric@lassosoft.com>
     Erik Osheim <d_m@plastic-idolatry.com>
     Erik Paluka <erik.paluka@gmail.com>
@@ -99,12 +114,15 @@ Language and style definitions (copied from the highlight.js project)
     Evgeny Stepanischev <imbolk@gmail.com>
     Flaviu Tamas <tamas.flaviu@gmail.com>
     Gavin Siu <gavsiu@gmail.com>
+    Google Inc. (David Benjamin) <davidben@google.com>
+    Gu Yiling <justice360@gmail.com>
     Guannan Wei <guannanwei@outlook.com>
     Guillaume Gomez <guillaume1.gomez@gmail.com>
     Guillaume Laforge <glaforge@gmail.com>
-    Gu Yiling <justice360@gmail.com>
+    Gustavo Costa <gusbemacbe@gmail.com>
     Hakan Özler <ozler.hakan@gmail.com>
     Hale Chan <halechan@qq.com>
+    Harmon <Harmon.Public@gmail.com>
     Heiko August <post@auge8472.de>
     Henrik Feldt <henrik@haf.se>
     Herbert Shin <initbar@protonmail.ch>
@@ -116,9 +134,8 @@ Language and style definitions (copied from the highlight.js project)
     Ivan Dementev <ivan_div@mail.ru>
     Jacob Childress <jacobc@gmail.com>
     Jan Berkel <jan.berkel@gmail.com>
-    Janis Voigtländer <janis.voigtlaender@gmail.com>
     Jan Kühle <jkuehle90@gmail.com>
-    Jan T. Sott <git@idleberg.com>
+    Janis Voigtländer <janis.voigtlaender@gmail.com>
     Jason Diamond <jason@diamond.name>
     Jason Jacobson <jason.a.jacobson@gmail.com>
     Jason Tate <adminz@web-cms-designs.com>
@@ -129,9 +146,9 @@ Language and style definitions (copied from the highlight.js project)
     Joe Eli McIlvain <joe.eli.mac@gmail.org>
     John Crepezzi <john.crepezzi@gmail.com>
     John Foster <jfoster@esri.com>
+    Jon Evans <jon@craftyjon.com>
     Jonas Follesø <jonas@follesoe.no>
     Jonathan Suever <suever@gmail.com>
-    Jon Evans <jon@craftyjon.com>
     Jordi Petit <jordi.petit@gmail.com>
     Jose Molina Colmenero <gaudy41@gmail.com>
     Josh Adams <josh@isotope11.com>
@@ -168,15 +185,17 @@ Language and style definitions (copied from the highlight.js project)
     Matt Evans <matt@aptech.com>
     Matt Evans <syrius3@gmail.com>
     Matthew Daly <matthewbdaly@gmail.com>
-    Maxim Dikun <dikmax@gmail.com>
     Max Mikhailov <seven.phases.max@gmail.com>
+    Maxim Dikun <dikmax@gmail.com>
     Mehdi Dogguy <mehdi@dogguy.org>
+    Melissa Geels <melissa@nimble.tools>
+    Meseta <meseta@gmail.com>
     Michael Allen <Michael.Allen@benefitfocus.com>
     Michael Johnston <lastobelus@gmail.com>
     Michael Rodler <contact@f0rki.at>
     Michal Gabrukiewicz <mgabru@gmail.com>
-    Mickaël Delahaye <mickael.delahaye@gmail.com>
     Mick MacCallum <micksmaccallum@gmail.com>
+    Mickaël Delahaye <mickael.delahaye@gmail.com>
     Mikko Kouhia <mikko.kouhia@iki.fi>
     Morten Piibeleht <morten.piibeleht@gmail.com>
     mucaho <mkucko@gmail.com>
@@ -184,11 +203,11 @@ Language and style definitions (copied from the highlight.js project)
     Nate Cook <natecook@gmail.com>
     Nathan Grigg <nathan@nathanamy.org>
     Nebuleon Fumika <nebuleon.fumika@gmail.com>
+    Nic West <nic@letolab.com>
     Nicholas Blumhardt <nblumhardt@nblumhardt.com>
     Nicolas Braud-Santoni <nicolas.braud-santoni@ens-cachan.fr>
     Nicolas Le Gall <contact@nlegall.fr>
     Nicolas LLOBERA <nllobera@gmail.com>
-    Nic West <nic@letolab.com>
     Nikita Ledyaev <lenikita@yandex.ru>
     Nikita Savchenko <zitros.lab@gmail.com>
     Nikolay Lisienko <info@neor.ru>
@@ -201,8 +220,8 @@ Language and style definitions (copied from the highlight.js project)
     Peter Leonov <gojpeg@gmail.com>
     Peter Piwowarski <oldlaptop654@aol.com>
     Philipp A. <flying-sheep@web.de>
-    Philippe Charrière <ph.charriere@gmail.com>
     Philipp Wolfer <ph.wolfer@gmail.com>
+    Philippe Charrière <ph.charriere@gmail.com>
     Poren Chiang <ren.chiang@gmail.com>
     prince <MC.prince.0203@gmail.com>
     pumbur <pumbur@pumbur.net>
@@ -217,8 +236,8 @@ Language and style definitions (copied from the highlight.js project)
     Robin Ward <robin.ward@gmail.com>
     Roman Shmatov <romanshmatov@gmail.com>
     Ruslan Keba <rukeba@gmail.com>
-    Samuel Reed <sam@bitmex.com>
     Sam Wu <samsam2310@gmail.com>
+    Samuel Reed <sam@bitmex.com>
     Seongwon Lee <dlimpid@gmail.com>
     Sergey Baranov <segyrn@yandex.ru>
     Sergey Bronnikov <sergeyb@bronevichok.ru>
@@ -231,8 +250,8 @@ Language and style definitions (copied from the highlight.js project)
     Simon Madine <simon@angryrobotzombie.com>
     Stanislav Belov <stbelov@gmail.com>
     Stefan Bechert <stefan.bechert@gmx.net>
-    Stefania Mellai <s.mellai@arduino.cc>
     Stefan Wienert <stwienert@gmail.com>
+    Stefania Mellai <s.mellai@arduino.cc>
     Stephan Boyer <stephan@stephanboyer.com>
     Stephan Kountso <steplg@gmail.com>
     Sylvestre Ledru <sylvestre.ledru@scilab-enterprises.com>
@@ -246,6 +265,7 @@ Language and style definitions (copied from the highlight.js project)
     Travis Odom <travis.a.odom@gmail.com>
     Trey Shugart <treshugart@gmail.com>
     Tristano Ajmone <tajmone@gmail.com>
+    Tristian Kelly <tristian.kelly560@gmail.com>
     Troy Kershaw <hello@troykershaw.com>
     Tsuyusato Kitsune <make.just.on@gmail.com>
     Vadimtro <vadimtro@yahoo.com>

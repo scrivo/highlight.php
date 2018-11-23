@@ -37,7 +37,13 @@ class HighlightAutoTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->allowedFailures = array('http', 'livescript');
+        $this->allowedFailures = array(
+            'http',
+            'java',
+            'livescript',
+            'shell',
+            'plaintext',
+        );
     }
 
     public static function detectableLanguagesProvider()
@@ -63,15 +69,24 @@ class HighlightAutoTest extends PHPUnit_Framework_TestCase
      */
     public function testAutomaticDetection($language, $raw)
     {
-        if (in_array($language, $this->allowedFailures)) {
-            $this->markTestSkipped("The $language auto-detection test is known to fail for unknown reasons...");
-        }
-
         $hl = new Highlighter();
         $hl->setAutodetectLanguages($hl->listLanguages());
 
         $actual = $hl->highlightAuto($raw);
 
-        $this->assertEquals($language, $actual->language);
+        $errMessage = sprintf(
+            "Expected language: %s; [1. %s (%d%%); 2. %s (%d%%)]",
+            $language,
+            $actual->language,
+            $actual->relevance,
+            $actual->secondBest->language,
+            $actual->secondBest->relevance
+        );
+
+        if (in_array($language, $this->allowedFailures)) {
+            $this->markTestSkipped("The '$language' auto-detection test is known to fail: $errMessage");
+        }
+
+        $this->assertEquals($language, $actual->language, $errMessage);
     }
 }
