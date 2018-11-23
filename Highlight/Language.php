@@ -190,7 +190,7 @@ class Language
         $mode->keywords = $mode->keywords ? $mode->keywords : $mode->beginKeywords;
 
         /* Note: JsonRef method creates different references as those in the
-         * original source files. Two modes may refer to the same keywors
+         * original source files. Two modes may refer to the same keywords
          * set, so only testing if the mode has keywords is not enough: the
          * mode's keywords might be compiled already, so it is necessary
          * to do an 'is_array' check.

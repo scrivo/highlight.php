@@ -4,6 +4,9 @@
 	"keywords": ["code", "syntax", "highlight", "highlight.js", "highlight.php"],
 	"type": "library",
 	"license": "BSD-3-Clause",
+    "scripts": {
+        "test": "phpunit -v"
+    },
 	"support": {
 		"issues": "https://github.com/scrivo/highlight.php/issues",
 		"source": "https://github.com/scrivo/highlight.php"
