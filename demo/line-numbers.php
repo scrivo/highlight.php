@@ -86,7 +86,7 @@ $hl = new Highlight\Highlighter();
                         <td id="L<?= $number ?>" data-line-number="<?= $number ?>"></td>
                         <td id="LC<?= $number ?>" class="blob-code"><?= $line ?></td>
                     </tr>
-                <? endforeach; ?>
+                <?php endforeach; ?>
             </tbody>
         </table>
     </body>
