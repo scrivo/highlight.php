@@ -83,8 +83,8 @@ $hl = new Highlight\Highlighter();
             <tbody>
                 <?php foreach ($lines as $number => $line): ?>
                     <tr>
-                        <td id="L<?= $number ?>" data-line-number="<?= $number ?>"></td>
-                        <td id="LC<?= $number ?>" class="blob-code"><?= $line ?></td>
+                        <td id="L<?= $number; ?>" data-line-number="<?= $number; ?>"></td>
+                        <td id="LC<?= $number; ?>" class="blob-code"><?= $line; ?></td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
