@@ -102,7 +102,7 @@ class JsonRef
             return;
         }
 
-        $depth++;
+        ++$depth;
 
         if (is_array($s) || is_object($s)) {
             foreach ($s as $k => &$v) {
