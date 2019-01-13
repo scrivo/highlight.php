@@ -90,8 +90,8 @@ class Language
         }
 
         foreach ($def as $k => $v) {
-            if (!isset($e->$k)) {
-                @$e->$k = $v;
+            if (!isset($e->$k) && is_object($e)) {
+                $e->$k = $v;
             }
         }
     }
