@@ -1,5 +1,6 @@
 language: php
 php:
+  - nightly
   - 7.3
   - 7.2
   - 7.1
