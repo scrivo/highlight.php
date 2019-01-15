@@ -50,6 +50,13 @@ $patches = array(
         array("[]{}%#'\\\"", "\\\\Q[]{}%#'\\\"\\\\E")
     ),
 
+    // The `-` character must be escaped in while in `[]`. This is enforced in PHP 7.3+
+    //   https://wiki.php.net/rfc/pcre2-migration
+    //   https://github.com/php/php-src/pull/2857
+    "dsconfig" => array(
+        array("[\\\\w-?]", "[\\\\w\\\\-?]")
+    ),
+
     // WTF, any ideas anyone?
     "mercury" => array(array("\\\\\\\/", "\\\\\\\\\\\/")),
 

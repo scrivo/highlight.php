@@ -276,7 +276,12 @@ class Highlighter
 
     private function processBuffer()
     {
-        $this->result .= $this->top->subLanguage ? $this->processSubLanguage() : $this->processKeywords();
+        if (is_object($this->top) && $this->top->subLanguage) {
+            $this->result .= $this->processSubLanguage();
+        } else {
+            $this->result .= $this->processKeywords();
+        }
+
         $this->modeBuffer = '';
     }
 
