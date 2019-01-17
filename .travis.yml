@@ -17,6 +17,8 @@ script:
 
 notifications:
   email: false
+  webhooks:
+    - http://helit.org:8093/+sujevo-dev/showSuccessfulBuildMessages=always
 
 jobs:
   include:
