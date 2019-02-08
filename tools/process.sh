@@ -1,9 +1,9 @@
 #!/bin/bash
 
-HLJS_V="9.14.1"
+HLJS_V="9.14.2"
 DOJO_V="1.13.0"
 
-HLJS_DL="https://api.github.com/repos/isagalaev/highlight.js/tarball/$HLJS_V"
+HLJS_DL="https://api.github.com/repos/highlightjs/highlight.js/tarball/$HLJS_V"
 DOJO_DL="http://download.dojotoolkit.org/release-$DOJO_V/dojo-release-$DOJO_V-src.tar.gz"
 
 curl -L $HLJS_DL --output "lib_highlight.tar.gz"
