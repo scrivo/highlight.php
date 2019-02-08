@@ -104,6 +104,7 @@ Language and style definitions (copied from the highlight.js project)
     Domen Kožar <domen@dev.si>
     Dotan Dimet <dotan@corky.net>
     Dr. Drang <drdrang@gmail.com>
+    Duncan Paterson <duncan@exist-db.org>
     Edwin Dalorzo <edwin@dalorzo.org>
     Egor Rogov <e.rogov@postgrespro.ru>
     Eric Bailey <eric.w.bailey@gmail.com>
@@ -167,6 +168,7 @@ Language and style definitions (copied from the highlight.js project)
     Kurt Emch <kurt@kurtemch.com>
     Ladislav Prskavec <ladislav@prskavec.net>
     Lars Schulna <kartoffelbrei.mit.muskatnuss@gmail.org>
+    Laurent Voullemier <laurent.voullemier@gmail.com>
     Loren Segal <lsegal@soen.ca>
     Louis Barranqueiro <louis.barranqueiro@gmail.com>
     Lucas Mazza <lucastmazza@gmail.com>
@@ -183,7 +185,6 @@ Language and style definitions (copied from the highlight.js project)
     Marvin Saignat <contact@zgmrvn.com>
     Matt Diephouse <matt@diephouse.com>
     Matt Evans <matt@aptech.com>
-    Matt Evans <syrius3@gmail.com>
     Matthew Daly <matthewbdaly@gmail.com>
     Max Mikhailov <seven.phases.max@gmail.com>
     Maxim Dikun <dikmax@gmail.com>
@@ -238,6 +239,7 @@ Language and style definitions (copied from the highlight.js project)
     Ruslan Keba <rukeba@gmail.com>
     Sam Wu <samsam2310@gmail.com>
     Samuel Reed <sam@bitmex.com>
+    Sean T. Allen <sean@monkeysnatchbanana.com>
     Seongwon Lee <dlimpid@gmail.com>
     Sergey Baranov <segyrn@yandex.ru>
     Sergey Bronnikov <sergeyb@bronevichok.ru>
