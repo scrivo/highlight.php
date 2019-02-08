@@ -9,6 +9,13 @@ php:
   - 5.5
   - 5.4
 
+matrix:
+  fast_finish: true
+  allow_failures:
+    # Since PHP 8.0.0-dev is the new nightly, some dependencies don't support
+    # it in their Composer files
+    - php: nightly
+
 install:
   - composer install --no-interaction --no-progress
 
