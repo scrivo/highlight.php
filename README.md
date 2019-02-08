@@ -16,6 +16,12 @@ composer require scrivo/highlight.php
 
 If you're not using Composer, ensure that the classes defined in the `Highlight` namespace can be found either by inclusion or by an autoloader. A trivial autoloader for this purpose is included in this project as `Highlight\Autoloader.php`
 
+### Composer Version Constraints
+
+When requiring this project in your `composer.json`, it is recommended you use the [caret version range](https://getcomposer.org/doc/articles/versions.md#caret-version-range-) and use only the major and minor values; i.e. `^9.14`.
+
+It's come to our attention that a lot of tutorials and projects out there are locking themselves into highly specific versions of this project; e.g. `"scrivo/highlight.php": "v9.12.0.1"`. Please do **not** do this or encourage it. We promise a [reliable backward compatibility policy](#backward-compatibility-promise) so there's no reason to lock yourself to such a specific version. By doing this, you are preventing yourself or your users from receiving updates to language definitions and bug fixes.
+
 ## Usage
 
 The `Highlight\Highlighter` class contains the highlighting functionality. You can choose between two highlighting modes:
@@ -76,9 +82,9 @@ The same stylesheets available in the **highlight.js** project are available in 
 
 This project will follow the same version numbers as the highlight.js project with regards to languages, meaning that a language definition available in highlight.js 9.12.0 will be available in highlight.php 9.12.0. However, there are times where bugs may arise in this project or its translated definition files, so there'll be one more number appended to the version number. For example, version 9.12.0.1 will contain all of the same languages as highlight.js 9.12.0 but also contain fixes solely to this project. This is done so this project can have version bumps without conflicts should highlight.js release version 9.12.1.
 
-### Backwards Compatibility Promise
+### Backward Compatibility Promise
 
-Despite the fact that the semantic versioning used in this project mirrors that of highlight.js, this project will adhere to [Symfony's Backwards Compatibility Promise](https://symfony.com/doc/current/contributing/code/bc.html#using-symfony-code). You can rest assured that there will be no breaking changes during `9.x` and any deprecations will be marked with `@deprecated` and won't be removed until the next major release.
+Despite the fact that the semantic versioning used in this project mirrors that of highlight.js, this project will adhere to [Symfony's Backward Compatibility Promise](https://symfony.com/doc/current/contributing/code/bc.html#using-symfony-code). You can rest assured that there will be no breaking changes during `9.x` and any deprecations will be marked with `@deprecated` and won't be removed until the next major release.
 
 ## Some History
 
