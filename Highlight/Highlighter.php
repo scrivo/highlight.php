@@ -508,9 +508,9 @@ class Highlighter
             $index = 0;
 
             while ($this->top && $this->top->terminators) {
-                $test = preg_match($this->top->terminators, $code, $match, PREG_OFFSET_CAPTURE, $index);
+                $test = @preg_match($this->top->terminators, $code, $match, PREG_OFFSET_CAPTURE, $index);
                 if ($test === false) {
-                    throw new \Exception("Invalid regExp " . var_export($this->top->terminators, true));
+                    throw new \Exception("Invalid " . $this->language->name . " regExp " . var_export($this->top->terminators, true));
                 } elseif ($test === 0) {
                     break;
                 }

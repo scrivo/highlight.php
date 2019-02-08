@@ -62,6 +62,11 @@ $patches = array(
 
     // The expression [^] is not allowed in PREG
     "lisp" => array(array("[^]", "[^|]")),
+
+    // Same reason as dsconfig
+    "xquery" => array(
+        array("[\\\\w-:]+","[\\\\w\\\\-:]+")
+    ),
 );
 
 for ($i=0; $i<count($f); $i+=2) {
