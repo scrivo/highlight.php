@@ -38,6 +38,7 @@ class Language
     public $disableAutodetect = false;
     public $caseInsensitive = false;
     public $aliases = null;
+    public $name = null;
 
     public function complete(&$e)
     {
@@ -179,6 +180,68 @@ class Language
         return array($mode);
     }
 
+    /**
+     * joinRe logically computes regexps.join(separator), but fixes the
+     * backreferences so they continue to match.
+     *
+     * @param array  $regexps
+     * @param string $separator
+     *
+     * @return string
+     */
+    private function joinRe($regexps, $separator)
+    {
+        // backreferenceRe matches an open parenthesis or backreference. To avoid
+        // an incorrect parse, it additionally matches the following:
+        // - [...] elements, where the meaning of parentheses and escapes change
+        // - other escape sequences, so we do not misparse escape sequences as
+        //   interesting elements
+        // - non-matching or lookahead parentheses, which do not capture. These
+        //   follow the '(' with a '?'.
+        $backreferenceRe = '#\[(?:[^\\\\\]]|\\\.)*\]|\(\??|\\\([1-9][0-9]*)|\\\.#';
+        $numCaptures = 0;
+        $ret = '';
+
+        $strLen = count($regexps);
+        for ($i = 0; $i < $strLen; ++$i) {
+            $offset = $numCaptures;
+            $re = $regexps[$i];
+
+            if ($i > 0) {
+                $ret .= $separator;
+            }
+
+            while (strlen($re) > 0) {
+                $matches = array();
+                $matchFound = preg_match($backreferenceRe, $re, $matches, PREG_OFFSET_CAPTURE);
+
+                if ($matchFound === 0) {
+                    $ret .= $re;
+                    break;
+                }
+
+                // PHP aliases to match the JS naming conventions
+                $match = $matches[0];
+                $index = $match[1];
+
+                $ret .= substr($re, 0, $index);
+                $re = substr($re, $index + strlen($match[0]));
+
+                if (substr($match[0], 0, 1) === '\\' && isset($matches[1])) {
+                    // Adjust the backreference.
+                    $ret .= "\\" . strval(intval($matches[1][0]) + $offset);
+                } else {
+                    $ret .= $match[0];
+                    if ($match[0] == "(") {
+                        ++$numCaptures;
+                    }
+                }
+            }
+        }
+
+        return $ret;
+    }
+
     private function compileMode($mode, $parent = null)
     {
         if (isset($mode->compiled)) {
@@ -260,7 +323,7 @@ class Language
 
         for ($i = 0; $i < count($mode->contains); ++$i) {
             $terminators[] = $mode->contains[$i]->beginKeywords
-                ? "\.?(" . $mode->contains[$i]->begin . ")\.?"
+                ? "\.?(?:" . $mode->contains[$i]->begin . ")\.?"
                 : $mode->contains[$i]->begin;
         }
         if ($mode->terminatorEnd) {
@@ -269,7 +332,7 @@ class Language
         if ($mode->illegal) {
             $terminators[] = $mode->illegal;
         }
-        $mode->terminators = count($terminators) ? $this->langRe(implode("|", $terminators), true) : null;
+        $mode->terminators = count($terminators) ? $this->langRe($this->joinRe($terminators, "|"), true) : null;
     }
 
     public function compile()
