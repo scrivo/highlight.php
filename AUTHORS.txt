@@ -116,6 +116,7 @@ Language and style definitions (copied from the highlight.js project)
     Flaviu Tamas <tamas.flaviu@gmail.com>
     Gavin Siu <gavsiu@gmail.com>
     Google Inc. (David Benjamin) <davidben@google.com>
+    Greg Cline <gregrcline@gmail.com>
     Gu Yiling <justice360@gmail.com>
     Guannan Wei <guannanwei@outlook.com>
     Guillaume Gomez <guillaume1.gomez@gmail.com>
