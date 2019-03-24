@@ -30,7 +30,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-set_time_limit(60);
+set_time_limit(0);
 $start = microtime(true);
 
 require_once "../Highlight/Autoloader.php";
