@@ -19,8 +19,12 @@
     },
     "autoload": {
         "psr-0": {
-            "Highlight\\": ""
-        }
+            "Highlight\\": "",
+            "HighlightUtilities\\": ""
+        },
+        "files": [
+            "HighlightUtilities/functions.php"
+        ]
     },
     "authors": [
         {
@@ -46,5 +50,8 @@
     "require": {
         "ext-json": "*",
         "ext-mbstring": "*"
+    },
+    "suggest": {
+        "ext-dom": "Needed to make use of the features in the utilities namespace"
     }
 }
