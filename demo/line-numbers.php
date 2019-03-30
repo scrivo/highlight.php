@@ -30,6 +30,8 @@
  */
 
 require_once "../Highlight/Autoloader.php";
+require_once "../HighlightUtilities/functions.php";
+
 spl_autoload_register("Highlight\\Autoloader::load");
 
 $hl = new Highlight\Highlighter();
@@ -74,10 +76,10 @@ $hl = new Highlight\Highlighter();
 
     <body>
         <?php
-        $snippet = file_get_contents("../test/detect/ruby/default.txt");
-        $r = $hl->highlight('ruby', $snippet);
+        $snippet = file_get_contents("../test/detect/php/default.txt");
+        $result = $hl->highlight("php", $snippet);
 
-        $lines = preg_split('/\R/', $r->value);
+        $lines = HighlightUtilities\splitCodeIntoArray($result->value);
         ?>
         <table>
             <tbody>
