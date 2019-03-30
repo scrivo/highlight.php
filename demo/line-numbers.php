@@ -38,13 +38,14 @@ $hl = new Highlight\Highlighter();
 
 ?>
 
-<html>
+<html lang="en">
     <head>
+        <title>highlight.php line number example</title>
         <link rel="stylesheet" type="text/css" href="../styles/default.css">
 
         <style type="text/css">
             table {
-                border-collapse:collapse;
+                border-collapse: collapse;
                 border-spacing: 0;
                 font-family: sans-serif;
                 width: 100%;
@@ -63,18 +64,24 @@ $hl = new Highlight\Highlighter();
             }
 
             td[data-line-number]::before {
+                color: rgba(0, 0, 0, 0.5);
                 content: attr(data-line-number);
                 display: block;
             }
 
             .blob-code {
-                padding-left: 15px;
-                white-space: pre;
+                padding: 5px 15px;
             }
         </style>
     </head>
 
     <body>
+        <h1>Render highlight.php with line numbers</h1>
+
+        <p>
+            Here's a demo of rendering the result of highlight.php with line numbers. With the <code>HighlightUtilities\splitCodeIntoArray()</code> function.
+        </p>
+
         <?php
         $snippet = file_get_contents("../test/detect/php/default.txt");
         $result = $hl->highlight("php", $snippet);
@@ -86,7 +93,9 @@ $hl = new Highlight\Highlighter();
                 <?php foreach ($lines as $number => $line): ?>
                     <tr>
                         <td id="L<?= $number; ?>" data-line-number="<?= $number; ?>"></td>
-                        <td id="LC<?= $number; ?>" class="blob-code"><?= $line; ?></td>
+                        <td id="LC<?= $number; ?>" class="blob-code">
+                            <pre><code><?= $line; ?></code></pre>
+                        </td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
