@@ -3,6 +3,7 @@
 $finder = PhpCsFixer\Finder::create()
     ->in('demo')
     ->in('Highlight')
+    ->in('HighlightUtilities')
     ->in('test')
 ;
 
@@ -15,7 +16,7 @@ return PhpCsFixer\Config::create()
         'concat_space' => ['spacing' => 'one'],
         'no_useless_else' => true,
         'no_useless_return' => true,
-        'phpdoc_align'=> true,
+        'phpdoc_align' => true,
         'phpdoc_order' => true,
         'phpdoc_trim_consecutive_blank_line_separation' => true,
         'single_quote' => false,

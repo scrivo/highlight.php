@@ -6,6 +6,22 @@
 
 *highlight.php* is a server side code highlighter written in PHP that currently supports 185 languages. It's a port of [highlight.js](http://www.highlightjs.org) by Ivan Sagalaev that makes full use of the language and style definitions of the original JavaScript project.
 
+[TOC]: # "## Table of Contents"
+
+## Table of Contents
+- [Installation + Setup](#installation--setup)
+    - [Composer Version Constraints](#composer-version-constraints)
+- [Usage](#usage)
+    - [Explicit Mode](#explicit-mode)
+    - [Automatic Language Detection Mode](#automatic-language-detection-mode)
+    - [Stylesheets](#stylesheets)
+- [Highlighter Utilities](#highlighter-utilities)
+- [Versioning](#versioning)
+    - [Backward Compatibility Promise](#backward-compatibility-promise)
+- [Some History](#some-history)
+- [License](#license)
+
+
 ## Installation + Setup
 
 The recommended approach is to install the project through [Composer](https://getcomposer.org/).
@@ -42,16 +58,16 @@ try {
     // Highlight some code.
     $highlighted = $hl->highlight('ruby', $code);
 
-    echo "<pre class=\"hljs {$highlighted->language}\">\n";
-    echo $highlighted->value . "\n";
-    echo "</pre>\n";
+    echo "<pre><code class=\"hljs {$highlighted->language}\">";
+    echo $highlighted->value;
+    echo "</code></pre>";
 }
 catch (DomainException $e) {
     // This is thrown if the specified language does not exist
 
-    echo "<pre>\n";
-    echo $code . "\n";
-    echo "</pre>\n";
+    echo "<pre><code>";
+    echo $code;
+    echo "</code></pre>";
 }
 ```
 
@@ -69,14 +85,22 @@ $hl->setAutodetectLanguages(array('ruby', 'python', 'perl'));
 
 $highlighted = $hl->highlightAuto(file_get_contents('some_ruby_script.rb'));
 
-echo "<pre class=\"hljs {$highlighted->language}\">\n";
-echo $highlighted->value . "\n";
-echo "</pre>\n";
+echo "<pre><code class=\"hljs {$highlighted->language}\">";
+echo $highlighted->value;
+echo "</code></pre>";
 ```
 
 ### Stylesheets
 
 The same stylesheets available in the **highlight.js** project are available in the `styles` directory of this project and may be included in your own CSS or made accessible to your web server.
+
+## Highlighter Utilities
+
+The core of the project is loyal port of **highlight.js** and is available under the main `Highlight` namespace. A series of convenience functions are provided under the `HighlightUtilities` namespace to introduce additional functionality without the need for another dependency.
+
+Available functions:
+
+- [`splitCodeIntoArray($html)`](HighlightUtilities/functions.php#L5-L14)
 
 ## Versioning
 
@@ -99,6 +123,6 @@ It was my decision not to make a PHP highlighter but to do a port of highlight.j
 
 Happy coding!
 
-## LICENSE
+## License
 
 [BSD](./LICENSE.md)
