@@ -1,9 +1,6 @@
 <?php
-/* Copyright (c)
- * - 2006-2013, Ivan Sagalaev (maniac@softwaremaniacs.org), highlight.js
- *              (original author)
- * - 2013,      Geert Bergman (geert@scrivo.nl), highlight.php
- * All rights reserved.
+
+/* Copyright (c) 2013-2019 Geert Bergman (geertscrivo.nl), highlight.php
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -30,21 +27,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-/* Sample: highlight a this code file without auto detection.
- */
-
-require_once("Highlight/Autoloader.php");
+require_once __DIR__ . "../Highlight/Autoloader.php";
 spl_autoload_register("Highlight\\Autoloader::load");
 
 $hl = new Highlight\Highlighter();
 $r = $hl->highlight("html", file_get_contents(__FILE__));
-
 ?>
-<html>
+
+<html lang="en">
     <head>
-        <link rel="stylesheet" type="text/css" href="styles/default.css">
+        <title>highlight.php example</title>
+        <link rel="stylesheet" type="text/css" href="../styles/default.css">
     </head>
     <body>
-        <pre><code class="hljs <?=$r->language?>"><?=$r->value?></code></pre>
+        <pre><code class="hljs <?=$r->language; ?>"><?=$r->value; ?></code></pre>
     </body>
 </html>

@@ -32,8 +32,6 @@ require_once "../HighlightUtilities/functions.php";
 
 spl_autoload_register("Highlight\\Autoloader::load");
 
-$hl = new Highlight\Highlighter();
-
 ?>
 
 <html lang="en">
@@ -81,6 +79,7 @@ $hl = new Highlight\Highlighter();
         </p>
 
         <?php
+        $hl = new Highlight\Highlighter();
         $snippet = file_get_contents("../test/detect/php/default.txt");
         $result = $hl->highlight("php", $snippet);
 
