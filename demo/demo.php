@@ -1,9 +1,9 @@
 <?php
+
 /* Copyright (c)
  * - 2006-2013, Ivan Sagalaev (maniac@softwaremaniacs.org), highlight.js
  *              (original author)
- * - 2013-2015, Geert Bergman (geert@scrivo.nl), highlight.php
- * All rights reserved.
+ * - 2013-2019, Geert Bergman (geert@scrivo.nl), highlight.php
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:

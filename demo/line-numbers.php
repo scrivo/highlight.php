@@ -1,8 +1,6 @@
 <?php
-/* Copyright (c)
- * - 2013-2015, Geert Bergman (geert@scrivo.nl), highlight.php
- * - 2014,      Daniel Lynge, highlight.php (contributor)
- * All rights reserved.
+
+/* Copyright (c) 2018 Geert Bergman (geertscrivo.nl), highlight.php
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
