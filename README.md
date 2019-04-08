@@ -100,7 +100,7 @@ The core of the project is loyal port of **highlight.js** and is available under
 
 Available functions:
 
-- [`splitCodeIntoArray($html)`](HighlightUtilities/functions.php#L5-L14)
+- [`splitCodeIntoArray($html)`](HighlightUtilities/functions.php#L32-L45)
 
 ## Versioning
 
