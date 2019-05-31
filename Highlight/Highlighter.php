@@ -190,6 +190,10 @@ class Highlighter
 
         $openSpan .= $classname . "\">";
 
+        if (!$classname) {
+            return $insideSpan;
+        }
+
         return $openSpan . $insideSpan . $closeSpan;
     }
 
