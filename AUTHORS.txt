@@ -241,6 +241,7 @@ Language and style definitions (copied from the highlight.js project)
     Sam Wu <samsam2310@gmail.com>
     Samuel Reed <sam@bitmex.com>
     Sean T. Allen <sean@monkeysnatchbanana.com>
+    Sejin Jeon <jinaidy93@gmail.com>
     Seongwon Lee <dlimpid@gmail.com>
     Sergey Baranov <segyrn@yandex.ru>
     Sergey Bronnikov <sergeyb@bronevichok.ru>
