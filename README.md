@@ -40,7 +40,7 @@ It's come to our attention that a lot of tutorials and projects out there are lo
 
 ## Usage
 
-The `Highlight\Highlighter` class contains the highlighting functionality. You can choose between two highlighting modes:
+The `\Highlight\Highlighter` class contains the highlighting functionality. You can choose between two highlighting modes:
 
 1. explicit mode
 2. automatic language detection mode
@@ -51,7 +51,7 @@ In explicit mode, you must define which language you will be highlighting as.
 
 ```php
 // Instantiate the Highlighter.
-$hl = new Highlight\Highlighter();
+$hl = new \Highlight\Highlighter();
 $code = file_get_contents('some_ruby_script.rb');
 
 try {
@@ -80,7 +80,7 @@ Alternatively you can use the automatic detection mode, which highlights your co
 > It is highly recommended you explicitly choose the language or limit the number of languages to automatically detect to reduce the number of inaccuracies.
 
 ```php
-$hl = new Highlight\Highlighter();
+$hl = new \Highlight\Highlighter();
 $hl->setAutodetectLanguages(array('ruby', 'python', 'perl'));
 
 $highlighted = $hl->highlightAuto(file_get_contents('some_ruby_script.rb'));
