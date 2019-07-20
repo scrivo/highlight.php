@@ -100,7 +100,11 @@ The core of the project is loyal port of **highlight.js** and is available under
 
 Available functions:
 
-- [`splitCodeIntoArray($html)`](HighlightUtilities/functions.php#L32-L45)
+- [`getAvailableStyleSheets()`](HighlightUtilities/functions.php#L32-L45)
+- [`getStyleSheet()`](HighlightUtilities/functions.php#L72-L85)
+- [`getStyleSheetFolder()`](HighlightUtilities/functions.php#L93-L101)
+- [`getStyleSheetPath()`](HighlightUtilities/functions.php#L109-L121)
+- [`splitCodeIntoArray($html)`](HighlightUtilities/functions.php#L137-L150)
 
 ## Versioning
 

@@ -37,6 +37,56 @@ class HighlightUtilitiesTest extends PHPUnit_Framework_TestCase
         $this->hl = new \Highlight\Highlighter();
     }
 
+    public function testGetAvailableStyleSheets_NamesOnly()
+    {
+        $results = \HighlightUtilities\getAvailableStyleSheets();
+
+        $this->assertNotEmpty($results);
+
+        foreach ($results as $result) {
+            $this->assertNotContains(DIRECTORY_SEPARATOR, $result);
+            $this->assertNotContains(".css", $result);
+        }
+    }
+
+    public function testGetAvailableStyleSheets_FilePaths()
+    {
+        $results = \HighlightUtilities\getAvailableStyleSheets(true);
+
+        $this->assertNotEmpty($results);
+
+        foreach ($results as $result) {
+            $this->assertContains(DIRECTORY_SEPARATOR, $result);
+            $this->assertContains(".css", $result);
+
+            $this->assertFileExists($result);
+        }
+    }
+
+    public function testGetAvailableStyleSheets_SameCount()
+    {
+        $namesOnly = \HighlightUtilities\getAvailableStyleSheets();
+        $filePaths = \HighlightUtilities\getAvailableStyleSheets(true);
+
+        $this->assertCount(count($namesOnly), $filePaths);
+    }
+
+    public function testGetStyleSheet_Exists()
+    {
+        $yesExt = \HighlightUtilities\getStyleSheet("a11y-dark.css");
+        $noExt = \HighlightUtilities\getStyleSheet("a11y-dark");
+
+        $this->assertNotEmpty($yesExt);
+        $this->assertEquals($yesExt, $noExt);
+    }
+
+    public function testGetStyleSheet_NotExists()
+    {
+        $this->setExpectedException('\DomainException');
+
+        \HighlightUtilities\getStyleSheet("strawberry.png");
+    }
+
     public function testSplitCodeIntoArray_MultilineComment()
     {
         $raw = <<<PHP
