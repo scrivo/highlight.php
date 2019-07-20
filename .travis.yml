@@ -1,6 +1,7 @@
 language: php
 php:
   - nightly
+  - 7.4snapshot
   - 7.3
   - 7.2
   - 7.1
@@ -15,6 +16,10 @@ matrix:
     # Since PHP 8.0.0-dev is the new nightly, some dependencies don't support
     # it in their Composer files
     - php: nightly
+
+    # Since PHP 7.4 isn't finalized, we'll allow it to fail but it should be here
+    # for detecting early breaking changes.
+    - php: 7.4snapshot
 
 install:
   - composer install --no-interaction --no-progress
