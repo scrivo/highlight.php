@@ -260,6 +260,7 @@ Language and style definitions (copied from the highlight.js project)
     Stephan Kountso <steplg@gmail.com>
     Sylvestre Ledru <sylvestre.ledru@scilab-enterprises.com>
     Søren Enevoldsen <senevoldsen90@gmail.com>
+    Taif Alimov <inzeppelin@gmail.com>
     Taisuke Fujimoto <temp-impl@users.noreply.github.com>
     Taneli Vatanen <taneli.vatanen@gmail.com>
     Taras <oxdef@oxdef.info>
