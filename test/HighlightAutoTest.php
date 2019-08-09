@@ -42,6 +42,8 @@ class HighlightAutoTest extends PHPUnit_Framework_TestCase
             'livescript',
             'shell',
             'plaintext',
+            'coffeescript',
+            'handlebars',
         );
     }
 
