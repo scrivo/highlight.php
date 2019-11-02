@@ -46,6 +46,7 @@ class Highlighter
     private $keywordCount = 0;
     private $relevance = 0;
     private $ignoreIllegals = false;
+    private $lastMatch;
 
     private static $classMap = array();
     private static $languages = null;
@@ -57,6 +58,7 @@ class Highlighter
 
     public function __construct()
     {
+        $this->lastMatch = new \stdClass();
         $this->options = array(
             'classPrefix' => 'hljs-',
             'tabReplace' => null,
@@ -140,22 +142,6 @@ class Highlighter
         return sprintf('/%s/m', preg_quote($value));
     }
 
-    private function subMode($lexeme, $mode)
-    {
-        for ($i = 0; $i < count($mode->contains); ++$i) {
-            if ($this->testRe($mode->contains[$i]->beginRe, $lexeme)) {
-                if ($mode->contains[$i]->endSameAsBegin) {
-                    $matches = array();
-                    preg_match($mode->contains[$i]->beginRe, $lexeme, $matches);
-
-                    $mode->contains[$i]->endRe = $this->escapeRe($matches[0]);
-                }
-
-                return $mode->contains[$i];
-            }
-        }
-    }
-
     private function endOfMode($mode, $lexeme)
     {
         if ($this->testRe($mode->endRe, $lexeme)) {
@@ -170,11 +156,6 @@ class Highlighter
         }
     }
 
-    private function isIllegal($lexeme, $mode)
-    {
-        return !$this->ignoreIllegals && $this->testRe($mode->illegalRe, $lexeme);
-    }
-
     private function keywordMatch($mode, $match)
     {
         $kwd = $this->language->caseInsensitive ? mb_strtolower($match[0], "UTF-8") : $match[0];
@@ -184,15 +165,19 @@ class Highlighter
 
     private function buildSpan($classname, $insideSpan, $leaveOpen = false, $noPrefix = false)
     {
+        if (!$leaveOpen && $insideSpan === '') {
+            return '';
+        }
+
+        if (!$classname) {
+            return $insideSpan;
+        }
+
         $classPrefix = $noPrefix ? "" : $this->options['classPrefix'];
         $openSpan = "<span class=\"" . $classPrefix;
         $closeSpan = $leaveOpen ? "" : self::SPAN_END_TAG;
 
         $openSpan .= $classname . "\">";
-
-        if (!$classname) {
-            return $insideSpan;
-        }
 
         return $openSpan . $insideSpan . $closeSpan;
     }
@@ -289,7 +274,7 @@ class Highlighter
         $this->modeBuffer = '';
     }
 
-    private function startNewMode($mode)
+    private function startNewMode($mode, $lexeme)
     {
         $this->result .= $mode->className ? $this->buildSpan($mode->className, "", true) : "";
 
@@ -298,6 +283,74 @@ class Highlighter
         $this->top = $t;
     }
 
+    private function doBeginMatch($match)
+    {
+        $lexeme = $match[0];
+        $newMode = $match->rule;
+
+        if ($newMode && $newMode->endSameAsBegin) {
+            $newMode->endRe = $this->escapeRe($lexeme);
+        }
+
+        if ($newMode->skip) {
+            $this->modeBuffer .= $lexeme;
+        } else {
+            if ($newMode->excludeBegin) {
+                $this->modeBuffer .= $lexeme;
+            }
+            $this->processBuffer();
+            if (!$newMode->returnBegin && !$newMode->excludeBegin) {
+                $this->modeBuffer = $lexeme;
+            }
+        }
+        $this->startNewMode($newMode, $lexeme);
+
+        return $newMode->returnBegin ? 0 : count($lexeme);
+    }
+
+    private function doEndMatch($match)
+    {
+        $lexeme = $match[0];
+        $endMode = $this->endOfMode($this->top, $lexeme);
+
+        if (!$endMode) {
+            return null;
+        }
+
+        $origin = $this->top;
+        if ($origin->skip) {
+            $this->modeBuffer .= $lexeme;
+        } else {
+            if (!($origin->returnEnd || $origin->excludeEnd)) {
+                $this->modeBuffer .= $lexeme;
+            }
+            $this->processBuffer();
+            if ($origin->excludeEnd) {
+                $this->modeBuffer = $lexeme;
+            }
+        }
+
+        do {
+            if ($this->top->className) {
+                $this->result .= self::SPAN_END_TAG;
+            }
+            if (!$this->top->skip && !$this->top->subLanguage) {
+                $this->relevance += $this->top->relevance;
+            }
+            $this->top = $this->top->parent;
+        } while($this->top !== $endMode->parent);
+
+        if ($endMode->starts) {
+            if ($endMode->endSameAsBegin) {
+                $endMode->starts->endRe = $endMode->endRe;
+            }
+            $this->startNewMode($endMode->starts, '');
+        }
+
+        return $origin->returnEnd ? 0 : count($lexeme);
+    }
+
+    // @TODO this is where I stopped
     private function processLexeme($buffer, $lexeme = null)
     {
         $this->modeBuffer .= $buffer;

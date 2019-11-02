@@ -35,6 +35,8 @@ namespace Highlight;
 
 class Language
 {
+    private static $COMMON_KEYWORDS = ['of', 'and', 'for', 'in', 'not', 'or', 'if', 'then'];
+
     public $disableAutodetect = false;
     public $caseInsensitive = false;
     public $aliases = null;
@@ -116,7 +118,17 @@ class Language
         //
         //   https://www.pcre.org/original/doc/html/pcrepattern.html
 
-        return "/(*ANYCRLF){$value}/um" . ($this->caseInsensitive ? "i" : "");
+        $regex = "/(*ANYCRLF){$value}/um" . ($this->caseInsensitive ? "i" : "");
+
+        return new RegEx($regex);
+    }
+
+    private function reCountMatchGroups($re)
+    {
+        $results = [];
+        preg_match_all('#' . (string)$re . '|#', '', $results);
+
+        return count($results) - 1;
     }
 
     private function processKeyWords($kw)
@@ -159,6 +171,19 @@ class Language
         return $result;
     }
 
+    private function dependencyOnParent($mode)
+    {
+        if (!$mode) {
+            return false;
+        }
+
+        if ($mode->endsWithParent) {
+            return $mode->endsWithParent;
+        }
+
+        return $this->dependencyOnParent($mode->starts);
+    }
+
     private function expandMode($mode)
     {
         if (isset($mode->variants) && !isset($mode->cachedVariants)) {
@@ -169,20 +194,34 @@ class Language
             }
         }
 
+        // EXPAND
+        // if we have variants then essentually "replace" the mode with the variants
+        // this happens in compileMode, where this function is called from
         if (isset($mode->cachedVariants)) {
             return $mode->cachedVariants;
         }
 
-        if (isset($mode->endsWithParent) && $mode->endsWithParent) {
-            return array($this->inherit($mode));
+        // CLONE
+        // if we have dependencies on parents then we need a unique
+        // instance of ourselves, so we can be reused with many
+        // different parents without issue
+        if ($this->dependencyOnParent($mode)) {
+            return array($this->inherit($mode, [
+                'starts' => $mode->starts ? $this->inherit($mode->starts) : null
+            ]));
         }
 
+        // no special dependency issues, just return ourselves
         return array($mode);
     }
 
     /**
      * joinRe logically computes regexps.join(separator), but fixes the
      * backreferences so they continue to match.
+     *
+     * it also places each individual regular expression into it's own
+     * match group, keeping track of the sequencing of those match groups
+     * is currently an exercise for the caller. :-)
      *
      * @param array  $regexps
      * @param string $separator
@@ -204,12 +243,15 @@ class Language
 
         $strLen = count($regexps);
         for ($i = 0; $i < $strLen; ++$i) {
+            $numCaptures += 1;
             $offset = $numCaptures;
             $re = $regexps[$i];
 
             if ($i > 0) {
                 $ret .= $separator;
             }
+
+            $ret .= "(";
 
             while (strlen($re) > 0) {
                 $matches = array();
@@ -237,9 +279,85 @@ class Language
                     }
                 }
             }
+
+            $ret .= ")";
         }
 
         return $ret;
+    }
+
+    private function buildModeRegex($mode)
+    {
+        $matchIndexes = [];
+        $matcherRe = null;
+        $regexes = [];
+        $matcher = new \stdClass();
+        $matchAt = 1;
+
+        $addRule = function ($rule, $regex) use (&$matchIndexes, &$matchAt, &$regexes) {
+            $matchIndexes[$matchAt] = $rule;
+            $regexes[] = [$rule, $regex];
+            $matchAt += $this->reCountMatchGroups($regex) + 1;
+        };
+
+        $term = null;
+        for ($i = 0; $i < count($mode->contains); $i++) {
+            $re = null;
+            $term = $mode->contains[$i];
+
+            if ($term->beginKeywords) {
+                $re = "\.?(?:" . $term->begin . ")\.?";
+            } else {
+                $re = $term->begin;
+            }
+
+            $addRule($term, $re);
+        }
+        if ($mode->terminatorEnd) {
+            $addRule('end', $mode->terminatorEnd);
+        }
+        if ($mode->illegal) {
+            $addRule('illegal', $mode->illegal);
+        }
+
+        $terminators = [];
+        foreach ($regexes as $regex) {
+            $terminators[] = $regex[1];
+        }
+        $matcherRe = $this->langRe($this->joinRe($terminators, '|'), true);
+
+        $matcher->lastIndex = 0;
+        $matcher->exec = function ($s) use ($regexes, $matcher, $matcherRe, $matchIndexes, $mode) {
+            if (count($regexes) === 0) {
+                return null;
+            }
+
+            $matcherRe->lastIndex = $matcher->lastIndex;
+            $match = $matcherRe->exec($s);
+            if (!$match) {
+                return null;
+            }
+
+            $rule = null;
+            for ($i = 0; $i < count($match); $i ++) {
+                if ($match[$i] !== null && isset($matchIndexes[$i]) && $matchIndexes[$i] !== null) {
+                    $rule = $matchIndexes[$i];
+                    break;
+                }
+            }
+
+            if (is_string($rule)) {
+                $match->type = $rule;
+                $match->extra = [$mode->illegal, $mode->terminatorEnd];
+            } else {
+                $match->type = "begin";
+                $match->rule = $rule;
+            }
+
+            return $match;
+        };
+
+        return $matcher;
     }
 
     private function compileMode($mode, $parent = null)
@@ -319,20 +437,47 @@ class Language
             $this->compileMode($mode->starts, $parent);
         }
 
-        $terminators = array();
+        $mode->terminators = $this->buildModeRegex($mode);
+    }
 
-        for ($i = 0; $i < count($mode->contains); ++$i) {
-            $terminators[] = $mode->contains[$i]->beginKeywords
-                ? "\.?(?:" . $mode->contains[$i]->begin . ")\.?"
-                : $mode->contains[$i]->begin;
+    private function compileKeywords($rawKeywords, $caseSensitive)
+    {
+        $compiledKeywords = [];
+
+        $splitAndCompile = function ($className, $str) use ($compiledKeywords, $caseSensitive) {
+            if ($caseSensitive) {
+                $str = strtolower($str);
+            }
+
+            $keywords = explode(' ', $str);
+
+            foreach ($keywords as $keyword) {
+                $pair = explode('|', $keyword);
+                $compiledKeywords[$pair[0]] = [$className, $this->scoreForKeyword($pair[0], $pair[1])];
+            }
+        };
+
+        if (is_string($rawKeywords)) {
+            $splitAndCompile("keyword", $rawKeywords);
+        } else {
+            foreach ($rawKeywords as $className => $rawKeyword) {
+                $splitAndCompile($className, $rawKeyword);
+            }
         }
-        if ($mode->terminatorEnd) {
-            $terminators[] = $mode->terminatorEnd;
+    }
+
+    private function scoreForKeyword($keyword, $providedScore)
+    {
+        if ($providedScore) {
+            return (int)$providedScore;
         }
-        if ($mode->illegal) {
-            $terminators[] = $mode->illegal;
-        }
-        $mode->terminators = count($terminators) ? $this->langRe($this->joinRe($terminators, "|"), true) : null;
+
+        return $this->commonKeyword($keyword) ? 0 : 1;
+    }
+
+    private function commonKeyword($word)
+    {
+        return in_array(strtolower($word), self::$COMMON_KEYWORDS);
     }
 
     public function compile()
