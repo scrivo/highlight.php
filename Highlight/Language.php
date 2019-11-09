@@ -33,15 +33,76 @@
 
 namespace Highlight;
 
+/**
+ * @todo In highlight.php 10.x, replace the @final attribute with the `final` keyword.
+ *
+ * @final
+ * @internal
+ *
+ * // Backward compatibility properties
+ *
+ * @property \stdClass $mode (DEPRECATED) All properties traditionally inside of $mode are now available directly from this class.
+ * @property bool $caseInsensitive (DEPRECATED) Due to compatibility requirements with highlight.js, use `case_insensitive` instead.
+ *
+ * // Language definition set via language definition JSON files
+ *
+ * @property bool $case_insensitive
+ * @property array $aliases
+ * @property string $className
+ * @property string $begin
+ * @property RegEx $beginRe
+ * @property string $end
+ * @property RegEx $endRe
+ * @property string $beginKeywords
+ * @property bool $endsWithParent
+ * @property bool $endsParent
+ * @property bool $endSameAsBegin
+ * @property string $lexemes
+ * @property RegEx $lexemesRe
+ * @property array<string, array> $keywords
+ * @property string $illegal
+ * @property RegEx $illegalRe
+ * @property bool $excludeBegin
+ * @property bool $excludeEnd
+ * @property bool $returnBegin
+ * @property bool $returnEnd
+ * @property array $contains
+ * @property string $starts
+ * @property array $variants
+ * @property string|array $subLanguage
+ * @property bool $skip
+ * @property bool $disableAutodetect
+ *
+ * // Properties set at runtime by the language compilation process
+ *
+ * @property string $terminators
+ * @property string $terminator_end
+ * @property bool $compiled
+ * @property int $relevance
+ *
+ * @see https://highlightjs.readthedocs.io/en/latest/reference.html
+ */
 class Language
 {
     private static $COMMON_KEYWORDS = ['of', 'and', 'for', 'in', 'not', 'or', 'if', 'then'];
 
-    public $disableAutodetect = false;
-    public $caseInsensitive = false;
-    public $aliases = null;
-    public $name = null;
+    /**
+     * @var string
+     */
+    public $name;
 
+    /**
+     * @var \stdClass|null
+     */
+    private $mode = null;
+
+    /**
+     * @todo Remove in highlight.php 10.x
+     *
+     * @deprecated 9.16.0 This method is no longer used since all of these properties will be set through magic methods instead
+     *
+     * @param \stdClass|null $e
+     */
     public function complete(&$e)
     {
         if (!isset($e)) {
@@ -103,14 +164,52 @@ class Language
     {
         $json = file_get_contents($filePath);
         $this->mode = json_decode($json);
-
         $this->name = $lang;
-        $this->aliases = isset($this->mode->aliases) ? $this->mode->aliases : null;
-
-        $this->caseInsensitive = isset($this->mode->case_insensitive) ? $this->mode->case_insensitive : false;
-        $this->disableAutodetect = isset($this->mode->disableAutodetect) ? $this->mode->disableAutodetect : false;
     }
 
+    public function __get($name)
+    {
+        if ($name === 'mode') {
+            @trigger_error('The "mode" property will be removed in highlight.php 10.x', E_USER_DEPRECATED);
+
+            return $this->mode;
+        }
+
+        if ($name === 'caseInsensitive') {
+            @trigger_error('Due to compatibility requirements with highlight.js, use "case_insensitive" instead.', E_USER_DEPRECATED);
+
+            return $this->mode->case_insensitive;
+        }
+
+        if (isset($this->mode->{$name})) {
+            $patch = array(
+                "begin" => true,
+                "end" => true,
+                "lexemes" => true,
+                "illegal" => true,
+            );
+
+            $value = $this->mode->{$name};
+
+            if (isset($patch[$name])) {
+                $value = str_replace("\\/", "/", $value);
+                $value = str_replace("/", "\\/", $value);
+            }
+
+            $this->{$name} = $value;
+
+            return $this->{$name};
+        }
+
+        return null;
+    }
+
+    /**
+     * @param string $value
+     * @param bool $global
+     *
+     * @return RegEx
+     */
     private function langRe($value, $global = false)
     {
         // PCRE allows us to change the definition of "new line." The
@@ -118,11 +217,16 @@ class Language
         //
         //   https://www.pcre.org/original/doc/html/pcrepattern.html
 
-        $regex = "/(*ANYCRLF){$value}/um" . ($this->caseInsensitive ? "i" : "");
+        $regex = "/(*ANYCRLF){$value}/um" . ($this->case_insensitive ? "i" : "");
 
         return new RegEx($regex);
     }
 
+    /**
+     * @param RegEx|string $re
+     *
+     * @return int
+     */
     private function reCountMatchGroups($re)
     {
         $results = [];
@@ -482,10 +586,10 @@ class Language
 
     public function compile()
     {
-        if (!isset($this->mode->compiled)) {
+        if (!$this->mode->compiled) {
             $jr = new JsonRef();
             $this->mode = $jr->decode($this->mode);
-            $this->compileMode($this->mode);
+            $this->compileMode($this);
         }
     }
 }

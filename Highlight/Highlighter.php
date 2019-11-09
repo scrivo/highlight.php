@@ -476,6 +476,8 @@ class Highlighter
     /**
      * @throws \DomainException if the requested language was not in this
      *                          Highlighter's language set
+     *
+     * @return Language
      */
     private function getLanguage($name)
     {
@@ -507,9 +509,16 @@ class Highlighter
      * - relevance (int)
      * - value (an HTML string with highlighting markup).
      *
+     * @param string $language
+     * @param string $code
+     * @param bool $ignoreIllegals
+     * @param null $continuation
+     *
      * @throws \DomainException if the requested language was not in this
      *                          Highlighter's language set
      * @throws \Exception       if an invalid regex was given in a language file
+     *
+     * @return \stdClass
      */
     public function highlight($language, $code, $ignoreIllegals = true, $continuation = null)
     {

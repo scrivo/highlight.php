@@ -1,9 +1,11 @@
 <?php
 
-
 namespace Highlight;
 
-
+/**
+ * @internal
+ * @since 9.16.0
+ */
 abstract class ArbitraryProperties
 {
     protected $data;

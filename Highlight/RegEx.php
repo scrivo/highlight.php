@@ -1,16 +1,29 @@
 <?php
 
-
 namespace Highlight;
 
-class RegEx extends ArbitraryProperties
+/**
+ * @internal
+ * @since 9.16.0
+ */
+final class RegEx extends ArbitraryProperties
 {
+    /**
+     * @var string
+     */
     private $regex;
-    public $lastIndex;
 
+    /**
+     * @var int
+     */
+    public $lastIndex = 0;
+
+    /**
+     * @param RegEx|string $regex
+     */
     public function __construct($regex)
     {
-        $this->regex = $regex;
+        $this->regex = (string)$regex;
         $this->data = [];
     }
 
@@ -19,6 +32,15 @@ class RegEx extends ArbitraryProperties
         return (string)$this->regex;
     }
 
+    /**
+     * Run the regular expression against the given string.
+     *
+     * @since 9.16.0
+     *
+     * @param string $str The string to run this regular expression against.
+     *
+     * @return PropertyArray|null
+     */
     public function exec($str)
     {
         $index = 0;

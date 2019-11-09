@@ -1,13 +1,21 @@
 <?php
 
-
 namespace Highlight;
 
-
-class PropertyArray extends ArbitraryProperties implements \ArrayAccess, \Countable
+/**
+ * @internal
+ * @since 9.16.0
+ */
+final class PropertyArray extends ArbitraryProperties implements \ArrayAccess, \Countable
 {
+    /**
+     * @var array
+     */
     private $array;
 
+    /**
+     * @param array $data
+     */
     public function __construct($data)
     {
         $this->array = $data;
