@@ -177,11 +177,11 @@ class Language
             return false;
         }
 
-        if ($mode->endsWithParent) {
+        if (isset($mode->endsWithParent) && $mode->endsWithParent) {
             return $mode->endsWithParent;
         }
 
-        return $this->dependencyOnParent($mode->starts);
+        return $this->dependencyOnParent(isset($mode->starts) ? $mode->starts : null);
     }
 
     private function expandMode($mode)
@@ -207,7 +207,7 @@ class Language
         // different parents without issue
         if ($this->dependencyOnParent($mode)) {
             return array($this->inherit($mode, [
-                'starts' => $mode->starts ? $this->inherit($mode->starts) : null
+                'starts' => isset($mode->starts) && $mode->starts ? $this->inherit($mode->starts) : null
             ]));
         }
 
@@ -340,7 +340,7 @@ class Language
 
             $rule = null;
             for ($i = 0; $i < count($match); $i ++) {
-                if ($match[$i] !== null && isset($matchIndexes[$i]) && $matchIndexes[$i] !== null) {
+                if ($match[$i] && isset($matchIndexes[$i]) && $matchIndexes[$i]) {
                     $rule = $matchIndexes[$i];
                     break;
                 }

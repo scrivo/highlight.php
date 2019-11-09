@@ -43,10 +43,11 @@ class Highlighter
     private $result = "";
     private $top = null;
     private $language = null;
-    private $keywordCount = 0;
     private $relevance = 0;
     private $ignoreIllegals = false;
+    private $continuations = array();
     private $lastMatch;
+    private $code;
 
     private static $classMap = array();
     private static $languages = null;
@@ -350,83 +351,57 @@ class Highlighter
         return $origin->returnEnd ? 0 : count($lexeme);
     }
 
-    // @TODO this is where I stopped
-    private function processLexeme($buffer, $lexeme = null)
+    private function processLexeme($textBeforeMatch, $match = null)
     {
-        $this->modeBuffer .= $buffer;
+        $lexeme = $match ? $match[0] : null;
+
+        // add non-matched text to the current mode buffer
+        $this->modeBuffer .= $textBeforeMatch;
 
         if ($lexeme === null) {
             $this->processBuffer();
-
             return 0;
         }
 
-        $new_mode = $this->subMode($lexeme, $this->top);
-        if ($new_mode) {
-            if ($new_mode->skip) {
-                $this->modeBuffer .= $lexeme;
-            } else {
-                if ($new_mode->excludeBegin) {
-                    $this->modeBuffer .= $lexeme;
-                }
-                $this->processBuffer();
-                if (!$new_mode->returnBegin && !$new_mode->excludeBegin) {
-                    $this->modeBuffer = $lexeme;
-                }
-            }
-            $this->startNewMode($new_mode, $lexeme);
+        // we've found a 0 width match and we're stuck, so we need to advance
+        // this happens when we have badly behaved rules that have optional matchers to the degree that
+        // sometimes they can end up matching nothing at all
+        // Ref: https://github.com/highlightjs/highlight.js/issues/2140
+        if ($this->lastMatch->type === "begin" && $match->type === "end" && $this->lastMatch->index === $match->index && $lexeme === "") {
+            // spit the "skipped" character that our regex choked on back into the output sequence
+            $this->modeBuffer .= substr($this->code, $match->index, 1);
+            return 1;
+        }
+        $this->lastMatch = $match;
 
-            return $new_mode->returnBegin ? 0 : strlen($lexeme);
+        if ($match->type === "begin") {
+            return $this->doBeginMatch($match);
+        } elseif ($match->type === "illegal" && !$this->ignoreIllegals) {
+            // illegal match, we do not continue processing
+            $_modeRaw = isset($this->top->className) ? $this->top->className : "<unnamed>";
+
+            throw new \UnexpectedValueException("Illegal lexeme \"$lexeme\" for mode \"$_modeRaw\"");
+        } elseif ($match->type === "end") {
+            $processed = $this->doEndMatch($match);
+
+            if ($processed !== null) {
+                return $processed;
+            }
         }
 
-        $end_mode = $this->endOfMode($this->top, $lexeme);
-        if ($end_mode) {
-            $origin = $this->top;
-            if ($origin->skip) {
-                $this->modeBuffer .= $lexeme;
-            } else {
-                if (!($origin->returnEnd || $origin->excludeEnd)) {
-                    $this->modeBuffer .= $lexeme;
-                }
-                $this->processBuffer();
-                if ($origin->excludeEnd) {
-                    $this->modeBuffer = $lexeme;
-                }
-            }
-            do {
-                if ($this->top->className) {
-                    $this->result .= self::SPAN_END_TAG;
-                }
-                if (!$this->top->skip && !$this->top->subLanguage) {
-                    $this->relevance += $this->top->relevance;
-                }
-                $this->top = $this->top->parent;
-            } while ($this->top != $end_mode->parent);
-            if ($end_mode->starts) {
-                if ($end_mode->endSameAsBegin) {
-                    $end_mode->starts->endRe = $end_mode->endRe;
-                }
-                $this->startNewMode($end_mode->starts, "");
-            }
-
-            return $origin->returnEnd ? 0 : strlen($lexeme);
-        }
-
-        if ($this->isIllegal($lexeme, $this->top)) {
-            $className = $this->top->className ? $this->top->className : "unnamed";
-            $err = "Illegal lexeme \"{$lexeme}\" for mode \"{$className}\"";
-
-            throw new \Exception($err);
-        }
-
-        // Parser should not reach this point as all types of lexemes should
-        // be caught earlier, but if it does due to some bug make sure it
-        // advances at least one character forward to prevent infinite looping.
+        // Why might be find ourselves here?  Only one occasion now.  An end match that was
+        // triggered but could not be completed.  When might this happen?  When an `endSameasBegin`
+        // rule sets the end rule to a specific match.  Since the overall mode termination rule that's
+        // being used to scan the text isn't recompiled that means that any match that LOOKS like
+        // the end (but is not, because it is not an exact match to the beginning) will
+        // end up here.  A definite end match, but when `doEndMatch` tries to "reapply"
+        // the end rule and fails to match, we wind up here, and just silently ignore the end.
+        //
+        // This causes no real harm other than stopping a few times too many.
 
         $this->modeBuffer .= $lexeme;
-        $l = strlen($lexeme);
 
-        return $l ? $l : 1;
+        return strlen($lexeme);
     }
 
     /**
@@ -538,6 +513,7 @@ class Highlighter
      */
     public function highlight($language, $code, $ignoreIllegals = true, $continuation = null)
     {
+        $this->code = $code;
         $this->language = $this->getLanguage($language);
         $this->language->compile();
         $this->top = $continuation ? $continuation : $this->language->mode;
@@ -565,15 +541,17 @@ class Highlighter
             $index = 0;
 
             while ($this->top && $this->top->terminators) {
-                $test = @preg_match($this->top->terminators, $code, $match, PREG_OFFSET_CAPTURE, $index);
-                if ($test === false) {
-                    throw new \Exception("Invalid " . $this->language->name . " regExp " . var_export($this->top->terminators, true));
-                } elseif ($test === 0) {
+                $this->top->terminators->lastIndex = $index;
+                $match = $this->top->terminators->exec->__invoke($code);
+
+                if (!$match) {
                     break;
                 }
-                $count = $this->processLexeme(substr($code, $index, $match[0][1] - $index), $match[0][0]);
-                $index = $match[0][1] + $count;
+
+                $count = $this->processLexeme(substr($code, $index, $match[0][1] - $index), $match[0]);
+                $index = $match->index + $count;
             }
+
             $this->processLexeme(substr($code, $index));
 
             for ($current = $this->top; isset($current->parent); $current = $current->parent) {
@@ -584,12 +562,15 @@ class Highlighter
 
             $res->relevance = $this->relevance;
             $res->value = $this->replaceTabs($this->result);
+            $res->illegal = false;
             $res->language = $this->language->name;
             $res->top = $this->top;
 
             return $res;
         } catch (\Exception $e) {
             if (strpos($e->getMessage(), "Illegal") !== false) {
+                $res->illegal = true;
+                $res->relevance = 0;
                 $res->value = $this->escape($code);
 
                 return $res;
