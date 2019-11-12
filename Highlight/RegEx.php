@@ -59,12 +59,12 @@ final class RegEx extends ArbitraryProperties
 
                 if (isset($result[1][1])) {
                     $nextIndex = $result[1][1];
-                    $proposedIndex = $idx + strlen($result[0][0]);
-                    $skippedChunk = trim(substr($str, $proposedIndex, $nextIndex - $proposedIndex));
+                    $proposedIndex = $idx + mb_strlen($result[0][0]);
+                    $skippedChunk = trim(mb_substr($str, $proposedIndex, $nextIndex - $proposedIndex));
 
                     $manualIndex = true;
 
-                    if (strlen($skippedChunk)) {
+                    if (mb_strlen($skippedChunk)) {
                         $this->lastIndex = $proposedIndex;
                     } else {
                         $this->lastIndex = $nextIndex - 1;
@@ -88,7 +88,7 @@ final class RegEx extends ArbitraryProperties
         }
 
         if (!$manualIndex) {
-            $this->lastIndex = $index + strlen($results[0]);
+            $this->lastIndex = $index + mb_strlen($results[0]);
         }
 
         if (count(array_filter($results, function ($v) { return $v !== null; })) === 0) {
