@@ -42,6 +42,7 @@ class Highlighter
     private $modeBuffer = "";
     private $result = "";
     private $top = null;
+    /** @var Language|null */
     private $language = null;
     private $relevance = 0;
     private $ignoreIllegals = false;
@@ -59,7 +60,7 @@ class Highlighter
 
     public function __construct()
     {
-        $this->lastMatch = new \stdClass();
+        $this->lastMatch = new SafeProperties(new \stdClass());
         $this->options = array(
             'classPrefix' => 'hljs-',
             'tabReplace' => null,
@@ -115,8 +116,8 @@ class Highlighter
             $lang = new Language($languageId, $filePath);
             self::$classMap[$languageId] = $lang;
 
-            if (isset($lang->mode->aliases)) {
-                foreach ($lang->mode->aliases as $alias) {
+            if ($lang->aliases) {
+                foreach ($lang->aliases as $alias) {
                     self::$aliases[$alias] = $languageId;
                 }
             }
@@ -130,7 +131,7 @@ class Highlighter
         if (!$re) {
             return false;
         }
-        $test = preg_match($re, $lexeme, $match, PREG_OFFSET_CAPTURE);
+        $test = preg_match((string) $re, $lexeme, $match, PREG_OFFSET_CAPTURE);
         if ($test === false) {
             throw new \Exception("Invalid regexp: " . var_export($re, true));
         }
@@ -159,7 +160,7 @@ class Highlighter
 
     private function keywordMatch($mode, $match)
     {
-        $kwd = $this->language->caseInsensitive ? mb_strtolower($match[0], "UTF-8") : $match[0];
+        $kwd = $this->language->case_insensitive ? mb_strtolower($match[0], "UTF-8") : $match[0];
 
         return isset($mode->keywords[$kwd]) ? $mode->keywords[$kwd] : null;
     }
@@ -190,31 +191,28 @@ class Highlighter
 
     private function processKeywords()
     {
-        if (empty($this->top->keywords)) {
+        if (!$this->top->keywords) {
             return $this->escape($this->modeBuffer);
         }
 
         $result = "";
         $lastIndex = 0;
+        $this->top->lexemesRe->lastIndex = 0;
+        $match = $this->top->lexemesRe->exec($this->modeBuffer);
 
-        /* TODO: when using the crystal language file on django and twigs code
-         * the values of $this->top->lexemesRe can become "" (empty). Check
-         * if this behaviour is consistent with highlight.js.
-         */
-        if ($this->top->lexemesRe) {
-            while (preg_match($this->top->lexemesRe, $this->modeBuffer, $match, PREG_OFFSET_CAPTURE, $lastIndex)) {
-                $result .= $this->escape(substr($this->modeBuffer, $lastIndex, $match[0][1] - $lastIndex));
-                $keyword_match = $this->keywordMatch($this->top, $match[0]);
+        while ($match) {
+            $result .= $this->escape(substr($this->modeBuffer, $lastIndex, $match->index - $lastIndex));
+            $keyword_match = $this->keywordMatch($this->top, $match);
 
-                if ($keyword_match) {
-                    $this->relevance += $keyword_match[1];
-                    $result .= $this->buildSpan($keyword_match[0], $this->escape($match[0][0]));
-                } else {
-                    $result .= $this->escape($match[0][0]);
-                }
-
-                $lastIndex = strlen($match[0][0]) + $match[0][1];
+            if ($keyword_match) {
+                $this->relevance += $keyword_match[1];
+                $result .= $this->buildSpan($keyword_match[0], $this->escape($match[0]));
+            } else {
+                $result .= $this->escape($match[0]);
             }
+
+            $lastIndex = $this->top->lexemesRe->lastIndex;
+            $match = $this->top->lexemesRe->exec($this->modeBuffer);
         }
 
         return $result . $this->escape(substr($this->modeBuffer, $lastIndex));
@@ -306,7 +304,7 @@ class Highlighter
         }
         $this->startNewMode($newMode, $lexeme);
 
-        return $newMode->returnBegin ? 0 : count($lexeme);
+        return $newMode->returnBegin ? 0 : strlen($lexeme);
     }
 
     private function doEndMatch($match)
@@ -339,7 +337,7 @@ class Highlighter
                 $this->relevance += $this->top->relevance;
             }
             $this->top = $this->top->parent;
-        } while($this->top !== $endMode->parent);
+        } while ($this->top !== $endMode->parent);
 
         if ($endMode->starts) {
             if ($endMode->endSameAsBegin) {
@@ -348,7 +346,7 @@ class Highlighter
             $this->startNewMode($endMode->starts, '');
         }
 
-        return $origin->returnEnd ? 0 : count($lexeme);
+        return $origin->returnEnd ? 0 : strlen($lexeme);
     }
 
     private function processLexeme($textBeforeMatch, $match = null)
@@ -360,6 +358,7 @@ class Highlighter
 
         if ($lexeme === null) {
             $this->processBuffer();
+
             return 0;
         }
 
@@ -370,6 +369,7 @@ class Highlighter
         if ($this->lastMatch->type === "begin" && $match->type === "end" && $this->lastMatch->index === $match->index && $lexeme === "") {
             // spit the "skipped" character that our regex choked on back into the output sequence
             $this->modeBuffer .= substr($this->code, $match->index, 1);
+
             return 1;
         }
         $this->lastMatch = $match;
@@ -474,6 +474,8 @@ class Highlighter
     }
 
     /**
+     * @param string $name
+     *
      * @throws \DomainException if the requested language was not in this
      *                          Highlighter's language set
      *
@@ -511,8 +513,8 @@ class Highlighter
      *
      * @param string $language
      * @param string $code
-     * @param bool $ignoreIllegals
-     * @param null $continuation
+     * @param bool   $ignoreIllegals
+     * @param null   $continuation
      *
      * @throws \DomainException if the requested language was not in this
      *                          Highlighter's language set
@@ -525,11 +527,11 @@ class Highlighter
         $this->code = $code;
         $this->language = $this->getLanguage($language);
         $this->language->compile();
-        $this->top = $continuation ? $continuation : $this->language->mode;
+        $this->top = $continuation ? $continuation : $this->language;
         $this->continuations = array();
         $this->result = "";
 
-        for ($current = $this->top; $current != $this->language->mode; $current = $current->parent) {
+        for ($current = $this->top; $current !== $this->language; $current = $current->parent) {
             if ($current->className) {
                 $this->result = $this->buildSpan($current->className, '', true) . $this->result;
             }
@@ -549,7 +551,7 @@ class Highlighter
             $count = 0;
             $index = 0;
 
-            while ($this->top && $this->top->terminators) {
+            while ($this->top) {
                 $this->top->terminators->lastIndex = $index;
                 $match = $this->top->terminators->exec->__invoke($code);
 
@@ -557,7 +559,7 @@ class Highlighter
                     break;
                 }
 
-                $count = $this->processLexeme(substr($code, $index, $match[0][1] - $index), $match[0]);
+                $count = $this->processLexeme(substr($code, $index, $match->index - $index), $match);
                 $index = $match->index + $count;
             }
 

@@ -44,6 +44,7 @@ namespace Highlight;
  * used in dojox.json.ref form the Dojo toolkit (Javascript). A typical
  * example of such a structure is as follows:
  *
+ * ```json
  * {
  *   "name":"Kris Zyp",
  *   "children":[{"name":"Jennika Zyp"},{"name":"Korban Zyp"}],
@@ -54,13 +55,24 @@ namespace Highlight;
  *   },
  *   "oldestChild":{"$ref":"#children.0"}
  * }
+ * ```
  *
  * Usage example:
  *
+ * ```php
  * $jr = new JsonRef();
  * $data = $jr->decode(file_get_contents("data.json"));
  * echo $data->spouse->spouse->name; // echos 'Kris Zyp'
  * echo $data->oldestChild->name; // echos 'Jennika Zyp'
+ * ```
+ *
+ * @todo In Highlight.php 10.x, mark this class final with a keyword.
+ *
+ * @since 9.16.0.0 Class has been marked as final
+ *
+ * @final
+ *
+ * @internal
  */
 class JsonRef
 {
@@ -81,6 +93,7 @@ class JsonRef
     private function getPaths(&$s, $r = "#")
     {
         $this->paths[$r] = &$s;
+
         if (is_array($s) || is_object($s)) {
             foreach ($s as $k => &$v) {
                 if ($k !== "\$ref") {
@@ -93,7 +106,9 @@ class JsonRef
     /**
      * Recurse through the data tree and resolve all path references.
      *
-     * @param mixed $s Decoded JSON data (decoded with json_decode)
+     * @param mixed $s     Decoded JSON data (decoded with json_decode)
+     * @param int   $limit
+     * @param int   $depth
      */
     private function resolvePathReferences(&$s, $limit = 20, $depth = 1)
     {
@@ -117,6 +132,8 @@ class JsonRef
     /**
      * Decode JSON data that may contain path based references.
      *
+     * @deprecated 9.16.0.0 This method will be removed in Highlight.php. Make use of `decodeRef` instead.
+     *
      * @param string|object $json JSON data string or JSON data object
      *
      * @return mixed The decoded JSON data
@@ -133,5 +150,22 @@ class JsonRef
         $this->resolvePathReferences($x);
         // Return the data.
         return $x;
+    }
+
+    /**
+     * Decode JSON data that may contain path based references.
+     *
+     * @param object $json JSON data string or JSON data object
+     */
+    public function decodeRef(&$json)
+    {
+        // Clear the path array.
+        $this->paths = array();
+
+        // Get all data paths.
+        $this->getPaths($json);
+
+        // Resolve all path references.
+        $this->resolvePathReferences($json);
     }
 }

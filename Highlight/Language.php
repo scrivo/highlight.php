@@ -37,54 +37,15 @@ namespace Highlight;
  * @todo In highlight.php 10.x, replace the @final attribute with the `final` keyword.
  *
  * @final
- * @internal
  *
  * // Backward compatibility properties
  *
  * @property \stdClass $mode (DEPRECATED) All properties traditionally inside of $mode are now available directly from this class.
  * @property bool $caseInsensitive (DEPRECATED) Due to compatibility requirements with highlight.js, use `case_insensitive` instead.
- *
- * // Language definition set via language definition JSON files
- *
- * @property bool $case_insensitive
- * @property array $aliases
- * @property string $className
- * @property string $begin
- * @property RegEx $beginRe
- * @property string $end
- * @property RegEx $endRe
- * @property string $beginKeywords
- * @property bool $endsWithParent
- * @property bool $endsParent
- * @property bool $endSameAsBegin
- * @property string $lexemes
- * @property RegEx $lexemesRe
- * @property array<string, array> $keywords
- * @property string $illegal
- * @property RegEx $illegalRe
- * @property bool $excludeBegin
- * @property bool $excludeEnd
- * @property bool $returnBegin
- * @property bool $returnEnd
- * @property array $contains
- * @property string $starts
- * @property array $variants
- * @property string|array $subLanguage
- * @property bool $skip
- * @property bool $disableAutodetect
- *
- * // Properties set at runtime by the language compilation process
- *
- * @property string $terminators
- * @property string $terminator_end
- * @property bool $compiled
- * @property int $relevance
- *
- * @see https://highlightjs.readthedocs.io/en/latest/reference.html
  */
-class Language
+class Language extends Mode
 {
-    private static $COMMON_KEYWORDS = ['of', 'and', 'for', 'in', 'not', 'or', 'if', 'then'];
+    private static $COMMON_KEYWORDS = array('of', 'and', 'for', 'in', 'not', 'or', 'if', 'then');
 
     /**
      * @var string
@@ -162,9 +123,12 @@ class Language
 
     public function __construct($lang, $filePath)
     {
+        $this->name = $lang;
+
         $json = file_get_contents($filePath);
         $this->mode = json_decode($json);
-        $this->name = $lang;
+
+        parent::__construct(json_decode($json, true));
     }
 
     public function __get($name)
@@ -172,41 +136,34 @@ class Language
         if ($name === 'mode') {
             @trigger_error('The "mode" property will be removed in highlight.php 10.x', E_USER_DEPRECATED);
 
-            return $this->mode;
+            return $this;
         }
 
         if ($name === 'caseInsensitive') {
             @trigger_error('Due to compatibility requirements with highlight.js, use "case_insensitive" instead.', E_USER_DEPRECATED);
 
-            return $this->mode->case_insensitive;
-        }
-
-        if (isset($this->mode->{$name})) {
-            $patch = array(
-                "begin" => true,
-                "end" => true,
-                "lexemes" => true,
-                "illegal" => true,
-            );
-
-            $value = $this->mode->{$name};
-
-            if (isset($patch[$name])) {
-                $value = str_replace("\\/", "/", $value);
-                $value = str_replace("/", "\\/", $value);
+            if (isset($this->mode->case_insensitive)) {
+                return $this->mode->case_insensitive;
             }
 
-            $this->{$name} = $value;
-
-            return $this->{$name};
+            return false;
         }
 
         return null;
     }
 
+    private function reStr($re)
+    {
+        if ($re && isset($re->source)) {
+            return $re->source;
+        }
+
+        return $re;
+    }
+
     /**
      * @param string $value
-     * @param bool $global
+     * @param bool   $global
      *
      * @return RegEx
      */
@@ -217,7 +174,8 @@ class Language
         //
         //   https://www.pcre.org/original/doc/html/pcrepattern.html
 
-        $regex = "/(*ANYCRLF){$value}/um" . ($this->case_insensitive ? "i" : "");
+        $escaped = preg_replace('#(?<!\\\)/#um', '\\/', $value);
+        $regex = "/(*ANYCRLF){$escaped}/um" . ($this->case_insensitive ? "i" : "");
 
         return new RegEx($regex);
     }
@@ -229,36 +187,16 @@ class Language
      */
     private function reCountMatchGroups($re)
     {
-        $results = [];
-        preg_match_all('#' . (string)$re . '|#', '', $results);
+        $results = array();
+        $escaped = preg_replace('#(?<!\\\)/#um', '\\/', (string) $re);
+        preg_match_all("/{$escaped}|/", '', $results);
 
         return count($results) - 1;
     }
 
-    private function processKeyWords($kw)
-    {
-        if (is_string($kw)) {
-            if ($this->caseInsensitive) {
-                $kw = mb_strtolower($kw, "UTF-8");
-            }
-            $kw = array("keyword" => explode(" ", $kw));
-        } else {
-            foreach ($kw as $cls => $vl) {
-                if (!is_array($vl)) {
-                    if ($this->caseInsensitive) {
-                        $vl = mb_strtolower($vl, "UTF-8");
-                    }
-                    $kw->$cls = explode(" ", $vl);
-                }
-            }
-        }
-
-        return $kw;
-    }
-
     private function inherit()
     {
-        $result = new \stdClass();
+        $result = new Mode(array());
         $objects = func_get_args();
         $parent = array_shift($objects);
 
@@ -290,7 +228,7 @@ class Language
 
     private function expandMode($mode)
     {
-        if (isset($mode->variants) && !isset($mode->cachedVariants)) {
+        if (count($mode->variants) && !count($mode->cachedVariants)) {
             $mode->cachedVariants = array();
 
             foreach ($mode->variants as $variant) {
@@ -301,7 +239,7 @@ class Language
         // EXPAND
         // if we have variants then essentually "replace" the mode with the variants
         // this happens in compileMode, where this function is called from
-        if (isset($mode->cachedVariants)) {
+        if (count($mode->cachedVariants)) {
             return $mode->cachedVariants;
         }
 
@@ -310,9 +248,9 @@ class Language
         // instance of ourselves, so we can be reused with many
         // different parents without issue
         if ($this->dependencyOnParent($mode)) {
-            return array($this->inherit($mode, [
-                'starts' => isset($mode->starts) && $mode->starts ? $this->inherit($mode->starts) : null
-            ]));
+            return array($this->inherit($mode, array(
+                'starts' => isset($mode->starts) && $mode->starts ? $this->inherit($mode->starts) : null,
+            )));
         }
 
         // no special dependency issues, just return ourselves
@@ -347,9 +285,9 @@ class Language
 
         $strLen = count($regexps);
         for ($i = 0; $i < $strLen; ++$i) {
-            $numCaptures += 1;
+            ++$numCaptures;
             $offset = $numCaptures;
-            $re = $regexps[$i];
+            $re = $this->reStr($regexps[$i]);
 
             if ($i > 0) {
                 $ret .= $separator;
@@ -392,22 +330,26 @@ class Language
 
     private function buildModeRegex($mode)
     {
-        $matchIndexes = [];
+        $matchIndexes = array();
         $matcherRe = null;
-        $regexes = [];
-        $matcher = new \stdClass();
+        $regexes = array();
+        $matcher = new Terminators();
         $matchAt = 1;
 
         $addRule = function ($rule, $regex) use (&$matchIndexes, &$matchAt, &$regexes) {
             $matchIndexes[$matchAt] = $rule;
-            $regexes[] = [$rule, $regex];
+            $regexes[] = array($rule, $regex);
             $matchAt += $this->reCountMatchGroups($regex) + 1;
         };
 
         $term = null;
-        for ($i = 0; $i < count($mode->contains); $i++) {
+        for ($i = 0; $i < count($mode->contains); ++$i) {
             $re = null;
             $term = $mode->contains[$i];
+
+            if (!($term instanceof SafeProperties)) {
+                $term = new SafeProperties($term);
+            }
 
             if ($term->beginKeywords) {
                 $re = "\.?(?:" . $term->begin . ")\.?";
@@ -417,14 +359,16 @@ class Language
 
             $addRule($term, $re);
         }
-        if ($mode->terminatorEnd) {
-            $addRule('end', $mode->terminatorEnd);
+
+        if ($mode->terminator_end) {
+            $addRule('end', $mode->terminator_end);
         }
+
         if ($mode->illegal) {
             $addRule('illegal', $mode->illegal);
         }
 
-        $terminators = [];
+        $terminators = array();
         foreach ($regexes as $regex) {
             $terminators[] = $regex[1];
         }
@@ -443,8 +387,8 @@ class Language
             }
 
             $rule = null;
-            for ($i = 0; $i < count($match); $i ++) {
-                if ($match[$i] && isset($matchIndexes[$i]) && $matchIndexes[$i]) {
+            for ($i = 0; $i < count($match); ++$i ) {
+                if ($match[$i] !== null && isset($matchIndexes[$i])) {
                     $rule = $matchIndexes[$i];
                     break;
                 }
@@ -452,7 +396,7 @@ class Language
 
             if (is_string($rule)) {
                 $match->type = $rule;
-                $match->extra = [$mode->illegal, $mode->terminatorEnd];
+                $match->extra = array($mode->illegal, $mode->terminator_end);
             } else {
                 $match->type = "begin";
                 $match->rule = $rule;
@@ -464,59 +408,52 @@ class Language
         return $matcher;
     }
 
+    /**
+     * @param Mode      $mode
+     * @param Mode|null $parent
+     */
     private function compileMode($mode, $parent = null)
     {
-        if (isset($mode->compiled)) {
+        if ($mode->compiled) {
             return;
         }
-        $this->complete($mode);
-        $mode->compiled = true;
 
+        $mode->compiled = true;
         $mode->keywords = $mode->keywords ? $mode->keywords : $mode->beginKeywords;
 
-        /* Note: JsonRef method creates different references as those in the
-         * original source files. Two modes may refer to the same keywords
-         * set, so only testing if the mode has keywords is not enough: the
-         * mode's keywords might be compiled already, so it is necessary
-         * to do an 'is_array' check.
-         */
-        if ($mode->keywords && !is_array($mode->keywords)) {
-            $compiledKeywords = array();
-
-            $mode->lexemesRe = $this->langRe($mode->lexemes ? $mode->lexemes : "\w+", true);
-
-            foreach ($this->processKeyWords($mode->keywords) as $clsNm => $dat) {
-                if (!is_array($dat)) {
-                    $dat = array($dat);
-                }
-                foreach ($dat as $kw) {
-                    $pair = explode("|", $kw);
-                    $compiledKeywords[$pair[0]] = array($clsNm, isset($pair[1]) ? intval($pair[1]) : 1);
-                }
-            }
-            $mode->keywords = $compiledKeywords;
+        if ($mode->keywords) {
+            $mode->keywords = $this->compileKeywords($mode->keywords, (bool) $this->case_insensitive);
         }
+
+        $mode->lexemesRe = $this->langRe($mode->lexemes ? $mode->lexemes : "\w+", true);
 
         if ($parent) {
             if ($mode->beginKeywords) {
                 $mode->begin = "\\b(" . implode("|", explode(" ", $mode->beginKeywords)) . ")\\b";
             }
+
             if (!$mode->begin) {
                 $mode->begin = "\B|\b";
             }
+
             $mode->beginRe = $this->langRe($mode->begin);
+
             if ($mode->endSameAsBegin) {
                 $mode->end = $mode->begin;
             }
+
             if (!$mode->end && !$mode->endsWithParent) {
                 $mode->end = "\B|\b";
             }
+
             if ($mode->end) {
                 $mode->endRe = $this->langRe($mode->end);
             }
-            $mode->terminatorEnd = $mode->end;
-            if ($mode->endsWithParent && $parent->terminatorEnd) {
-                $mode->terminatorEnd .= ($mode->end ? "|" : "") . $parent->terminatorEnd;
+
+            $mode->terminator_end = $mode->end;
+
+            if ($mode->endsWithParent && $parent->terminator_end) {
+                $mode->terminator_end .= ($mode->end ? "|" : "") . $parent->terminator_end;
             }
         }
 
@@ -524,20 +461,35 @@ class Language
             $mode->illegalRe = $this->langRe($mode->illegal);
         }
 
+        if ($mode->relevance === null) {
+            $mode->relevance = 1;
+        }
+
+        if (!$mode->contains) {
+            $mode->contains = array();
+        }
+
         $expandedContains = array();
-        foreach ($mode->contains as $c) {
+        foreach ($mode->contains as &$c) {
+            if (is_array($c)) {
+                $c = new Mode($c);
+            }
+
             $expandedContains = array_merge($expandedContains, $this->expandMode(
                 $c === 'self' ? $mode : $c
             ));
         }
-
         $mode->contains = $expandedContains;
 
-        for ($i = 0; $i < count($mode->contains); ++$i) {
-            $this->compileMode($mode->contains[$i], $mode);
+        foreach ($mode->contains as $contain) {
+            $this->compileMode($contain, $mode);
         }
 
         if ($mode->starts) {
+            if (is_array($mode->starts)) {
+                $mode->starts = new Mode($mode->starts);
+            }
+
             $this->compileMode($mode->starts, $parent);
         }
 
@@ -546,9 +498,9 @@ class Language
 
     private function compileKeywords($rawKeywords, $caseSensitive)
     {
-        $compiledKeywords = [];
+        $compiledKeywords = array();
 
-        $splitAndCompile = function ($className, $str) use ($compiledKeywords, $caseSensitive) {
+        $splitAndCompile = function ($className, $str) use (&$compiledKeywords, $caseSensitive) {
             if ($caseSensitive) {
                 $str = strtolower($str);
             }
@@ -557,7 +509,8 @@ class Language
 
             foreach ($keywords as $keyword) {
                 $pair = explode('|', $keyword);
-                $compiledKeywords[$pair[0]] = [$className, $this->scoreForKeyword($pair[0], $pair[1])];
+                $providedScore = $pair[1] ?? null;
+                $compiledKeywords[$pair[0]] = array($className, $this->scoreForKeyword($pair[0], $providedScore));
             }
         };
 
@@ -568,12 +521,14 @@ class Language
                 $splitAndCompile($className, $rawKeyword);
             }
         }
+
+        return $compiledKeywords;
     }
 
     private function scoreForKeyword($keyword, $providedScore)
     {
         if ($providedScore) {
-            return (int)$providedScore;
+            return (int) $providedScore;
         }
 
         return $this->commonKeyword($keyword) ? 0 : 1;
@@ -586,10 +541,12 @@ class Language
 
     public function compile()
     {
-        if (!$this->mode->compiled) {
-            $jr = new JsonRef();
-            $this->mode = $jr->decode($this->mode);
-            $this->compileMode($this);
+        if ($this->compiled) {
+            return;
         }
+
+        $jr = new JsonRef();
+        $jr->decodeRef($this);
+        $this->compileMode($this);
     }
 }

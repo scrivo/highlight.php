@@ -4,21 +4,22 @@ namespace Highlight;
 
 /**
  * @internal
- * @since 9.16.0
+ *
+ * @since 9.16.0.0
  */
 abstract class ArbitraryProperties
 {
-    protected $data;
+    protected $customData = array();
 
     public function __set($name, $value)
     {
-        $this->data[$name] = $value;
+        $this->customData[$name] = $value;
     }
 
     public function __get($name)
     {
-        if (isset($this->data[$name])) {
-            return $this->data[$name];
+        if (isset($this->customData[$name])) {
+            return $this->customData[$name];
         }
 
         return null;
@@ -26,11 +27,11 @@ abstract class ArbitraryProperties
 
     public function __isset($name)
     {
-        return isset($this->data[$name]);
+        return isset($this->customData[$name]);
     }
 
     public function __unset($name)
     {
-        unset($this->data[$name]);
+        unset($this->customData[$name]);
     }
 }
