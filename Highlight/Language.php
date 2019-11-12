@@ -387,7 +387,7 @@ class Language extends Mode
             }
 
             $rule = null;
-            for ($i = 0; $i < count($match); ++$i ) {
+            for ($i = 0; $i < count($match); ++$i) {
                 if ($match[$i] !== null && isset($matchIndexes[$i])) {
                     $rule = $matchIndexes[$i];
                     break;
@@ -509,7 +509,7 @@ class Language extends Mode
 
             foreach ($keywords as $keyword) {
                 $pair = explode('|', $keyword);
-                $providedScore = $pair[1] ?? null;
+                $providedScore = isset($pair[1]) ? $pair[1] : null;
                 $compiledKeywords[$pair[0]] = array($className, $this->scoreForKeyword($pair[0], $providedScore));
             }
         };

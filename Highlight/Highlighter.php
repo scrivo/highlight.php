@@ -37,10 +37,12 @@ class Highlighter
 {
     const SPAN_END_TAG = "</span>";
 
+    /** @var array */
     private $options;
 
     private $modeBuffer = "";
     private $result = "";
+    /** @var Language|null */
     private $top = null;
     /** @var Language|null */
     private $language = null;
@@ -126,6 +128,14 @@ class Highlighter
         return self::$classMap[$languageId];
     }
 
+    /**
+     * @param $re
+     * @param $lexeme
+     *
+     * @throws \Exception
+     *
+     * @return bool
+     */
     private function testRe($re, $lexeme)
     {
         if (!$re) {
@@ -144,6 +154,14 @@ class Highlighter
         return sprintf('/%s/m', preg_quote($value));
     }
 
+    /**
+     * @param $mode
+     * @param $lexeme
+     *
+     * @throws \Exception
+     *
+     * @return Mode|null
+     */
     private function endOfMode($mode, $lexeme)
     {
         if ($this->testRe($mode->endRe, $lexeme)) {
@@ -156,6 +174,8 @@ class Highlighter
         if ($mode->endsWithParent) {
             return $this->endOfMode($mode->parent, $lexeme);
         }
+
+        return null;
     }
 
     private function keywordMatch($mode, $match)
@@ -349,6 +369,12 @@ class Highlighter
         return $origin->returnEnd ? 0 : strlen($lexeme);
     }
 
+    /**
+     * @param string    $textBeforeMatch
+     * @param Mode|null $match
+     *
+     * @return int
+     */
     private function processLexeme($textBeforeMatch, $match = null)
     {
         $lexeme = $match ? $match[0] : null;
@@ -406,6 +432,10 @@ class Highlighter
 
     /**
      * Replace tabs for something more usable.
+     *
+     * @param string $code
+     *
+     * @return string
      */
     private function replaceTabs($code)
     {

@@ -74,7 +74,7 @@ class Mode
     /** @var array */
     public $contains = array();
 
-    /** @var string */
+    /** @var Mode */
     public $starts = '';
 
     /** @var array */

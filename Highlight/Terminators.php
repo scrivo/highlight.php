@@ -7,6 +7,6 @@ class Terminators
     /** @var int */
     public $lastIndex;
 
-    /** @var callable(string) */
+    /** @var \Closure(string) */
     public $exec;
 }

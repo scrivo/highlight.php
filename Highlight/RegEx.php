@@ -3,6 +3,10 @@
 namespace Highlight;
 
 /**
+ * A PHP implementation to match JavaScript's RegExp class as closely as possible.
+ *
+ * A lot of behavior in this class is reversed engineered, so improvements are welcome!
+ *
  * @internal
  *
  * @since 9.16.0
@@ -92,7 +96,7 @@ final class RegEx extends ArbitraryProperties
         }
 
         $matches = new SafeProperties($results);
-        $matches->index = $index ?? 0;
+        $matches->index = isset($index) ? $index : 0;
         $matches->input = $str;
 
         return $matches;
