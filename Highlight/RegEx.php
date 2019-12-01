@@ -49,51 +49,23 @@ final class RegEx extends ArbitraryProperties
     {
         $index = null;
         $results = array();
-        preg_match_all($this->source, $str, $results, PREG_OFFSET_CAPTURE, $this->lastIndex);
+        preg_match_all($this->source, $str, $results, PREG_SET_ORDER | PREG_OFFSET_CAPTURE, $this->lastIndex);
 
-        $manualIndex = false;
+        if ($results === null || count($results) === 0) {
+            return null;
+        }
 
-        foreach ($results as &$result) {
-            if (isset($result[0][0]) && $result[0][0] !== null) {
-                $idx = $result[0][1];
-
-                if (isset($result[1][1])) {
-                    $nextIndex = $result[1][1];
-                    $proposedIndex = $idx + mb_strlen($result[0][0]);
-                    $skippedChunk = trim(mb_substr($str, $proposedIndex, $nextIndex - $proposedIndex));
-
-                    $manualIndex = true;
-
-                    if (mb_strlen($skippedChunk)) {
-                        $this->lastIndex = $proposedIndex;
-                    } else {
-                        $this->lastIndex = $nextIndex - 1;
-                    }
-                }
-
-                if ($idx !== -1) {
-                    $result = $result[0][0];
-
-                    if ($index === null) {
-                        $index = $idx;
-                    }
-                } else {
-                    $result = null;
-                }
-            } elseif (isset($result[0]) && $result[0]) {
+        foreach ($results[0] as &$result) {
+            if ($result[1] !== -1) {
+                $index = $result[1];
                 $result = $result[0];
             } else {
                 $result = null;
             }
         }
 
-        if (!$manualIndex) {
-            $this->lastIndex = $index + mb_strlen($results[0]);
-        }
-
-        if (count(array_filter($results, function ($v) { return $v !== null; })) === 0) {
-            return null;
-        }
+        $results = $results[0];
+        $this->lastIndex += mb_strlen($results[0]) + ($index - $this->lastIndex);
 
         $matches = new SafeProperties($results);
         $matches->index = isset($index) ? $index : 0;
