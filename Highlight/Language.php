@@ -231,7 +231,7 @@ class Language extends Mode
 
     private function expandMode($mode)
     {
-        if (count($mode->variants) && !count($mode->cachedVariants)) {
+        if ($mode->variants && !$mode->cachedVariants) {
             $mode->cachedVariants = array();
 
             foreach ($mode->variants as $variant) {
@@ -242,7 +242,7 @@ class Language extends Mode
         // EXPAND
         // if we have variants then essentually "replace" the mode with the variants
         // this happens in compileMode, where this function is called from
-        if (count($mode->cachedVariants)) {
+        if ($mode->cachedVariants) {
             return $mode->cachedVariants;
         }
 
