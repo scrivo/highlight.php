@@ -174,6 +174,9 @@ class Language extends Mode
         //
         //   https://www.pcre.org/original/doc/html/pcrepattern.html
 
+        // PCRE requires us to tell it the string can be UTF-8, so the 'u' modifier
+        // is required. The `u` flag for PCRE is different from JS' unicode flag.
+
         $escaped = preg_replace('#(?<!\\\)/#um', '\\/', $value);
         $regex = "/(*ANYCRLF){$escaped}/um" . ($this->case_insensitive ? "i" : "");
 
