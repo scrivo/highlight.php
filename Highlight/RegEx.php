@@ -57,7 +57,11 @@ final class RegEx extends ArbitraryProperties
 
         foreach ($results[0] as &$result) {
             if ($result[1] !== -1) {
-                $index = $result[1];
+                // Only save the index if it hasn't been set yet
+                if ($index === null) {
+                    $index = $result[1];
+                }
+
                 $result = $result[0];
             } else {
                 $result = null;
