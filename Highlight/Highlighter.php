@@ -583,7 +583,7 @@ class Highlighter
 
             while ($this->top) {
                 $this->top->terminators->lastIndex = $index;
-                $match = $this->top->terminators->exec->__invoke($code);
+                $match = $this->top->terminators->exec($code);
 
                 if (!$match) {
                     break;

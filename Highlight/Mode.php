@@ -108,8 +108,6 @@ class Mode
 
     public function __construct(array $data)
     {
-        $this->terminators = new Terminators();
-
         $patch = array(
             "begin" => true,
             "end" => true,
@@ -125,6 +123,8 @@ class Mode
 
             $this->{$key} = $value;
         }
+
+        $this->terminators = new Terminators($this->case_insensitive);
     }
 
     public function __get($name)

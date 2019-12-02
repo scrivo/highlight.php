@@ -37,6 +37,7 @@ namespace Highlight;
  * @todo In highlight.php 10.x, replace the @final attribute with the `final` keyword.
  *
  * @final
+ * @internal
  *
  * // Backward compatibility properties
  *
@@ -152,15 +153,6 @@ class Language extends Mode
         return null;
     }
 
-    private function reStr($re)
-    {
-        if ($re && isset($re->source)) {
-            return $re->source;
-        }
-
-        return $re;
-    }
-
     /**
      * @param string $value
      * @param bool   $global
@@ -169,32 +161,7 @@ class Language extends Mode
      */
     private function langRe($value, $global = false)
     {
-        // PCRE allows us to change the definition of "new line." The
-        // `(*ANYCRLF)` matches `\r`, `\n`, and `\r\n` for `$`
-        //
-        //   https://www.pcre.org/original/doc/html/pcrepattern.html
-
-        // PCRE requires us to tell it the string can be UTF-8, so the 'u' modifier
-        // is required. The `u` flag for PCRE is different from JS' unicode flag.
-
-        $escaped = preg_replace('#(?<!\\\)/#um', '\\/', $value);
-        $regex = "/(*ANYCRLF){$escaped}/um" . ($this->case_insensitive ? "i" : "");
-
-        return new RegEx($regex);
-    }
-
-    /**
-     * @param RegEx|string $re
-     *
-     * @return int
-     */
-    private function reCountMatchGroups($re)
-    {
-        $results = array();
-        $escaped = preg_replace('#(?<!\\\)/#um', '\\/', (string) $re);
-        preg_match_all("/{$escaped}|/", '', $results);
-
-        return count($results) - 1;
+        return RegExUtils::langRe($value, $global, $this->case_insensitive);
     }
 
     private function inherit()
@@ -258,157 +225,6 @@ class Language extends Mode
 
         // no special dependency issues, just return ourselves
         return array($mode);
-    }
-
-    /**
-     * joinRe logically computes regexps.join(separator), but fixes the
-     * backreferences so they continue to match.
-     *
-     * it also places each individual regular expression into it's own
-     * match group, keeping track of the sequencing of those match groups
-     * is currently an exercise for the caller. :-)
-     *
-     * @param array  $regexps
-     * @param string $separator
-     *
-     * @return string
-     */
-    private function joinRe($regexps, $separator)
-    {
-        // backreferenceRe matches an open parenthesis or backreference. To avoid
-        // an incorrect parse, it additionally matches the following:
-        // - [...] elements, where the meaning of parentheses and escapes change
-        // - other escape sequences, so we do not misparse escape sequences as
-        //   interesting elements
-        // - non-matching or lookahead parentheses, which do not capture. These
-        //   follow the '(' with a '?'.
-        $backreferenceRe = '#\[(?:[^\\\\\]]|\\\.)*\]|\(\??|\\\([1-9][0-9]*)|\\\.#';
-        $numCaptures = 0;
-        $ret = '';
-
-        $strLen = count($regexps);
-        for ($i = 0; $i < $strLen; ++$i) {
-            ++$numCaptures;
-            $offset = $numCaptures;
-            $re = $this->reStr($regexps[$i]);
-
-            if ($i > 0) {
-                $ret .= $separator;
-            }
-
-            $ret .= "(";
-
-            while (strlen($re) > 0) {
-                $matches = array();
-                $matchFound = preg_match($backreferenceRe, $re, $matches, PREG_OFFSET_CAPTURE);
-
-                if ($matchFound === 0) {
-                    $ret .= $re;
-                    break;
-                }
-
-                // PHP aliases to match the JS naming conventions
-                $match = $matches[0];
-                $index = $match[1];
-
-                $ret .= substr($re, 0, $index);
-                $re = substr($re, $index + strlen($match[0]));
-
-                if (substr($match[0], 0, 1) === '\\' && isset($matches[1])) {
-                    // Adjust the backreference.
-                    $ret .= "\\" . strval(intval($matches[1][0]) + $offset);
-                } else {
-                    $ret .= $match[0];
-                    if ($match[0] == "(") {
-                        ++$numCaptures;
-                    }
-                }
-            }
-
-            $ret .= ")";
-        }
-
-        return $ret;
-    }
-
-    private function buildModeRegex($mode)
-    {
-        $matchIndexes = array();
-        $matcherRe = null;
-        $regexes = array();
-        $matcher = new Terminators();
-        $matchAt = 1;
-
-        $addRule = function ($rule, $regex) use (&$matchIndexes, &$matchAt, &$regexes) {
-            $matchIndexes[$matchAt] = $rule;
-            $regexes[] = array($rule, $regex);
-            $matchAt += $this->reCountMatchGroups($regex) + 1;
-        };
-
-        $term = null;
-        for ($i = 0; $i < count($mode->contains); ++$i) {
-            $re = null;
-            $term = $mode->contains[$i];
-
-            if (!($term instanceof SafeProperties)) {
-                $term = new SafeProperties($term);
-            }
-
-            if ($term->beginKeywords) {
-                $re = "\.?(?:" . $term->begin . ")\.?";
-            } else {
-                $re = $term->begin;
-            }
-
-            $addRule($term, $re);
-        }
-
-        if ($mode->terminator_end) {
-            $addRule('end', $mode->terminator_end);
-        }
-
-        if ($mode->illegal) {
-            $addRule('illegal', $mode->illegal);
-        }
-
-        $terminators = array();
-        foreach ($regexes as $regex) {
-            $terminators[] = $regex[1];
-        }
-        $matcherRe = $this->langRe($this->joinRe($terminators, '|'), true);
-
-        $matcher->lastIndex = 0;
-        $matcher->exec = function ($s) use ($regexes, $matcher, $matcherRe, $matchIndexes, $mode) {
-            if (count($regexes) === 0) {
-                return null;
-            }
-
-            $matcherRe->lastIndex = $matcher->lastIndex;
-            $match = $matcherRe->exec($s);
-            if (!$match) {
-                return null;
-            }
-
-            $rule = null;
-            for ($i = 0; $i < count($match); ++$i) {
-                if ($match[$i] !== null && isset($matchIndexes[$i])) {
-                    $rule = $matchIndexes[$i];
-                    break;
-                }
-            }
-
-            if (is_string($rule)) {
-                $match->type = $rule;
-                $match->extra = array($mode->illegal, $mode->terminator_end);
-            } else {
-                $match->type = "begin";
-                $match->rule = $rule;
-            }
-
-            return $match;
-        };
-
-        return $matcher;
     }
 
     /**
@@ -496,7 +312,8 @@ class Language extends Mode
             $this->compileMode($mode->starts, $parent);
         }
 
-        $mode->terminators = $this->buildModeRegex($mode);
+        $terminators = new Terminators($this->case_insensitive);
+        $mode->terminators = $terminators->_buildModeRegex($mode);
     }
 
     private function compileKeywords($rawKeywords, $caseSensitive)
