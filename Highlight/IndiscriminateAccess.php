@@ -49,7 +49,7 @@ final class IndiscriminateAccess implements \ArrayAccess, \Countable, \IteratorA
         return isset($this->dataSource->{$offset});
     }
 
-    public function &offsetGet($offset)
+    public function offsetGet($offset)
     {
         if ($this->isArray) {
             if (isset($this->dataSource[$offset])) {
@@ -61,9 +61,7 @@ final class IndiscriminateAccess implements \ArrayAccess, \Countable, \IteratorA
             }
         }
 
-        $null = null;
-
-        return $null;
+        return null;
     }
 
     public function offsetSet($offset, $value)

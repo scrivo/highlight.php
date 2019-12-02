@@ -22,7 +22,7 @@ final class SafeProperties extends ArbitraryProperties implements \ArrayAccess, 
         $this->data = new IndiscriminateAccess($data);
     }
 
-    public function &__get($name)
+    public function __get($name)
     {
         if (isset($this->customData[$name])) {
             return $this->customData[$name];
@@ -32,9 +32,7 @@ final class SafeProperties extends ArbitraryProperties implements \ArrayAccess, 
             return $this->data[$name];
         }
 
-        $null = null;
-
-        return $null;
+        return null;
     }
 
     public function __isset($name)
