@@ -106,6 +106,9 @@ class Mode
     /** @var int */
     public $relevance = 1;
 
+    /** @var Mode|null */
+    public $parent = null;
+
     public function __construct(array $data)
     {
         $patch = array(
@@ -123,8 +126,6 @@ class Mode
 
             $this->{$key} = $value;
         }
-
-        $this->terminators = new Terminators($this->case_insensitive);
     }
 
     public function __get($name)

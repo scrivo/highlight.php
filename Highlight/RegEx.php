@@ -11,7 +11,7 @@ namespace Highlight;
  *
  * @since 9.16.0
  */
-final class RegEx extends ArbitraryProperties
+final class RegEx
 {
     /**
      * @var string
@@ -43,7 +43,7 @@ final class RegEx extends ArbitraryProperties
      *
      * @param string $str the string to run this regular expression against
      *
-     * @return SafeProperties|null
+     * @return RegExMatch|null
      */
     public function exec($str)
     {
@@ -71,7 +71,7 @@ final class RegEx extends ArbitraryProperties
         $results = $results[0];
         $this->lastIndex += mb_strlen($results[0]) + ($index - $this->lastIndex);
 
-        $matches = new SafeProperties($results);
+        $matches = new RegExMatch($results);
         $matches->index = isset($index) ? $index : 0;
         $matches->input = $str;
 

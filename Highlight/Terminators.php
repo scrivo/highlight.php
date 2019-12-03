@@ -50,10 +50,6 @@ final class Terminators
             $re = null;
             $term = $mode->contains[$i];
 
-            if (!($term instanceof SafeProperties)) {
-                $term = new SafeProperties($term);
-            }
-
             if ($term->beginKeywords) {
                 $re = "\.?(?:" . $term->begin . ")\.?";
             } else {

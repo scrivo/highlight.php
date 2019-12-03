@@ -62,7 +62,7 @@ class Highlighter
 
     public function __construct()
     {
-        $this->lastMatch = new SafeProperties(new \stdClass());
+        $this->lastMatch = new Mode([]);
         $this->options = array(
             'classPrefix' => 'hljs-',
             'tabReplace' => null,
