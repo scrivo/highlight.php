@@ -71,7 +71,7 @@ class Mode
     /** @var bool */
     public $returnEnd = false;
 
-    /** @var array */
+    /** @var Mode[] */
     public $contains = array();
 
     /** @var Mode */

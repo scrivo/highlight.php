@@ -62,7 +62,7 @@ class Highlighter
 
     public function __construct()
     {
-        $this->lastMatch = new Mode([]);
+        $this->lastMatch = new Mode(array());
         $this->options = array(
             'classPrefix' => 'hljs-',
             'tabReplace' => null,

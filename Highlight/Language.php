@@ -129,7 +129,8 @@ class Language extends Mode
         $json = file_get_contents($filePath);
         $this->mode = json_decode($json);
 
-        parent::__construct(json_decode($json, true));
+        $modeAsArray = json_decode($json, true);
+        parent::__construct($modeAsArray);
     }
 
     public function __get($name)
@@ -196,7 +197,12 @@ class Language extends Mode
         return $this->dependencyOnParent(isset($mode->starts) ? $mode->starts : null);
     }
 
-    private function expandMode($mode)
+    /**
+     * @param Mode $mode
+     *
+     * @return Mode[]
+     */
+    private function expandOrCloneMode($mode)
     {
         if ($mode->variants && !$mode->cachedVariants) {
             $mode->cachedVariants = array();
@@ -219,7 +225,7 @@ class Language extends Mode
         // different parents without issue
         if ($this->dependencyOnParent($mode)) {
             return array($this->inherit($mode, array(
-                'starts' => isset($mode->starts) && $mode->starts ? $this->inherit($mode->starts) : null,
+                'starts' => $mode->starts ? $this->inherit($mode->starts) : null,
             )));
         }
 
@@ -294,7 +300,7 @@ class Language extends Mode
                 $c = new Mode($c);
             }
 
-            $expandedContains = array_merge($expandedContains, $this->expandMode(
+            $expandedContains = array_merge($expandedContains, $this->expandOrCloneMode(
                 $c === 'self' ? $mode : $c
             ));
         }
@@ -320,29 +326,30 @@ class Language extends Mode
     {
         $compiledKeywords = array();
 
-        $splitAndCompile = function ($className, $str) use (&$compiledKeywords, $caseSensitive) {
-            if ($caseSensitive) {
-                $str = strtolower($str);
-            }
-
-            $keywords = explode(' ', $str);
-
-            foreach ($keywords as $keyword) {
-                $pair = explode('|', $keyword);
-                $providedScore = isset($pair[1]) ? $pair[1] : null;
-                $compiledKeywords[$pair[0]] = array($className, $this->scoreForKeyword($pair[0], $providedScore));
-            }
-        };
-
         if (is_string($rawKeywords)) {
-            $splitAndCompile("keyword", $rawKeywords);
+            $this->splitAndCompile("keyword", $rawKeywords, $compiledKeywords, $caseSensitive);
         } else {
             foreach ($rawKeywords as $className => $rawKeyword) {
-                $splitAndCompile($className, $rawKeyword);
+                $this->splitAndCompile($className, $rawKeyword, $compiledKeywords, $caseSensitive);
             }
         }
 
         return $compiledKeywords;
+    }
+
+    private function splitAndCompile($className, $str, array &$compiledKeywords, $caseSensitive)
+    {
+        if ($caseSensitive) {
+            $str = strtolower($str);
+        }
+
+        $keywords = explode(' ', $str);
+
+        foreach ($keywords as $keyword) {
+            $pair = explode('|', $keyword);
+            $providedScore = isset($pair[1]) ? $pair[1] : null;
+            $compiledKeywords[$pair[0]] = array($className, $this->scoreForKeyword($pair[0], $providedScore));
+        }
     }
 
     private function scoreForKeyword($keyword, $providedScore)
