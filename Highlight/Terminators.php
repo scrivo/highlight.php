@@ -220,7 +220,7 @@ final class Terminators
     {
         $results = array();
         $escaped = preg_replace('#(?<!\\\)/#um', '\\/', (string) $re);
-        preg_match_all("/{$escaped}|/", '', $results);
+        preg_match_all("/{$escaped}|/u", '', $results);
 
         return count($results) - 1;
     }
