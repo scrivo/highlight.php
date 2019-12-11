@@ -48,78 +48,22 @@ class Language extends Mode
 {
     private static $COMMON_KEYWORDS = array('of', 'and', 'for', 'in', 'not', 'or', 'if', 'then');
 
-    /**
-     * @var string
-     */
+    /** @var string */
     public $name;
 
-    /**
-     * @var \stdClass|null
-     */
+    /** @var \stdClass|Mode|null */
     private $mode = null;
 
     /**
      * @todo Remove in highlight.php 10.x
      *
-     * @deprecated 9.16.0 This method is no longer used since all of these properties will be set through magic methods instead
+     * @deprecated 9.16.0 This method should never have been exposed publicly as part of the API.
      *
      * @param \stdClass|null $e
      */
     public function complete(&$e)
     {
-        if (!isset($e)) {
-            $e = new \stdClass();
-        }
-
-        $patch = array(
-            "begin" => true,
-            "end" => true,
-            "lexemes" => true,
-            "illegal" => true,
-        );
-
-        $def = array(
-            "begin" => "",
-            "beginRe" => "",
-            "beginKeywords" => "",
-            "excludeBegin" => "",
-            "returnBegin" => "",
-            "end" => "",
-            "endRe" => "",
-            "endSameAsBegin" => "",
-            "endsParent" => "",
-            "endsWithParent" => "",
-            "excludeEnd" => "",
-            "returnEnd" => "",
-            "starts" => "",
-            "terminators" => "",
-            "terminatorEnd" => "",
-            "lexemes" => "",
-            "lexemesRe" => "",
-            "illegal" => "",
-            "illegalRe" => "",
-            "className" => "",
-            "contains" => array(),
-            "keywords" => null,
-            "subLanguage" => null,
-            "subLanguageMode" => "",
-            "compiled" => false,
-            "relevance" => 1,
-            "skip" => false,
-        );
-
-        foreach ($patch as $k => $v) {
-            if (isset($e->$k)) {
-                $e->$k = str_replace("\\/", "/", $e->$k);
-                $e->$k = str_replace("/", "\\/", $e->$k);
-            }
-        }
-
-        foreach ($def as $k => $v) {
-            if (!isset($e->$k) && is_object($e)) {
-                $e->$k = $v;
-            }
-        }
+        Mode::_normalize($e);
     }
 
     public function __construct($lang, $filePath)
@@ -128,9 +72,6 @@ class Language extends Mode
 
         $json = file_get_contents($filePath);
         $this->mode = json_decode($json);
-
-        $modeAsArray = json_decode($json, true);
-        parent::__construct($modeAsArray);
     }
 
     public function __get($name)
@@ -138,7 +79,7 @@ class Language extends Mode
         if ($name === 'mode') {
             @trigger_error('The "mode" property will be removed in highlight.php 10.x', E_USER_DEPRECATED);
 
-            return $this;
+            return $this->mode;
         }
 
         if ($name === 'caseInsensitive') {
@@ -149,6 +90,10 @@ class Language extends Mode
             }
 
             return false;
+        }
+
+        if (isset($this->mode->{$name})) {
+            return $this->mode->{$name};
         }
 
         return null;
@@ -167,7 +112,7 @@ class Language extends Mode
 
     private function inherit()
     {
-        $result = new Mode(array());
+        $result = new \stdClass();
         $objects = func_get_args();
         $parent = array_shift($objects);
 
@@ -234,11 +179,13 @@ class Language extends Mode
     }
 
     /**
-     * @param Mode      $mode
-     * @param Mode|null $parent
+     * @param \stdClass|Mode      $mode
+     * @param \stdClass|Mode|null $parent
      */
     private function compileMode($mode, $parent = null)
     {
+        Mode::_normalize($mode);
+
         if ($mode->compiled) {
             return;
         }
@@ -296,8 +243,8 @@ class Language extends Mode
 
         $expandedContains = array();
         foreach ($mode->contains as &$c) {
-            if (is_array($c)) {
-                $c = new Mode($c);
+            if ($c instanceof \stdClass) {
+                Mode::_normalize($c);
             }
 
             $expandedContains = array_merge($expandedContains, $this->expandOrCloneMode(
@@ -311,15 +258,13 @@ class Language extends Mode
         }
 
         if ($mode->starts) {
-            if (is_array($mode->starts)) {
-                $mode->starts = new Mode($mode->starts);
-            }
-
             $this->compileMode($mode->starts, $parent);
         }
 
         $terminators = new Terminators($this->case_insensitive);
         $mode->terminators = $terminators->_buildModeRegex($mode);
+
+        Mode::_handleDeprecations($mode);
     }
 
     private function compileKeywords($rawKeywords, $caseSensitive)
@@ -373,7 +318,8 @@ class Language extends Mode
         }
 
         $jr = new JsonRef();
-        $jr->decodeRef($this);
-        $this->compileMode($this);
+        $jr->decodeRef($this->mode);
+
+        $this->compileMode($this->mode);
     }
 }

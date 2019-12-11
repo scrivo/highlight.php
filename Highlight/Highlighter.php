@@ -62,7 +62,10 @@ class Highlighter
 
     public function __construct()
     {
-        $this->lastMatch = new Mode(array());
+        $this->lastMatch = new RegExMatch([]);
+        $this->lastMatch->type = "";
+        $this->lastMatch->rule = null;
+
         $this->options = array(
             'classPrefix' => 'hljs-',
             'tabReplace' => null,
@@ -371,7 +374,7 @@ class Highlighter
 
     /**
      * @param string    $textBeforeMatch
-     * @param Mode|null $match
+     * @param RegExMatch|null $match
      *
      * @return int
      */
@@ -557,6 +560,7 @@ class Highlighter
         $this->code = $code;
         $this->language = $this->getLanguage($language);
         $this->language->compile();
+        $this->language->caseInsensitive = 0;
         $this->top = $continuation ? $continuation : $this->language;
         $this->continuations = array();
         $this->result = "";
