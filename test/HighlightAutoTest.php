@@ -39,7 +39,6 @@ class HighlightAutoTest extends PHPUnit_Framework_TestCase
         $this->allowedFailures = array(
             'http',
             'java',
-            'livescript',
             'shell',
             'plaintext',
             'coffeescript',
