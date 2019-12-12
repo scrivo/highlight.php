@@ -34,6 +34,7 @@ namespace Highlight;
  * @property Mode[] $contains = array()
  * @property Mode $starts = ""
  * @property array $variants = array()
+ * @property int|null $relevance = null
  * @property string|array|null $subLanguage = null
  * @property bool $skip = false
  * @property bool $disableAutodetect = false
@@ -44,7 +45,6 @@ namespace Highlight;
  * @property Terminators|null $terminators = null
  * @property string $terminator_end = ""
  * @property bool $compiled = false
- * @property int $relevance = 1
  * @property Mode|null $parent = null
  * @property string $type = ''
  *
@@ -103,6 +103,7 @@ abstract class Mode
             "contains" => array(),
             "starts" => "",
             "variants" => array(),
+            "relevance" => null,
             "subLanguage" => null,
             "skip" => false,
             "disableAutodetect" => false,
@@ -114,7 +115,6 @@ abstract class Mode
             "terminators" => null,
             "terminator_end" => "",
             "compiled" => false,
-            "relevance" => 1,
             "parent" => null,
 
             // This value is unique to highlight.php Modes
