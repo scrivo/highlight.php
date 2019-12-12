@@ -62,7 +62,7 @@ class Highlighter
 
     public function __construct()
     {
-        $this->lastMatch = new RegExMatch([]);
+        $this->lastMatch = new RegExMatch(array());
         $this->lastMatch->type = "";
         $this->lastMatch->rule = null;
 
@@ -373,7 +373,7 @@ class Highlighter
     }
 
     /**
-     * @param string    $textBeforeMatch
+     * @param string          $textBeforeMatch
      * @param RegExMatch|null $match
      *
      * @return int

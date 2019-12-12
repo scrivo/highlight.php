@@ -37,6 +37,7 @@ namespace Highlight;
  * @todo In highlight.php 10.x, replace the @final attribute with the `final` keyword.
  *
  * @final
+ *
  * @internal
  *
  * // Backward compatibility properties
@@ -54,22 +55,13 @@ class Language extends Mode
     /** @var \stdClass|Mode|null */
     private $mode = null;
 
-    /**
-     * @todo Remove in highlight.php 10.x
-     *
-     * @deprecated 9.16.0 This method should never have been exposed publicly as part of the API.
-     *
-     * @param \stdClass|null $e
-     */
-    public function complete(&$e)
-    {
-        Mode::_normalize($e);
-    }
-
     public function __construct($lang, $filePath)
     {
         $this->name = $lang;
 
+        // We're loading the JSON definition file as an \stdClass object instead of an associative array. This is being
+        // done to take advantage of objects being pass by reference automatically in PHP whereas arrays are pass by
+        // value.
         $json = file_get_contents($filePath);
         $this->mode = json_decode($json);
     }
@@ -321,5 +313,17 @@ class Language extends Mode
         $jr->decodeRef($this->mode);
 
         $this->compileMode($this->mode);
+    }
+
+    /**
+     * @todo Remove in highlight.php 10.x
+     *
+     * @deprecated 9.16.0 This method should never have been exposed publicly as part of the API.
+     *
+     * @param \stdClass|null $e
+     */
+    public function complete(&$e)
+    {
+        Mode::_normalize($e);
     }
 }

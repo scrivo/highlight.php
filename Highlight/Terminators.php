@@ -122,7 +122,7 @@ final class Terminators
 
     /**
      * @param Mode|string $rule
-     * @param string $regex
+     * @param string      $regex
      */
     private function addRule($rule, $regex)
     {
