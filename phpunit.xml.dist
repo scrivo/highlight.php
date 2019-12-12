@@ -3,7 +3,6 @@
     xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/3.7/phpunit.xsd"
     bootstrap="test/bootstrap.php"
     colors="true"
-    timeoutForLargeTests="120"
 >
     <testsuites>
         <testsuite name="highlight.php Test Suite">
