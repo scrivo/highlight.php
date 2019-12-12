@@ -66,6 +66,7 @@ class HighlightAutoTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @large
      * @dataProvider detectableLanguagesProvider
      */
     public function testAutomaticDetection($language, $raw)
