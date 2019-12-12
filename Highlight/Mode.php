@@ -85,8 +85,6 @@ abstract class Mode
      * @internal
      *
      * @since 9.16.0.0
-     *
-     * @param \stdClass|null $obj
      */
     public static function _normalize(\stdClass &$obj)
     {
@@ -173,8 +171,6 @@ abstract class Mode
      * Set any deprecated properties values to their replacement values.
      *
      * @internal
-     *
-     * @param \stdClass $obj
      */
     public static function _handleDeprecations(\stdClass &$obj)
     {
