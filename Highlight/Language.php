@@ -42,7 +42,7 @@ namespace Highlight;
  *
  * // Backward compatibility properties
  *
- * @property \stdClass $mode (DEPRECATED) All properties traditionally inside of $mode are now available directly from this class.
+ * @property \stdClass|Mode $mode (DEPRECATED) All properties traditionally inside of $mode are now available directly from this class.
  * @property bool $caseInsensitive (DEPRECATED) Due to compatibility requirements with highlight.js, use `case_insensitive` instead.
  */
 class Language extends Mode
@@ -102,6 +102,13 @@ class Language extends Mode
         return RegExUtils::langRe($value, $global, $this->case_insensitive);
     }
 
+    /**
+     * Performs a shallow merge of multiple objects into one.
+     *
+     * @param Mode|array ...$params The objects to merge.
+     *
+     * @return \stdClass
+     */
     private function inherit()
     {
         $result = new \stdClass();
@@ -150,7 +157,7 @@ class Language extends Mode
         }
 
         // EXPAND
-        // if we have variants then essentually "replace" the mode with the variants
+        // if we have variants then essentially "replace" the mode with the variants
         // this happens in compileMode, where this function is called from
         if ($mode->cachedVariants) {
             return $mode->cachedVariants;
@@ -165,6 +172,8 @@ class Language extends Mode
                 'starts' => $mode->starts ? $this->inherit($mode->starts) : null,
             )));
         }
+
+        // highlight.php does not have a concept freezing our Modes
 
         // no special dependency issues, just return ourselves
         return array($mode);
@@ -303,7 +312,14 @@ class Language extends Mode
         return in_array(strtolower($word), self::$COMMON_KEYWORDS);
     }
 
-    public function compile()
+    /**
+     * Compile the Language definition.
+     *
+     * @param bool $safeMode
+     *
+     * @since 9.17.1.0 The 'safeMode' parameter was added.
+     */
+    public function compile($safeMode)
     {
         if ($this->compiled) {
             return;
@@ -311,6 +327,16 @@ class Language extends Mode
 
         $jr = new JsonRef();
         $jr->decodeRef($this->mode);
+
+        // self is not valid at the top-level
+        if (isset($this->mode->contains) && !in_array("self", $this->mode->contains)) {
+            if (!$safeMode) {
+                throw new \LogicException("`self` is not supported at the top-level of a language.");
+            }
+            $this->mode->contains = array_filter($this->mode->contains, function ($mode) {
+                return $mode !== "self";
+            });
+        }
 
         $this->compileMode($this->mode);
     }

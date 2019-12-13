@@ -37,20 +37,38 @@ class Highlighter
 {
     const SPAN_END_TAG = "</span>";
 
+    /** @var bool */
+    private $safeMode = true;
+
     /** @var array */
     private $options;
 
+    /** @var string */
     private $modeBuffer = "";
+
+    /** @var string */
     private $result = "";
+
     /** @var Language|null */
     private $top = null;
+
     /** @var Language|null */
     private $language = null;
+
+    /** @var int */
     private $relevance = 0;
+
+    /** @var bool */
     private $ignoreIllegals = false;
+
+    /** @var array */
     private $continuations = array();
+
+    /** @var RegExMatch */
     private $lastMatch;
-    private $code;
+
+    /** @var string */
+    private $value;
 
     private static $classMap = array();
     private static $languages = null;
@@ -188,13 +206,13 @@ class Highlighter
         return isset($mode->keywords[$kwd]) ? $mode->keywords[$kwd] : null;
     }
 
-    private function buildSpan($classname, $insideSpan, $leaveOpen = false, $noPrefix = false)
+    private function buildSpan($className, $insideSpan, $leaveOpen = false, $noPrefix = false)
     {
         if (!$leaveOpen && $insideSpan === '') {
             return '';
         }
 
-        if (!$classname) {
+        if (!$className) {
             return $insideSpan;
         }
 
@@ -202,7 +220,7 @@ class Highlighter
         $openSpan = "<span class=\"" . $classPrefix;
         $closeSpan = $leaveOpen ? "" : self::SPAN_END_TAG;
 
-        $openSpan .= $classname . "\">";
+        $openSpan .= $className . "\">";
 
         return $openSpan . $insideSpan . $closeSpan;
     }
@@ -265,10 +283,11 @@ class Highlighter
                     count($this->top->subLanguage) ? $this->top->subLanguage : null
                 );
             }
-            // Counting embedded language score towards the host language may
-            // be disabled with zeroing the containing mode relevance. Usecase
-            // in point is Markdown that allows XML everywhere and makes every
-            // XML snippet to have a much larger Markdown score.
+
+            // Counting embedded language score towards the host language may be disabled
+            // with zeroing the containing mode relevance. Use case in point is Markdown that
+            // allows XML everywhere and makes every XML snippet to have a much larger Markdown
+            // score.
             if ($this->top->relevance > 0) {
                 $this->relevance += $res->relevance;
             }
@@ -296,7 +315,7 @@ class Highlighter
         $this->modeBuffer = '';
     }
 
-    private function startNewMode($mode, $lexeme)
+    private function startNewMode($mode)
     {
         $this->result .= $mode->className ? $this->buildSpan($mode->className, "", true) : "";
 
@@ -325,7 +344,7 @@ class Highlighter
                 $this->modeBuffer = $lexeme;
             }
         }
-        $this->startNewMode($newMode, $lexeme);
+        $this->startNewMode($newMode);
 
         return $newMode->returnBegin ? 0 : strlen($lexeme);
     }
@@ -333,7 +352,8 @@ class Highlighter
     private function doEndMatch($match)
     {
         $lexeme = $match[0];
-        $endMode = $this->endOfMode($this->top, $lexeme);
+        $matchPlusRemainder = substr($this->value, $match->index);
+        $endMode = $this->endOfMode($this->top, $matchPlusRemainder);
 
         if (!$endMode) {
             return null;
@@ -366,7 +386,8 @@ class Highlighter
             if ($endMode->endSameAsBegin) {
                 $endMode->starts->endRe = $endMode->endRe;
             }
-            $this->startNewMode($endMode->starts, '');
+
+            $this->startNewMode($endMode->starts);
         }
 
         return $origin->returnEnd ? 0 : strlen($lexeme);
@@ -397,7 +418,7 @@ class Highlighter
         // Ref: https://github.com/highlightjs/highlight.js/issues/2140
         if ($this->lastMatch->type === "begin" && $match->type === "end" && $this->lastMatch->index === $match->index && $lexeme === "") {
             // spit the "skipped" character that our regex choked on back into the output sequence
-            $this->modeBuffer .= substr($this->code, $match->index, 1);
+            $this->modeBuffer .= substr($this->value, $match->index, 1);
 
             return 1;
         }
@@ -507,6 +528,22 @@ class Highlighter
     }
 
     /**
+     * @since 9.17.1.0
+     */
+    public function enableSafeMode()
+    {
+        $this->safeMode = true;
+    }
+
+    /**
+     * @since 9.17.1.0
+     */
+    public function disableSafeMode()
+    {
+        $this->safeMode = false;
+    }
+
+    /**
      * @param string $name
      *
      * @throws \DomainException if the requested language was not in this
@@ -544,8 +581,10 @@ class Highlighter
      * - relevance (int)
      * - value (an HTML string with highlighting markup).
      *
-     * @param string $language
-     * @param string $code
+     * @todo In v10.x, change the return type from \stdClass to HighlightResult
+     *
+     * @param string $name
+     * @param string $value
      * @param bool   $ignoreIllegals
      * @param null   $continuation
      *
@@ -553,13 +592,13 @@ class Highlighter
      *                          Highlighter's language set
      * @throws \Exception       if an invalid regex was given in a language file
      *
-     * @return \stdClass
+     * @return HighlightResult|\stdClass
      */
-    public function highlight($language, $code, $ignoreIllegals = true, $continuation = null)
+    public function highlight($name, $value, $ignoreIllegals = true, $continuation = null)
     {
-        $this->code = $code;
-        $this->language = $this->getLanguage($language);
-        $this->language->compile();
+        $this->value = $value;
+        $this->language = $this->getLanguage($name);
+        $this->language->compile($this->safeMode);
         $this->language->caseInsensitive = 0;
         $this->top = $continuation ? $continuation : $this->language;
         $this->continuations = array();
@@ -575,10 +614,13 @@ class Highlighter
         $this->relevance = 0;
         $this->ignoreIllegals = $ignoreIllegals;
 
+        /** @var HighlightResult $res */
         $res = new \stdClass();
         $res->relevance = 0;
         $res->value = "";
         $res->language = "";
+        $res->top = null;
+        $res->errorRaised = null;
 
         try {
             $match = null;
@@ -587,17 +629,17 @@ class Highlighter
 
             while ($this->top) {
                 $this->top->terminators->lastIndex = $index;
-                $match = $this->top->terminators->exec($code);
+                $match = $this->top->terminators->exec($value);
 
                 if (!$match) {
                     break;
                 }
 
-                $count = $this->processLexeme(substr($code, $index, $match->index - $index), $match);
+                $count = $this->processLexeme(substr($value, $index, $match->index - $index), $match);
                 $index = $match->index + $count;
             }
 
-            $this->processLexeme(substr($code, $index));
+            $this->processLexeme(substr($value, $index));
 
             for ($current = $this->top; isset($current->parent); $current = $current->parent) {
                 if ($current->className) {
@@ -616,10 +658,19 @@ class Highlighter
             if (strpos($e->getMessage(), "Illegal") !== false) {
                 $res->illegal = true;
                 $res->relevance = 0;
-                $res->value = $this->escape($code);
+                $res->value = $this->escape($value);
+
+                return $res;
+            } elseif ($this->safeMode) {
+                $res->relevance = 0;
+                $res->value = $this->escape($value);
+                $res->language = $name;
+                $res->top = $this->top;
+                $res->errorRaised = $e;
 
                 return $res;
             }
+
             throw $e;
         }
     }
@@ -628,22 +679,22 @@ class Highlighter
      * Highlight the given code by highlighting the given code with each
      * registered language and then finding the match with highest accuracy.
      *
-     * @param string        $code
+     * @param string        $text
      * @param string[]|null $languageSubset When set to null, this method will
      *                                      attempt to highlight $code with each language (170+). Set this to
      *                                      an array of languages of your choice to limit the amount of languages
      *                                      to try.
      *
-     * @throws \DomainException if the attempted language to check does not exist
      * @throws \Exception       if an invalid regex was given in a language file
+     * @throws \DomainException if the attempted language to check does not exist
      *
-     * @return \stdClass
+     * @return HighlightResult|\stdClass
      */
-    public function highlightAuto($code, $languageSubset = null)
+    public function highlightAuto($text, $languageSubset = null)
     {
         $res = new \stdClass();
         $res->relevance = 0;
-        $res->value = $this->escape($code);
+        $res->value = $this->escape($text);
         $res->language = "";
         $scnd = clone $res;
 
@@ -657,7 +708,7 @@ class Highlighter
                     continue;
                 }
 
-                $current = $this->highlight($l, $code, false);
+                $current = $this->highlight($l, $text, false);
             } catch (\DomainException $e) {
                 continue;
             }
