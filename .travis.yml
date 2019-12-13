@@ -7,6 +7,9 @@ php:
   - 7.0
   - 5.6
 
+env:
+  - COMPOSER_PROCESS_TIMEOUT=0
+
 matrix:
   fast_finish: true
   include:

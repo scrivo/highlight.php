@@ -63,6 +63,12 @@ $patches = array(
     // The expression [^] is not allowed in PREG
     "lisp" => array(array("[^]", "[^|]")),
 
+    // There's a typo in the Swift translation file
+    "swift" => array(array(
+        '{02B80}-9',
+        '{02B8}0-9',
+    )),
+
     // Same reason as dsconfig
     "xquery" => array(
         array("[\\\\w-:]+","[\\\\w\\\\-:]+")
