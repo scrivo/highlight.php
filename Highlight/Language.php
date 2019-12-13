@@ -332,11 +332,10 @@ class Language extends Mode
         if (isset($this->mode->contains) && !in_array("self", $this->mode->contains)) {
             if (!$safeMode) {
                 throw new \LogicException("`self` is not supported at the top-level of a language.");
-            } else {
-                $this->mode->contains = array_filter($this->mode->contains, function ($mode) {
-                    return $mode !== "self";
-                });
             }
+            $this->mode->contains = array_filter($this->mode->contains, function ($mode) {
+                return $mode !== "self";
+            });
         }
 
         $this->compileMode($this->mode);

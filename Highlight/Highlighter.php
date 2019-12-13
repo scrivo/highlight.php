@@ -590,7 +590,6 @@ class Highlighter
      *
      * @throws \DomainException if the requested language was not in this
      *                          Highlighter's language set
-     *
      * @throws \Exception       if an invalid regex was given in a language file
      *
      * @return HighlightResult|\stdClass
@@ -686,10 +685,10 @@ class Highlighter
      *                                      an array of languages of your choice to limit the amount of languages
      *                                      to try.
      *
-     * @return \stdClass
-     *@throws \Exception       if an invalid regex was given in a language file
-     *
+     * @throws \Exception       if an invalid regex was given in a language file
      * @throws \DomainException if the attempted language to check does not exist
+     *
+     * @return HighlightResult|\stdClass
      */
     public function highlightAuto($text, $languageSubset = null)
     {

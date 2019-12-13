@@ -31,6 +31,7 @@ namespace Highlight;
 
 /**
  * @api
+ *
  * @since 9.17.1.0
  */
 abstract class HighlightResult
