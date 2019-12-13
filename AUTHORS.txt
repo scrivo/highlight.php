@@ -2,14 +2,19 @@ Syntax highlighting with language autodetection in PHP.
 
 -------------------------------------------------------------------------------
 
-Author(s):
-	Geert Bergman <geert@scrivo.nl>
+Current maintainer(s):
 
-Contributer(s):
+	Vladimir Jimenez <me@allejo.io>
+
+Former maintainers:
+
+	Geert Bergman (original author) <geert@scrivo.nl>
+
+Contributor(s):
+
 	Carsten Brandt <mail@cebe.cc>
 	Daniel Lynge
 	Daniel Gómez Pan <pana_1990@hotmail.com>
-	Vladimir Jimenez <me@allejo.io>
 	Martin Folkers <hello@twobrain.io>
 
 -------------------------------------------------------------------------------
@@ -20,6 +25,7 @@ Current core developers (alphabetical):
 
     Gidi Meir Morris <gidi@gidi.io>
     Jan T. Sott <git@idleberg.com>
+    Josh Goebel <hello@joshgoebel.com>
     Li Xuanji <xuanji@gmail.com>
     Marcos Cáceres <marcos@marcosc.com>
     Sang Dang <sang.dang@polku.io>
@@ -74,6 +80,7 @@ Language and style definitions (copied from the highlight.js project)
     Bryant Williams <b.n.williams@gmail.com>
     Builder's Brewery <buildersbrewery@gmail.com>
     Camil Staps <info@camilstaps.nl>
+    Carl Baxter <carl@cbax.tech>
     Carlo Kok <ck@remobjects.com>
     Casey Duncan <casey.duncan@gmail.com>
     Cedric Sohrauer <sohrauer@googlemail.com>
@@ -114,6 +121,7 @@ Language and style definitions (copied from the highlight.js project)
     Eugene Nizhibitsky <nizhibitsky@gmail.com>
     Evgeny Stepanischev <imbolk@gmail.com>
     Flaviu Tamas <tamas.flaviu@gmail.com>
+    G8t Guy <g8tguy@g8tguy.com>
     Gavin Siu <gavsiu@gmail.com>
     Google Inc. (David Benjamin) <davidben@google.com>
     Greg Cline <gregrcline@gmail.com>
@@ -239,6 +247,7 @@ Language and style definitions (copied from the highlight.js project)
     Roman Shmatov <romanshmatov@gmail.com>
     Ruslan Keba <rukeba@gmail.com>
     Sam Wu <samsam2310@gmail.com>
+    Samia Ali <samiaab1990@gmail.com>
     Samuel Reed <sam@bitmex.com>
     Sean T. Allen <sean@monkeysnatchbanana.com>
     Sejin Jeon <jinaidy93@gmail.com>
@@ -266,6 +275,7 @@ Language and style definitions (copied from the highlight.js project)
     Taras <oxdef@oxdef.info>
     Taufik Nurrohman <latitudu.latitudu@gmail.com>
     Thomas Applencourt <thomas.applencourt@irsamc.ups-tlse.fr>
+    Thomas Reichel <tom.p.reichel@gmail.com>
     Tim Schumacher <tim@datenknoten.me>
     Travis Odom <travis.a.odom@gmail.com>
     Trey Shugart <treshugart@gmail.com>
@@ -288,6 +298,7 @@ Language and style definitions (copied from the highlight.js project)
     Vsevolod Solovyov <vsevolod.solovyov@gmail.com>
     Yoshihide Jimbo <yjimbo@gmail.com>
     Yuri Ivanov <ivanov@supersoft.ru>
+    Yuri Mazursky <mail@colomolome.com>
     Yury Selivanov <yselivanov@gmail.com>
     Zaripov Yura <yur4ik7@ukr.net>
     Zaven Muradyan <megalivoithos@gmail.com>
