@@ -31,8 +31,7 @@
 
 /**
  * Extract language definitions (JSON strings) from the large file that was
- * created using 'get_language_definitions.php' and create a JSON file for
- * each language.
+ * created using 'node launcher.js' and create a JSON file for each language.
  */
 
 $f = file("languages.dat");
@@ -41,13 +40,13 @@ $patches = array(
     // The expression \\/: causes issues for PREG due to the / and the : having special meaning, therefore we use \Q and
     // \E to have PREG treat them as literal characters
     "1c" => array(
-        array("\\\\\\\\/:", "\\\\Q\\\\/:\\\\E")
+        array("\\\\\\\\/:", "\\\\Q\\\\/:\\\\E"),
     ),
 
     // The expression []{}%#'" should be treated as a list of invalid characters, however the [] is special in PREG so
     // we use \Q and \E to have PREG treat them as literal characters
     "ada" => array(
-        array("[]{}%#'\\\"", "\\\\Q[]{}%#'\\\"\\\\E")
+        array("[]{}%#'\\\"", "\\\\Q[]{}%#'\\\"\\\\E"),
     ),
 
     // WTF, any ideas anyone?
@@ -63,33 +62,39 @@ $patches = array(
     )),
 );
 
-for ($i=0; $i<count($f); $i+=2) {
-    if (isset($f[$i+1])) {
-        $fl = trim($f[$i]);
-        $json = $f[$i+1];
+for ($i = 0; $i < count($f); $i += 2) {
+    if (!isset($f[$i + 1])) {
+        continue;
+    }
 
-        // The `-` character must be escaped in while in `[]`. This is enforced in PHP 7.3+
-        //   https://wiki.php.net/rfc/pcre2-migration
-        //   https://github.com/php/php-src/pull/2857
-        $json = preg_replace('/(\[[^:]*?\w)(-)([^a-zA-Z0-9\\\\]+?)/um', '$1\\\\\\-$3', $json);
+    $languageName = trim($f[$i]);
+    $jsonLangDef = $f[$i + 1];
 
-        if (!$fl) {
-            die(sprintf("ERROR: No language name on line %d\n", ($i+1)));
-        }
-        if (!@json_decode($json)) {
-            die(sprintf("ERROR: Invalid JSON data on line %d\n", ($i+2)));
-        }
+    // The `-` character must be escaped in while in `[]`. This is enforced in PHP 7.3+
+    //   https://wiki.php.net/rfc/pcre2-migration
+    //   https://github.com/php/php-src/pull/2857
+    $jsonLangDef = preg_replace('/(\[[^:]*?\w)(-)([^a-zA-Z0-9\\\\]+?)/um', '$1\\\\\\-$3', $jsonLangDef);
 
-        if (isset($patches[$fl])) {
-            foreach ($patches[$fl] as $patch) {
-                $json = str_replace($patch[0], $patch[1], $json);
-                echo "{$patch[0]}, {$patch[1]}\n{$json}";
+    if (!$languageName) {
+        die(sprintf("ERROR: No language name on line %d\n", ($i + 1)));
+    }
+    if (!@json_decode($jsonLangDef)) {
+        die(sprintf("ERROR: Invalid JSON data on line %d\n", ($i + 2)));
+    }
+
+    if (isset($patches[$languageName])) {
+        foreach ($patches[$languageName] as $j => $patch) {
+            $patched = str_replace($patch[0], $patch[1], $jsonLangDef);
+
+            if ($jsonLangDef === $patched) {
+                printf("Patch %d for %s was not applied and likely unnecessary\n", $j, $languageName);
             }
-        }
 
-        echo "Creating language file '{$fl}.json'\n";
-        if (!file_put_contents("../Highlight/languages/{$fl}.json", $json)) {
-            die("ERROR: Couldn't write to file.\n");
+            $jsonLangDef = $patched;
         }
+    }
+
+    if (!file_put_contents("../Highlight/languages/{$languageName}.json", $jsonLangDef)) {
+        die("ERROR: Couldn't write to file.\n");
     }
 }
