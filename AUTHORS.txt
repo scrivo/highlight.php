@@ -4,18 +4,18 @@ Syntax highlighting with language autodetection in PHP.
 
 Current maintainer(s):
 
-	Vladimir Jimenez <me@allejo.io>
+    Vladimir Jimenez <me@allejo.io>
 
 Former maintainers:
 
-	Geert Bergman (original author) <geert@scrivo.nl>
+    Geert Bergman (original author) <geert@scrivo.nl>
 
 Contributor(s):
 
-	Carsten Brandt <mail@cebe.cc>
-	Daniel Lynge
-	Daniel Gómez Pan <pana_1990@hotmail.com>
-	Martin Folkers <hello@twobrain.io>
+    Carsten Brandt <mail@cebe.cc>
+    Daniel Lynge
+    Daniel Gómez Pan <pana_1990@hotmail.com>
+    Martin Folkers <hello@twobrain.io>
 
 -------------------------------------------------------------------------------
 
