@@ -50,13 +50,6 @@ $patches = array(
         array("[]{}%#'\\\"", "\\\\Q[]{}%#'\\\"\\\\E")
     ),
 
-    // The `-` character must be escaped in while in `[]`. This is enforced in PHP 7.3+
-    //   https://wiki.php.net/rfc/pcre2-migration
-    //   https://github.com/php/php-src/pull/2857
-    "dsconfig" => array(
-        array("[\\\\w-?]", "[\\\\w\\\\-?]")
-    ),
-
     // WTF, any ideas anyone?
     "mercury" => array(array("\\\\\\\/", "\\\\\\\\\\\/")),
 
@@ -68,18 +61,17 @@ $patches = array(
         '{02B80}-9',
         '{02B8}0-9',
     )),
-
-    // Same reason as dsconfig
-    "xquery" => array(
-        array("[\\\\w-:]+","[\\\\w\\\\-:]+")
-    ),
 );
 
 for ($i=0; $i<count($f); $i+=2) {
     if (isset($f[$i+1])) {
-
         $fl = trim($f[$i]);
         $json = $f[$i+1];
+
+        // The `-` character must be escaped in while in `[]`. This is enforced in PHP 7.3+
+        //   https://wiki.php.net/rfc/pcre2-migration
+        //   https://github.com/php/php-src/pull/2857
+        $json = preg_replace('/(\[[^:]*?\w)(-)([^a-zA-Z0-9\\\\]+?)/um', '$1\\\\\\-$3', $json);
 
         if (!$fl) {
             die(sprintf("ERROR: No language name on line %d\n", ($i+1)));
