@@ -120,12 +120,14 @@ class Language extends Mode
     /**
      * Performs a shallow merge of multiple objects into one.
      *
-     * @param Mode|array ...$params The objects to merge.
+     * @param Mode                 $params The objects to merge.
+     * @param array<string, mixed> ...$_
      *
-     * @return \stdClass|Mode
+     * @return Mode
      */
-    private function inherit()
+    private function inherit($params, $_ = array())
     {
+        /** @var Mode $result */
         $result = new \stdClass();
         $objects = func_get_args();
         $parent = array_shift($objects);
