@@ -52,7 +52,7 @@ namespace Highlight;
  * @property bool $endSameAsBegin = false
  * @property string $lexemes = ""
  * @property RegEx|null $lexemesRe = null
- * @property array<string, array> $keywords = array()
+ * @property array<string, array<int, string|int>> $keywords = array()
  * @property string $illegal = ""
  * @property RegEx|null $illegalRe = null
  * @property bool $excludeBegin = false
@@ -63,7 +63,7 @@ namespace Highlight;
  * @property Mode $starts = ""
  * @property array $variants = array()
  * @property int|null $relevance = null
- * @property string|array|null $subLanguage = null
+ * @property string|string[]|null $subLanguage = null
  * @property bool $skip = false
  * @property bool $disableAutodetect = false
  *
