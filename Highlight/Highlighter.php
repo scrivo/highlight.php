@@ -57,7 +57,7 @@ class Highlighter
     /** @var string */
     private $result = "";
 
-    /** @var Language|Mode|null */
+    /** @var Mode|null */
     private $top = null;
 
     /** @var Language|null */
@@ -833,7 +833,7 @@ class Highlighter
     /**
      * Returns list of all available aliases for given language name.
      *
-     * @param string $language name or alias of language to look-up
+     * @param string $name name or alias of language to look-up
      *
      * @throws \DomainException if the requested language was not in this
      *                          Highlighter's language set
@@ -844,9 +844,9 @@ class Highlighter
      *                  language name language. Passed-in name is included as
      *                  well.
      */
-    public function getAliasesForLanguage($language)
+    public function getAliasesForLanguage($name)
     {
-        $language = self::getLanguage($language);
+        $language = self::getLanguage($name);
 
         if ($language === null) {
             throw new \DomainException("Unknown language: $language");

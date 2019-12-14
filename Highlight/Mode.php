@@ -40,35 +40,35 @@ namespace Highlight;
  * Language definition set via language definition JSON files
  *
  * @property bool $case_insensitive = false
- * @property array $aliases = array()
- * @property string $className = ""
- * @property string $begin = ""
+ * @property string[] $aliases = array()
+ * @property string|null $className = null
+ * @property string|null $begin = null
  * @property RegEx|null $beginRe = null
- * @property string $end = ""
+ * @property string|null $end = null
  * @property RegEx|null $endRe = null
- * @property string $beginKeywords = ""
+ * @property string|null $beginKeywords = null
  * @property bool $endsWithParent = false
  * @property bool $endsParent = false
  * @property bool $endSameAsBegin = false
- * @property string $lexemes = ""
+ * @property string|null $lexemes = null
  * @property RegEx|null $lexemesRe = null
  * @property array<string, array<int, string|int>> $keywords = array()
- * @property string $illegal = ""
+ * @property string|null $illegal = null
  * @property RegEx|null $illegalRe = null
  * @property bool $excludeBegin = false
  * @property bool $excludeEnd = false
  * @property bool $returnBegin = false
  * @property bool $returnEnd = false
  * @property Mode[] $contains = array()
- * @property Mode $starts = ""
- * @property array $variants = array()
+ * @property Mode|null $starts = null
+ * @property Mode[] $variants = array()
  * @property int|null $relevance = null
  * @property string|string[]|null $subLanguage = null
  * @property bool $skip = false
  * @property bool $disableAutodetect = false
  *
  * Properties set at runtime by the language compilation process
- * @property array $cachedVariants = array()
+ * @property array<int, Mode> $cachedVariants = array()
  * @property Terminators|null $terminators = null
  * @property string $terminator_end = ""
  * @property bool $compiled = false
@@ -77,7 +77,7 @@ namespace Highlight;
  *
  * @see https://highlightjs.readthedocs.io/en/latest/reference.html
  */
-abstract class Mode
+abstract class Mode extends \stdClass
 {
     /**
      * Fill in the missing properties that this Mode does not have.
@@ -108,26 +108,26 @@ abstract class Mode
         $defaultValues = array(
             "case_insensitive" => false,
             "aliases" => array(),
-            "className" => "",
-            "begin" => "",
+            "className" => null,
+            "begin" => null,
             "beginRe" => null,
-            "end" => "",
+            "end" => null,
             "endRe" => null,
-            "beginKeywords" => "",
+            "beginKeywords" => null,
             "endsWithParent" => false,
             "endsParent" => false,
             "endSameAsBegin" => false,
-            "lexemes" => "",
+            "lexemes" => null,
             "lexemesRe" => null,
             "keywords" => array(),
-            "illegal" => "",
+            "illegal" => null,
             "illegalRe" => null,
             "excludeBegin" => false,
             "excludeEnd" => false,
             "returnBegin" => false,
             "returnEnd" => false,
             "contains" => array(),
-            "starts" => "",
+            "starts" => null,
             "variants" => array(),
             "relevance" => null,
             "subLanguage" => null,

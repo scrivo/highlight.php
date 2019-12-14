@@ -42,19 +42,24 @@ namespace Highlight;
  *
  * // Backward compatibility properties
  *
- * @property \stdClass|Mode $mode (DEPRECATED) All properties traditionally inside of $mode are now available directly from this class.
+ * @property Mode $mode (DEPRECATED) All properties traditionally inside of $mode are now available directly from this class.
  * @property bool $caseInsensitive (DEPRECATED) Due to compatibility requirements with highlight.js, use `case_insensitive` instead.
  */
 class Language extends Mode
 {
+    /** @var string[] */
     private static $COMMON_KEYWORDS = array('of', 'and', 'for', 'in', 'not', 'or', 'if', 'then');
 
     /** @var string */
     public $name;
 
-    /** @var \stdClass|Mode|null */
+    /** @var Mode|null */
     private $mode = null;
 
+    /**
+     * @param string $lang
+     * @param string $filePath
+     */
     public function __construct($lang, $filePath)
     {
         $this->name = $lang;
@@ -63,9 +68,19 @@ class Language extends Mode
         // done to take advantage of objects being pass by reference automatically in PHP whereas arrays are pass by
         // value.
         $json = file_get_contents($filePath);
+
+        if ($json === false) {
+            throw new \InvalidArgumentException("Language file inaccessible: $filePath");
+        }
+
         $this->mode = json_decode($json);
     }
 
+    /**
+     * @param string $name
+     *
+     * @return bool|Mode|\stdClass|null
+     */
     public function __get($name)
     {
         if ($name === 'mode') {
@@ -107,7 +122,7 @@ class Language extends Mode
      *
      * @param Mode|array ...$params The objects to merge.
      *
-     * @return \stdClass
+     * @return \stdClass|Mode
      */
     private function inherit()
     {
@@ -128,6 +143,11 @@ class Language extends Mode
         return $result;
     }
 
+    /**
+     * @param Mode|null $mode
+     *
+     * @return bool
+     */
     private function dependencyOnParent($mode)
     {
         if (!$mode) {
@@ -144,7 +164,7 @@ class Language extends Mode
     /**
      * @param Mode $mode
      *
-     * @return Mode[]
+     * @return array<int, \stdClass|Mode>
      */
     private function expandOrCloneMode($mode)
     {
@@ -180,8 +200,10 @@ class Language extends Mode
     }
 
     /**
-     * @param \stdClass|Mode      $mode
-     * @param \stdClass|Mode|null $parent
+     * @param Mode      $mode
+     * @param Mode|null $parent
+     *
+     * @return void
      */
     private function compileMode($mode, $parent = null)
     {
@@ -242,6 +264,7 @@ class Language extends Mode
             $mode->contains = array();
         }
 
+        /** @var Mode[] $expandedContains */
         $expandedContains = array();
         foreach ($mode->contains as &$c) {
             if ($c instanceof \stdClass) {
@@ -254,6 +277,7 @@ class Language extends Mode
         }
         $mode->contains = $expandedContains;
 
+        /** @var Mode $contain */
         foreach ($mode->contains as $contain) {
             $this->compileMode($contain, $mode);
         }
@@ -268,8 +292,15 @@ class Language extends Mode
         Mode::_handleDeprecations($mode);
     }
 
+    /**
+     * @param array<string, string>|string $rawKeywords
+     * @param bool                         $caseSensitive
+     *
+     * @return array<string, array<int, string|int>>
+     */
     private function compileKeywords($rawKeywords, $caseSensitive)
     {
+        /** @var array<string, array<int, string|int>> $compiledKeywords */
         $compiledKeywords = array();
 
         if (is_string($rawKeywords)) {
@@ -283,6 +314,14 @@ class Language extends Mode
         return $compiledKeywords;
     }
 
+    /**
+     * @param string $className
+     * @param string $str
+     * @param array<string, array<int, string|int>> $compiledKeywords
+     * @param bool $caseSensitive
+     *
+     * @return void
+     */
     private function splitAndCompile($className, $str, array &$compiledKeywords, $caseSensitive)
     {
         if ($caseSensitive) {
@@ -298,6 +337,12 @@ class Language extends Mode
         }
     }
 
+    /**
+     * @param string $keyword
+     * @param string $providedScore
+     *
+     * @return int
+     */
     private function scoreForKeyword($keyword, $providedScore)
     {
         if ($providedScore) {
@@ -307,6 +352,11 @@ class Language extends Mode
         return $this->commonKeyword($keyword) ? 0 : 1;
     }
 
+    /**
+     * @param string $word
+     *
+     * @return bool
+     */
     private function commonKeyword($word)
     {
         return in_array(strtolower($word), self::$COMMON_KEYWORDS);
@@ -318,6 +368,8 @@ class Language extends Mode
      * @param bool $safeMode
      *
      * @since 9.17.1.0 The 'safeMode' parameter was added.
+     *
+     * @return void
      */
     public function compile($safeMode)
     {
@@ -347,6 +399,8 @@ class Language extends Mode
      * @deprecated 9.16.0 This method should never have been exposed publicly as part of the API.
      *
      * @param \stdClass|null $e
+     *
+     * @return void
      */
     public function complete(&$e)
     {
