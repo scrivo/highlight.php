@@ -29,10 +29,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-/**
- * Extract language definitions (JSON strings) from the large file that was
- * created using 'node launcher.js' and create a JSON file for each language.
- */
+// Extract language definitions (JSON strings) from the large file that was
+// created using 'node launcher.js' and create a JSON file for each language.
 
 $f = file("languages.dat");
 
