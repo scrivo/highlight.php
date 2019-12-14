@@ -70,7 +70,7 @@ final class RegEx
      *
      * @param string $str the string to run this regular expression against
      *
-     * @return RegExMatch|null
+     * @return RegExMatch<int, string>|null
      */
     public function exec($str)
     {
