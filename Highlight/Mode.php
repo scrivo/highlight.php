@@ -84,9 +84,13 @@ abstract class Mode extends \stdClass
      *
      * @internal
      *
+     * @param \stdClass|null $obj
+     *
      * @since 9.16.0.0
+     *
+     * @return void
      */
-    public static function _normalize(\stdClass &$obj)
+    public static function _normalize(&$obj)
     {
         // Don't overload our Modes if we've already normalized it
         if (isset($obj->__IS_COMPLETE)) {
@@ -171,8 +175,12 @@ abstract class Mode extends \stdClass
      * Set any deprecated properties values to their replacement values.
      *
      * @internal
+     *
+     * @param \stdClass $obj
+     *
+     * @return void
      */
-    public static function _handleDeprecations(\stdClass &$obj)
+    public static function _handleDeprecations(&$obj)
     {
         $deprecations = array(
             // @TODO Deprecated since 9.16.0.0; remove at 10.x
