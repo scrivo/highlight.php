@@ -59,6 +59,8 @@ class Language extends Mode
     /**
      * @param string $lang
      * @param string $filePath
+     *
+     * @throws \InvalidArgumentException when the given $filePath is inaccessible
      */
     public function __construct($lang, $filePath)
     {
