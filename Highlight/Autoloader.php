@@ -27,26 +27,27 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-/**
- * Implementation of the \Scrivo\Autoloader class.
- */
-
 namespace Highlight;
 
 /**
- * The autoloader class for Highlight classes.
+ * The autoloader class for Highlight classes for projects without Composer or autoloaders.
  *
- * Typical usage:
- *
+ * ```php
  * <?php
  *
  * require_once("Highlight/Autoloader.php");
  * spl_autoload_register("\\Highlight\\Autoloader::load");
  *
  * // Now use Highlight classes:
- * $hl = new Highlighter(...);
- * ...
- * ?>
+ * $hl = new \Highlight\Highlighter(...);
+ * ```
+ *
+ * @TODO In v10.x, mark this class final for real
+ *
+ * @api
+ * @final
+ *
+ * @since 7.5.0.0
  */
 class Autoloader
 {
@@ -54,7 +55,7 @@ class Autoloader
      * The method to include the source file for a given class to use in
      * the PHP spl_autoload_register function.
      *
-     * @param string a name of a Scrivo class
+     * @param string $class a name of a Scrivo class
      *
      * @return bool true if the source file was successfully included
      */
