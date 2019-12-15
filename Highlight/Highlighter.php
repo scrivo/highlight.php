@@ -72,7 +72,7 @@ class Highlighter
     /** @var array<string, Mode> */
     private $continuations = array();
 
-    /** @var RegExMatch<int, string> */
+    /** @var RegExMatch */
     private $lastMatch;
 
     /** @var string The current code we are highlighting */
@@ -221,8 +221,8 @@ class Highlighter
     }
 
     /**
-     * @param Mode                    $mode
-     * @param RegExMatch<int, string> $match
+     * @param Mode       $mode
+     * @param RegExMatch $match
      *
      * @return mixed|null
      */
@@ -379,7 +379,7 @@ class Highlighter
     }
 
     /**
-     * @param RegExMatch<int, string> $match
+     * @param RegExMatch $match
      *
      * @return int
      */
@@ -409,7 +409,7 @@ class Highlighter
     }
 
     /**
-     * @param RegExMatch<int, string> $match
+     * @param RegExMatch $match
      *
      * @return int|null
      */
@@ -458,8 +458,8 @@ class Highlighter
     }
 
     /**
-     * @param string                       $textBeforeMatch
-     * @param RegExMatch<int, string>|null $match
+     * @param string          $textBeforeMatch
+     * @param RegExMatch|null $match
      *
      * @return int
      */

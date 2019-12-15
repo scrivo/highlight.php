@@ -79,7 +79,7 @@ class Language extends Mode
     /**
      * @param string $name
      *
-     * @return bool|Mode|\stdClass|null
+     * @return bool|Mode|null
      */
     public function __get($name)
     {
@@ -120,7 +120,7 @@ class Language extends Mode
     /**
      * Performs a shallow merge of multiple objects into one.
      *
-     * @param Mode                 $params The objects to merge.
+     * @param Mode                 $params the objects to merge
      * @param array<string, mixed> ...$_
      *
      * @return Mode
@@ -317,10 +317,10 @@ class Language extends Mode
     }
 
     /**
-     * @param string $className
-     * @param string $str
+     * @param string                                $className
+     * @param string                                $str
      * @param array<string, array<int, string|int>> $compiledKeywords
-     * @param bool $caseSensitive
+     * @param bool                                  $caseSensitive
      *
      * @return void
      */
