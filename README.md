@@ -100,11 +100,11 @@ The core of the project is loyal port of **highlight.js** and is available under
 
 Available functions:
 
-- [`getAvailableStyleSheets(bool $filePaths = false)`](HighlightUtilities/functions.php#L32-L45)
-- [`getStyleSheet(string $name)`](HighlightUtilities/functions.php#L72-L85)
-- [`getStyleSheetFolder()`](HighlightUtilities/functions.php#L93-L101)
-- [`getStyleSheetPath(string $name)`](HighlightUtilities/functions.php#L109-L121)
-- [`splitCodeIntoArray(string $html)`](HighlightUtilities/functions.php#L137-L150)
+- [`getAvailableStyleSheets(bool $filePaths = false): string[]`](HighlightUtilities/functions.php#L32-L45)
+- [`getStyleSheet(string $name): false|string`](HighlightUtilities/functions.php#L72-L85)
+- [`getStyleSheetFolder(): string`](HighlightUtilities/functions.php#L93-L101)
+- [`getStyleSheetPath(string $name): string`](HighlightUtilities/functions.php#L109-L121)
+- [`splitCodeIntoArray(string $html): false|string[]`](HighlightUtilities/functions.php#L137-L150)
 
 ## Versioning
 
