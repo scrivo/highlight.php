@@ -27,7 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-require_once __DIR__ . "../Highlight/Autoloader.php";
+require_once __DIR__ . "/../Highlight/Autoloader.php";
 spl_autoload_register("Highlight\\Autoloader::load");
 
 $hl = new Highlight\Highlighter();
