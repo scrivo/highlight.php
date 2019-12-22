@@ -46,6 +46,6 @@ jobs:
         bash .travis/hasGitChanges.sh
 
 notifications:
-    email: false
-    webhooks:
-        - http://helit.org:8093/+sujevo-dev/showSuccessfulBuildMessages=always
+  email: false
+  webhooks:
+    - http://helit.org:8093/+sujevo-dev/showSuccessfulBuildMessages=always
