@@ -50,8 +50,8 @@
     },
     "require-dev": {
         "phpunit/phpunit": "^4.8|^5.7",
-        "symfony/finder": "^3.4",
-        "symfony/var-dumper": "^3.4"
+        "symfony/finder": "^2.8|^3.4",
+        "symfony/var-dumper": "^2.8|^3.4"
     },
     "suggest": {
         "ext-dom": "Needed to make use of the features in the utilities namespace"

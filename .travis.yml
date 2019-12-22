@@ -1,38 +1,51 @@
 language: php
-php:
-  - 7.4snapshot
-  - 7.3
-  - 7.2
-  - 7.1
-  - 7.0
-  - 5.6
 
-env:
-  - COMPOSER_PROCESS_TIMEOUT=0
+# Use a jobs-only configuration file
+#   https://github.com/travis-ci/travis-ci/issues/8295#issuecomment-454457787
+unit_test: &unit_test
+  stage: Unit Tests
+  env:
+    - COMPOSER_PROCESS_TIMEOUT=0
+  install:
+    - composer install --prefer-dist --no-interaction --no-progress
+  script:
+    - composer test
 
-matrix:
-  fast_finish: true
+jobs:
   include:
-    - php: 5.5
-      dist: precise
-    - php: 5.4
-      dist: precise
+    # Unit testing in different PHP versions
+    - <<: *unit_test
+      php: 5.4
+      dist: trusty
+    - <<: *unit_test
+      php: 5.5
+      dist: trusty
+    - <<: *unit_test
+      php: 5.6
+      dist: xenial
+    - <<: *unit_test
+      php: 7.0
+      dist: xenial
+    - <<: *unit_test
+      php: 7.1
+      dist: bionic
+    - <<: *unit_test
+      php: 7.2
+      dist: bionic
+    - <<: *unit_test
+      php: 7.3
+      dist: bionic
+    - <<: *unit_test
+      php: 7.4
+      dist: bionic
 
-install:
-  - composer install --no-interaction --no-progress
-
-script:
-  - composer test
+    # Other checks we need to perform
+    - stage: checks
+      php: 7.2
+      script:
+        bash .travis/hasGitChanges.sh
 
 notifications:
   email: false
   webhooks:
     - http://helit.org:8093/+sujevo-dev/showSuccessfulBuildMessages=always
-
-jobs:
-  include:
-    - stage: checks
-      php:
-        - 7.2
-      script:
-        bash .travis/hasGitChanges.sh

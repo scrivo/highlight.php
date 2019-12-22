@@ -45,6 +45,7 @@ class HighlightAutoTest extends PHPUnit_Framework_TestCase
             'plaintext',    // [1. asciidoc (10%); 2. properties (4%)]
             'coffeescript', // [1. livescript (26%); 2. coffeescript (26%)]
             'handlebars',   // [1. htmlbars (12%); 2. handlebars (12%)]
+            'n1ql',         // [1. sql (26%); 2. n1ql (26%)]
             'sml',          // [1. sml (18%); 2. coq (18%)]
             'purebasic',    // [1. reasonml (29%); 2. purebasic (29%)]
         );
