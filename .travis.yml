@@ -1,11 +1,4 @@
 language: php
-php:
-  - 7.4snapshot
-  - 7.3
-  - 7.2
-  - 7.1
-  - 7.0
-  - 5.6
 
 env:
   - COMPOSER_PROCESS_TIMEOUT=0
@@ -13,13 +6,25 @@ env:
 matrix:
   fast_finish: true
   include:
-    - php: 5.5
-      dist: precise
-    - php: 5.4
-      dist: precise
+      - php: 5.4
+        dist: trusty
+      - php: 5.5
+        dist: trusty
+      - php: 5.6
+        dist: xenial
+      - php: 7.0
+        dist: xenial
+      - php: 7.1
+        dist: bionic
+      - php: 7.2
+        dist: bionic
+      - php: 7.3
+        dist: bionic
+      - php: 7.4
+        dist: bionic
 
 install:
-  - composer install --no-interaction --no-progress
+  - composer install --prefer-dist --no-interaction --no-progress
 
 script:
   - composer test
