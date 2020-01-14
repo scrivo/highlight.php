@@ -1,6 +1,6 @@
 # Contributing
 
-Welcome to your server-side syntax highlight solution! If you're interested in contributing to the project, here are a few things to keep in mind!
+Welcome to your server-side syntax highlighting solution! If you're interested in contributing to the project, here are a few things to keep in mind!
 
 ## Language Definitions + Styles
 
