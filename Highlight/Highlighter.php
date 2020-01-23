@@ -310,6 +310,8 @@ class Highlighter
         try {
             $hl = new Highlighter();
             $hl->setAutodetectLanguages($this->options['languages']);
+            $hl->setClassPrefix($this->options['classPrefix']);
+            $hl->setTabReplace($this->options['tabReplace']);
 
             $explicit = is_string($this->top->subLanguage);
             if ($explicit && !in_array($this->top->subLanguage, self::$languages)) {
