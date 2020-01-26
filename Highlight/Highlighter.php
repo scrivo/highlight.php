@@ -48,6 +48,7 @@ class Highlighter
     /** @var bool */
     private $safeMode = true;
 
+    // @TODO In v10.x, this value should be static to match highlight.js behavior
     /** @var array<string, mixed> */
     private $options;
 
@@ -309,6 +310,8 @@ class Highlighter
     {
         try {
             $hl = new Highlighter();
+
+            // @TODO in v10.x, this should no longer be necessary once `$options` is made static
             $hl->setAutodetectLanguages($this->options['languages']);
             $hl->setClassPrefix($this->options['classPrefix']);
             $hl->setTabReplace($this->options['tabReplace']);
@@ -345,9 +348,6 @@ class Highlighter
 
             return $this->buildSpan($res->language, $res->value, false, true);
         } catch (\Exception $e) {
-            error_log("TODO, is this a relevant catch?");
-            error_log($e);
-
             return $this->escape($this->modeBuffer);
         }
     }
