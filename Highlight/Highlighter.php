@@ -316,6 +316,10 @@ class Highlighter
             $hl->setClassPrefix($this->options['classPrefix']);
             $hl->setTabReplace($this->options['tabReplace']);
 
+            if (!$this->safeMode) {
+                $hl->disableSafeMode();
+            }
+
             $explicit = is_string($this->top->subLanguage);
             if ($explicit && !in_array($this->top->subLanguage, self::$languages)) {
                 return $this->escape($this->modeBuffer);
