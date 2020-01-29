@@ -77,7 +77,7 @@ class Highlighter
     private $lastMatch;
 
     /** @var string The current code we are highlighting */
-    private $value;
+    private $codeToHighlight;
 
     /** @var array<string, Language> A mapping of a language ID to a Language definition */
     private static $classMap = array();
@@ -422,7 +422,7 @@ class Highlighter
     private function doEndMatch($match)
     {
         $lexeme = $match[0];
-        $matchPlusRemainder = substr($this->value, $match->index);
+        $matchPlusRemainder = substr($this->codeToHighlight, $match->index);
         $endMode = $this->endOfMode($this->top, $matchPlusRemainder);
 
         if (!$endMode) {
@@ -488,7 +488,7 @@ class Highlighter
         // Ref: https://github.com/highlightjs/highlight.js/issues/2140
         if ($this->lastMatch->type === "begin" && $match->type === "end" && $this->lastMatch->index === $match->index && $lexeme === "") {
             // spit the "skipped" character that our regex choked on back into the output sequence
-            $this->modeBuffer .= substr($this->value, $match->index, 1);
+            $this->modeBuffer .= substr($this->codeToHighlight, $match->index, 1);
 
             return 1;
         }
@@ -661,8 +661,8 @@ class Highlighter
      *
      * @todo In v10.x, change the return type from \stdClass to HighlightResult
      *
-     * @param string    $name
-     * @param string    $value
+     * @param string    $languageName
+     * @param string    $code
      * @param bool      $ignoreIllegals
      * @param Mode|null $continuation
      *
@@ -672,13 +672,13 @@ class Highlighter
      *
      * @return HighlightResult|\stdClass
      */
-    public function highlight($name, $value, $ignoreIllegals = true, $continuation = null)
+    public function highlight($languageName, $code, $ignoreIllegals = true, $continuation = null)
     {
-        $this->value = $value;
-        $this->language = $this->getLanguage($name);
+        $this->codeToHighlight = $code;
+        $this->language = $this->getLanguage($languageName);
 
         if ($this->language === null) {
-            throw new \DomainException("Unknown language: \"$name\"");
+            throw new \DomainException("Unknown language: \"$languageName\"");
         }
 
         $this->language->compile($this->safeMode);
@@ -711,17 +711,17 @@ class Highlighter
 
             while ($this->top) {
                 $this->top->terminators->lastIndex = $index;
-                $match = $this->top->terminators->exec($value);
+                $match = $this->top->terminators->exec($this->codeToHighlight);
 
                 if (!$match) {
                     break;
                 }
 
-                $count = $this->processLexeme(substr($value, $index, $match->index - $index), $match);
+                $count = $this->processLexeme(substr($this->codeToHighlight, $index, $match->index - $index), $match);
                 $index = $match->index + $count;
             }
 
-            $this->processLexeme(substr($value, $index));
+            $this->processLexeme(substr($this->codeToHighlight, $index));
 
             for ($current = $this->top; isset($current->parent); $current = $current->parent) {
                 if ($current->className) {
@@ -740,13 +740,13 @@ class Highlighter
             if (strpos($e->getMessage(), "Illegal") !== false) {
                 $res->illegal = true;
                 $res->relevance = 0;
-                $res->value = $this->escape($value);
+                $res->value = $this->escape($this->codeToHighlight);
 
                 return $res;
             } elseif ($this->safeMode) {
                 $res->relevance = 0;
-                $res->value = $this->escape($value);
-                $res->language = $name;
+                $res->value = $this->escape($this->codeToHighlight);
+                $res->language = $languageName;
                 $res->top = $this->top;
                 $res->errorRaised = $e;
 
@@ -761,7 +761,7 @@ class Highlighter
      * Highlight the given code by highlighting the given code with each
      * registered language and then finding the match with highest accuracy.
      *
-     * @param string        $text
+     * @param string        $code
      * @param string[]|null $languageSubset When set to null, this method will attempt to highlight $text with each
      *                                      language. Set this to an array of languages of your choice to limit the
      *                                      amount of languages to try.
@@ -771,12 +771,12 @@ class Highlighter
      *
      * @return HighlightResult|\stdClass
      */
-    public function highlightAuto($text, $languageSubset = null)
+    public function highlightAuto($code, $languageSubset = null)
     {
         /** @var HighlightResult $result */
         $result = new \stdClass();
         $result->relevance = 0;
-        $result->value = $this->escape($text);
+        $result->value = $this->escape($code);
         $result->language = "";
         $secondBest = clone $result;
 
@@ -795,7 +795,7 @@ class Highlighter
                 continue;
             }
 
-            $current = $this->highlight($name, $text, false);
+            $current = $this->highlight($name, $code, false);
 
             if ($current->relevance > $secondBest->relevance) {
                 $secondBest = $current;

@@ -151,6 +151,7 @@ Language and style definitions (copied from the highlight.js project)
     Jason Tate <adminz@web-cms-designs.com>
     Jay Strybis <jay.strybis@gmail.com>
     Jeff Escalante <hello@jenius.me>
+    Jeffrey Arnold <jeffrey.arnold@gmail.com>
     Jen Evers-Corvina <jen@sevvie.net>
     Joe Cheng <joe@rstudio.org>
     Joe Eli McIlvain <joe.eli.mac@gmail.org>
