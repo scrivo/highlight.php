@@ -11,6 +11,8 @@
     "type": "library",
     "license": "BSD-3-Clause",
     "scripts": {
+        "test:detection": "phpunit test/DetectionTest.php",
+        "test:markup": "phpunit test/MarkupTest.php",
         "test": "phpunit -v"
     },
     "support": {
