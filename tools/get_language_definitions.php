@@ -92,6 +92,8 @@ for ($i = 0; $i < count($f); $i += 2) {
         }
     }
 
+    $jsonLangDef = json_encode(json_decode($jsonLangDef), JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) . "\n";
+
     if (!file_put_contents("../Highlight/languages/{$languageName}.json", $jsonLangDef)) {
         die("ERROR: Couldn't write to file.\n");
     }
