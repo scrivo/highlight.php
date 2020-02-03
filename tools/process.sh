@@ -1,6 +1,6 @@
 #!/bin/bash
 
-HLJS_V="9.18.0"
+HLJS_V="9.18.1"
 DOJO_V="1.13.0"
 
 HLJS_DL="https://api.github.com/repos/highlightjs/highlight.js/tarball/$HLJS_V"
