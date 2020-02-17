@@ -99,7 +99,7 @@ In version 9.x of this project, the following languages are the default auto-det
 - PHP
 - HTTP
 
-These default languages are considered "legacy behavior" and will be removed in version 10.x of this library to match highlight.js behavior. The new default behavior in 10.x will be to use *every* language to match highlight.js behavior.
+These default languages are considered "legacy behavior" and will be removed in version 10.x of this library to match highlight.js behavior; the new default behavior in 10.x will be to use *every* language.
 
 ### Stylesheets
 
