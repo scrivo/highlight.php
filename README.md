@@ -73,11 +73,9 @@ catch (DomainException $e) {
 
 ### Automatic Language Detection Mode
 
-Alternatively you can use the automatic detection mode, which highlights your code with the language the library thinks is best.
+Alternatively you can use the automatic detection mode, which highlights your code with the language the library thinks is best. It is highly recommended you explicitly choose the language or limit the number of languages to automatically detect to reduce the number of inaccuracies.
 
-> **Warning:** You must supply a list of languages that the `Highlighter` will pick from. This occurs in a brute force fashion and the language with the most accurate result will be selected. This is extremely inefficient as you supply more languages and may not always be 100% accurate.
->
-> It is highly recommended you explicitly choose the language or limit the number of languages to automatically detect to reduce the number of inaccuracies.
+> **Warning:** Auto-detection occurs in a brute force fashion and the language with the most accurate result will be selected. This is extremely inefficient as you supply more languages and may not always be 100% accurate if similar languages are configured.
 
 ```php
 $hl = new \Highlight\Highlighter();
@@ -89,6 +87,19 @@ echo "<pre><code class=\"hljs {$highlighted->language}\">";
 echo $highlighted->value;
 echo "</code></pre>";
 ```
+
+#### Default Languages
+
+In version 9.x of this project, the following languages are the default auto-detected languages:
+
+- XML
+- JSON
+- JavaScript
+- CSS
+- PHP
+- HTTP
+
+These default languages are considered "legacy behavior" and will be removed in version 10.x of this library to match highlight.js behavior. The new default behavior in 10.x will be to use *every* language to match highlight.js behavior.
 
 ### Stylesheets
 
