@@ -29,6 +29,9 @@
 
 namespace HighlightUtilities;
 
+require_once __DIR__ . '/_internals.php';
+require_once __DIR__ . '/_themeColors.php';
+
 /**
  * Get a list of available stylesheets.
  *
