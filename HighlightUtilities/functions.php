@@ -70,6 +70,24 @@ function getAvailableStyleSheets($filePaths = false)
 }
 
 /**
+ * Get the hexadecimal color code used for the background of a given theme.
+ *
+ * @api
+ *
+ * @since 9.18.1.1
+ *
+ * @param string $name The stylesheet name (with or without the extension)
+ *
+ * @throws \DomainException when no stylesheet with this name exists
+ *
+ * @return string A hexadecimal representation of the background (includes the '#')
+ */
+function getThemeBackgroundColor($name)
+{
+    return _getThemeBackgroundColor(getNoCssExtension($name));
+}
+
+/**
  * Get the contents of the given stylesheet.
  *
  * @api
@@ -121,10 +139,7 @@ function getStyleSheetFolder()
  */
 function getStyleSheetPath($name)
 {
-    if (substr($name, -4, 4) === ".css") {
-        $name = preg_replace("/\.css$/", "", $name);
-    }
-
+    $name = getNoCssExtension($name);
     $path = implode(DIRECTORY_SEPARATOR, array(getStyleSheetFolder(), $name)) . ".css";
 
     if (!file_exists($path)) {
