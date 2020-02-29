@@ -83,7 +83,7 @@ function getAvailableStyleSheets($filePaths = false)
  *
  * @throws \DomainException when no stylesheet with this name exists
  *
- * @return string A hexadecimal representation of the background (includes the '#')
+ * @return float[] An array representing RGB numerical values
  */
 function getThemeBackgroundColor($name)
 {

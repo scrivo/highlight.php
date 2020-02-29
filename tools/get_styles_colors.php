@@ -19,7 +19,8 @@ $backgroundColors = array();
 
 /** @var \Symfony\Component\Finder\SplFileInfo $file */
 foreach ($finder->getIterator() as $file) {
-    $color = '#ffffff';
+    $themeName = $file->getBasename('.css');
+    $backgroundColors[$themeName] = array(255, 255, 255);
     $cssParser = new Sabberworm\CSS\Parser($file->getContents());
     $cssDocument = $cssParser->parse();
 
@@ -37,7 +38,11 @@ foreach ($finder->getIterator() as $file) {
                 /** @var Rule $value */
                 foreach ($bgColor as $value) {
                     if ($value->getValue() instanceof Color) {
-                        $color = preg_replace('/background(?:-color)?:\s|;/', '', (string) $value);
+                        $backgroundColors[$themeName] = array(
+                            'r' => $value->getValue()->getColor()['r']->getSize(),
+                            'g' => $value->getValue()->getColor()['g']->getSize(),
+                            'b' => $value->getValue()->getColor()['b']->getSize(),
+                        );
 
                         break 3;
                     }
@@ -45,13 +50,6 @@ foreach ($finder->getIterator() as $file) {
             }
         }
     }
-
-    $backgroundColors[] = sprintf(
-        "%s'%s' => '%s',",
-        str_repeat(' ', 8),
-        $file->getBasename('.css'),
-        $color
-    );
 }
 
 $document = <<<'PHP'
@@ -66,13 +64,11 @@ $document = <<<'PHP'
  *
  * @throws \DomainException when no stylesheet with this name exists
  *
- * @return string
+ * @return float[]
  */
 function _getThemeBackgroundColor($theme)
 {
-    $colors = array(
-{colorMapping}
-    );
+    $colors = {colorMapping};
 
     if (!isset($colors[$theme])) {
         throw new DomainException("There is no stylesheet by the name of '$theme'");
@@ -84,7 +80,7 @@ function _getThemeBackgroundColor($theme)
 PHP;
 
 $document = strtr($document, array(
-    '{colorMapping}' => implode("\n", $backgroundColors),
+    '{colorMapping}' => var_export($backgroundColors, true),
 ));
 
 file_put_contents(__DIR__ . '/../HighlightUtilities/_themeColors.php', $document);
