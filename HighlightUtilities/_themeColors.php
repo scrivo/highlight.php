@@ -50,9 +50,9 @@ function _getThemeBackgroundColor($theme)
             'b' => 34.0,
         ),
         'ascetic' => array(
-            0 => 255,
-            1 => 255,
-            2 => 255,
+            'r' => 255,
+            'g' => 255,
+            'b' => 255,
         ),
         'atelier-cave-dark' => array(
             'r' => 25.0,
@@ -170,9 +170,9 @@ function _getThemeBackgroundColor($theme)
             'b' => 250.0,
         ),
         'brown-paper' => array(
-            0 => 255,
-            1 => 255,
-            2 => 255,
+            'r' => 255,
+            'g' => 255,
+            'b' => 255,
         ),
         'codepen-embed' => array(
             'r' => 34.0,
@@ -195,9 +195,9 @@ function _getThemeBackgroundColor($theme)
             'b' => 68.0,
         ),
         'darkula' => array(
-            0 => 255,
-            1 => 255,
-            2 => 255,
+            'r' => 255,
+            'g' => 255,
+            'b' => 255,
         ),
         'default' => array(
             'r' => 240.0,
@@ -225,9 +225,9 @@ function _getThemeBackgroundColor($theme)
             'b' => 238.0,
         ),
         'github-gist' => array(
-            0 => 255,
-            1 => 255,
-            2 => 255,
+            'r' => 255,
+            'g' => 255,
+            'b' => 255,
         ),
         'github' => array(
             'r' => 248.0,
@@ -240,9 +240,9 @@ function _getThemeBackgroundColor($theme)
             'b' => 34.0,
         ),
         'googlecode' => array(
-            0 => 255,
-            1 => 255,
-            2 => 255,
+            'r' => 255,
+            'g' => 255,
+            'b' => 255,
         ),
         'gradient-dark' => array(
             'r' => 80.0,
@@ -290,9 +290,9 @@ function _getThemeBackgroundColor($theme)
             'b' => 64.0,
         ),
         'isbl-editor-light' => array(
-            0 => 255,
-            1 => 255,
-            2 => 255,
+            'r' => 255,
+            'g' => 255,
+            'b' => 255,
         ),
         'kimbie.dark' => array(
             'r' => 34.0,
@@ -305,9 +305,9 @@ function _getThemeBackgroundColor($theme)
             'b' => 212.0,
         ),
         'lightfair' => array(
-            0 => 255,
-            1 => 255,
-            2 => 255,
+            'r' => 255,
+            'g' => 255,
+            'b' => 255,
         ),
         'magula' => array(
             'r' => 244.0,
@@ -360,9 +360,9 @@ function _getThemeBackgroundColor($theme)
             'b' => 219.0,
         ),
         'pojoaque' => array(
-            0 => 255,
-            1 => 255,
-            2 => 255,
+            'r' => 255,
+            'g' => 255,
+            'b' => 255,
         ),
         'purebasic' => array(
             'r' => 255.0,
@@ -395,9 +395,9 @@ function _getThemeBackgroundColor($theme)
             'b' => 240.0,
         ),
         'school-book' => array(
-            0 => 255,
-            1 => 255,
-            2 => 255,
+            'r' => 255,
+            'g' => 255,
+            'b' => 255,
         ),
         'shades-of-purple' => array(
             'r' => 45.0,
@@ -425,9 +425,9 @@ function _getThemeBackgroundColor($theme)
             'b' => 81.0,
         ),
         'tomorrow-night-bright' => array(
-            0 => 255,
-            1 => 255,
-            2 => 255,
+            'r' => 255,
+            'g' => 255,
+            'b' => 255,
         ),
         'tomorrow-night-eighties' => array(
             'r' => 45.0,
@@ -440,14 +440,14 @@ function _getThemeBackgroundColor($theme)
             'b' => 33.0,
         ),
         'tomorrow' => array(
-            0 => 255,
-            1 => 255,
-            2 => 255,
+            'r' => 255,
+            'g' => 255,
+            'b' => 255,
         ),
         'vs' => array(
-            0 => 255,
-            1 => 255,
-            2 => 255,
+            'r' => 255,
+            'g' => 255,
+            'b' => 255,
         ),
         'vs2015' => array(
             'r' => 30.0,

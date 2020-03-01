@@ -20,7 +20,11 @@ $backgroundColors = array();
 /** @var \Symfony\Component\Finder\SplFileInfo $file */
 foreach ($finder->getIterator() as $file) {
     $themeName = $file->getBasename('.css');
-    $backgroundColors[$themeName] = array(255, 255, 255);
+    $backgroundColors[$themeName] = array(
+        'r' => 255,
+        'g' => 255,
+        'b' => 255,
+    );
     $cssParser = new Sabberworm\CSS\Parser($file->getContents());
     $cssDocument = $cssParser->parse();
 
