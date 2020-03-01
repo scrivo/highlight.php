@@ -170,9 +170,9 @@ function _getThemeBackgroundColor($theme)
             'b' => 250.0,
         ),
         'brown-paper' => array(
-            'r' => 255,
-            'g' => 255,
-            'b' => 255,
+            'r' => 183.0,
+            'g' => 166.0,
+            'b' => 142.0,
         ),
         'codepen-embed' => array(
             'r' => 34.0,
@@ -360,9 +360,9 @@ function _getThemeBackgroundColor($theme)
             'b' => 219.0,
         ),
         'pojoaque' => array(
-            'r' => 255,
-            'g' => 255,
-            'b' => 255,
+            'r' => 24.0,
+            'g' => 25.0,
+            'b' => 20.0,
         ),
         'purebasic' => array(
             'r' => 255.0,
@@ -395,9 +395,9 @@ function _getThemeBackgroundColor($theme)
             'b' => 240.0,
         ),
         'school-book' => array(
-            'r' => 255,
-            'g' => 255,
-            'b' => 255,
+            'r' => 246.0,
+            'g' => 246.0,
+            'b' => 174.0,
         ),
         'shades-of-purple' => array(
             'r' => 45.0,

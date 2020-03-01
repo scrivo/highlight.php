@@ -4,6 +4,7 @@ use Sabberworm\CSS\Property\Selector;
 use Sabberworm\CSS\Rule\Rule;
 use Sabberworm\CSS\RuleSet\DeclarationBlock;
 use Sabberworm\CSS\Value\Color;
+use Sabberworm\CSS\Value\RuleValueList;
 use Symfony\Component\Finder\Finder;
 
 require __DIR__ . '/../vendor/autoload.php';
@@ -12,6 +13,7 @@ $finder = new Finder();
 $finder
     ->in(__DIR__ . '/../styles/')
     ->name('*.css')
+    ->sortByName()
     ->files()
 ;
 
@@ -39,17 +41,34 @@ foreach ($finder->getIterator() as $file) {
                     $bgColor = $ruleSet->getRules('background-color');
                 }
 
-                /** @var Rule $value */
+                /** @var RuleValueList|Rule $value */
                 foreach ($bgColor as $value) {
-                    if ($value->getValue() instanceof Color) {
-                        $backgroundColors[$themeName] = array(
-                            'r' => $value->getValue()->getColor()['r']->getSize(),
-                            'g' => $value->getValue()->getColor()['g']->getSize(),
-                            'b' => $value->getValue()->getColor()['b']->getSize(),
-                        );
+                    $isColor = $value->getValue() instanceof Color;
+                    $isValueList = $value->getValue() instanceof RuleValueList;
 
-                        break 3;
+                    if (!$isColor && !$isValueList) {
+                        continue;
                     }
+
+                    if ($isColor) {
+                        $colorValue = $value->getValue()->getColor();
+                    } elseif ($isValueList) {
+                        /** @var RuleValueList $valueList */
+                        foreach ($value->getValue()->getListComponents() as $valueList) {
+                            if ($valueList instanceof Color) {
+                                $colorValue = $valueList->getColor();
+                                break;
+                            }
+                        }
+                    }
+
+                    $backgroundColors[$themeName] = array(
+                        'r' => $colorValue['r']->getSize(),
+                        'g' => $colorValue['g']->getSize(),
+                        'b' => $colorValue['b']->getSize(),
+                    );
+
+                    break 3;
                 }
             }
         }
