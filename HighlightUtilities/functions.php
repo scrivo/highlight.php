@@ -73,7 +73,8 @@ function getAvailableStyleSheets($filePaths = false)
 }
 
 /**
- * Get the hexadecimal color code used for the background of a given theme.
+ * Get the RGB representation used for the background of a given theme as an
+ * array of three numbers.
  *
  * @api
  *
