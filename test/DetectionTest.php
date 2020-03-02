@@ -48,6 +48,7 @@ class DetectionTest extends PHPUnit_Framework_TestCase
             'n1ql',         // [1. sql (26%); 2. n1ql (26%)]
             'sml',          // [1. sml (18%); 2. coq (18%)]
             'purebasic',    // [1. reasonml (29%); 2. purebasic (29%)]
+            'fortran',      // [1. irpf90 (40%); 2. fortran (40%)]
         );
     }
 
