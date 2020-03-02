@@ -36,7 +36,7 @@
  *
  * @return string
  */
-function getNoCssExtension($name)
+function _getNoCssExtension($name)
 {
     if (substr($name, -4, 4) === ".css") {
         $name = preg_replace("/\.css$/", "", $name);

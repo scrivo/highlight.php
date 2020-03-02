@@ -87,7 +87,7 @@ function getAvailableStyleSheets($filePaths = false)
  */
 function getThemeBackgroundColor($name)
 {
-    return _getThemeBackgroundColor(getNoCssExtension($name));
+    return _getThemeBackgroundColor(_getNoCssExtension($name));
 }
 
 /**
@@ -142,7 +142,7 @@ function getStyleSheetFolder()
  */
 function getStyleSheetPath($name)
 {
-    $name = getNoCssExtension($name);
+    $name = _getNoCssExtension($name);
     $path = implode(DIRECTORY_SEPARATOR, array(getStyleSheetFolder(), $name)) . ".css";
 
     if (!file_exists($path)) {
