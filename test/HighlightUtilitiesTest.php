@@ -115,4 +115,18 @@ PHP;
             $this->assertStringEndsWith('</span>', trim($line));
         }
     }
+
+    public function testGetThemeBackgroundColorSingleColor()
+    {
+        $theme = 'atom-one-dark';
+
+        $this->assertEquals(array('r' => 40, 'g' => 44, 'b' => 52), \HighlightUtilities\getThemeBackgroundColor($theme));
+    }
+
+    public function testGetThemeBackgroundColorColorWithBgImage()
+    {
+        $theme = 'brown-paper';
+
+        $this->assertEquals(array('r' => 183, 'g' => 166, 'b' => 142), \HighlightUtilities\getThemeBackgroundColor($theme));
+    }
 }

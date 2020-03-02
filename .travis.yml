@@ -9,6 +9,8 @@ unit_test: &unit_test
   install:
     - composer install --prefer-dist --no-interaction --no-progress
   script:
+    # Disable XDebug to speed up Composer and test suites.
+    - phpenv config-rm xdebug.ini
     - composer test
 
 jobs:

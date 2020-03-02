@@ -29,6 +29,7 @@ php get_language_definitions.php
 rm -r ../styles/ 2> /dev/null
 mkdir -p ../styles/
 cp -a lib_highlight/src/styles/ ../styles/
+php get_styles_colors.php
 
 # Copy unit tests
 rm -r ../test/detect/ 2> /dev/null
