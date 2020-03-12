@@ -6,7 +6,8 @@ $finder = PhpCsFixer\Finder::create()
     ->in('HighlightUtilities')
     ->in('test')
     ->in('tools')
-    ->exclude('tools/lib_*')
+    ->exclude('lib_dojo')
+    ->exclude('lib_highlight')
 ;
 
 return PhpCsFixer\Config::create()
