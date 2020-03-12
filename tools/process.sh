@@ -40,3 +40,9 @@ cp -a lib_highlight/test/detect/ ../test/detect/
 cp -a lib_highlight/test/markup/ ../test/markup/
 
 rm ../test/{detect,markup}/index.js 2> /dev/null
+
+# Build a full browser build and copy it over to our demo
+cd lib_highlight
+node tools/build -t browser
+cp build/highlight.pack.js ../../demo/highlight.pack.js
+cd ..
