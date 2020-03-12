@@ -29,104 +29,171 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-$start = microtime(true);
-
 require_once "../Highlight/Autoloader.php";
 spl_autoload_register("Highlight\\Autoloader::load");
 
 $hl = new Highlight\Highlighter();
-$hl->setAutodetectLanguages($hl->listLanguages());
 
-?>
-<html>
-  <head>
-    <link rel="stylesheet" type="text/css" href="../styles/default.css">
-    <script src="highlight.pack.js"></script>
-    <script>
+function getLanguageRaw($lang)
+{
+    return file_get_contents("../test/detect/{$lang}/default.txt");
+}
 
-function testDetection() {
+function getLanguageDemo($lang)
+{
+    $snippet = getLanguageRaw($lang);
 
-    var table = document.getElementById('test');
-    var rws = table.getElementsByTagName('TR');
-
-    for (var i = 1; i < rws.length; i++) {
-        var tds = rws[i].getElementsByTagName('TD');
-
-        var p1a = tds[1].getElementsByTagName('P')[0];
-        var p1b = tds[1].getElementsByTagName('P')[1];
-        var p2a = tds[2].getElementsByTagName('P')[0];
-        var p2b = tds[2].getElementsByTagName('P')[1];
-
-        var code1 = tds[1].getElementsByTagName('DIV')[0];
-        var code2 = tds[2].getElementsByTagName('CODE')[0];
-
-        p2a.innerHTML = code2.result.language +    ": " + code2.result.re;
-        p2b.innerHTML = code2.second_best.language +    ": " +
-            code2.second_best.re;
-
-        if (code1.innerHTML != code2.innerHTML
-                 || p1a.innerHTML != p2a.innerHTML
-//                 || p1b.innerHTML != p2b.innerHTML
-        ) {
-            console.log(code1.innerHTML);
-            console.log(code2.innerHTML);
-
-            rws[i].style.backgroundColor = "#ffcccc";
-            tds[0].style.backgroundColor = "#ffcccc";
-            tds[0].lastChild.innerHTML = "failed";
-        }
+    if ($snippet === false) {
+        die('Language not found');
     }
+
+    global $hl;
+
+    $result = $hl->highlight($lang, $snippet);
+
+    return vsprintf(
+        '
+            <link rel="stylesheet" type="text/css" href="../styles/default.css">
+            <style>* { margin: 0; padding: 0; }</style>
+            <pre><code class="%s hljs">%s</code></pre>
+        ',
+        array(
+            $result->language,
+            $result->value,
+        )
+    );
 }
 
-hljs.tabReplace = '    ';
-hljs.initHighlightingOnLoad();
+if (isset($_GET['lang'])) {
+    $lang = $_GET['lang'];
 
-window.addEventListener("load", testDetection );  // capture phase
+    if (isset($_GET['raw'])) {
+        echo getLanguageRaw($lang);
+        die();
+    }
 
-    </script>
-
-    <style type="text/css">
-
-table { font-family: sans-serif; }
-table { border-spacing: 0px; border-collapse:collapse; width: 100%}
-th, td { border: solid grey 1px; overflow: auto; max-width:500px}
-td p { margin: 0px; }
-pre code, pre div { padding: 0.5em; background: #F0F0F0; }
-td.signal { padding: 0.5em; background-color: #ccffcc; }
-pre { margin: 0px; }
-
-    </style>
-
-  </head>
-  <body>
-    <table id="test">
-    <tr>
-      <th>result</th>
-      <th>highlight.php</th>
-      <th>highlight.js</th>
-    </tr>
-<?php
-foreach ($hl->listLanguages() as $languageId) {
-    $snippet = file_get_contents("../test/detect/{$languageId}/default.txt");
-    $r = $hl->highlightAuto($snippet); ?>
-    <tr>
-      <td class="signal"><p><?=$r->language; ?></p><p>pass</p></td>
-      <td>
-        <p><?=$r->language; ?>: <?=$r->relevance; ?></p>
-        <p><?=$r->secondBest->language; ?>: <?=$r->secondBest->relevance; ?></p>
-        <pre><div class=" hljs <?=$r->language; ?>"><?= $r->value; ?></div></pre>
-      </td>
-      <td class="js">
-        <p>&nbsp;</p>
-        <p>&nbsp;</p>
-        <pre><code><?=htmlentities($snippet); ?></code></pre>
-      </td>
-    </tr>
-<?php
+    echo getLanguageDemo($_GET['lang']);
+    die();
 }
+
 ?>
-  </body>
+<html lang="en">
+    <head>
+        <title>highlight.php vs highlight.js Comparison</title>
+        <link rel="stylesheet" type="text/css" href="../styles/default.css">
+
+        <script src="highlight.pack.js"></script>
+        <script>
+            hljs.tabReplace = '    ';
+            hljs.initHighlightingOnLoad();
+
+            window.addEventListener('load', function () {
+                const rows = document.querySelectorAll('[data-lang-comparison]');
+
+                for (let i = 0; i < rows.length; i++) {
+                    const row = rows.item(i);
+                    const cols = row.getElementsByTagName('td');
+
+                    const resultCol = cols.item(0);
+                    const phpCodeCol = cols.item(1);
+                    const jsCodeCol = cols.item(2);
+
+                    const iframe = phpCodeCol.getElementsByTagName('iframe').item(0);
+                    const phpCode = iframe.contentDocument.getElementsByTagName('pre').item(0);
+                    const jsCode = jsCodeCol.getElementsByTagName('pre').item(0);
+
+                    if (phpCode.innerHTML === jsCode.innerHTML) {
+                        resultCol.style.backgroundColor = '#ccffcc';
+                    } else {
+                        resultCol.style.backgroundColor = '#ffcccc';
+                    }
+                }
+            });
+        </script>
+
+        <style type="text/css">
+            * {
+                margin: 0;
+                padding: 0;
+            }
+
+            p {
+                margin-bottom: 0.8rem;
+            }
+
+            table {
+                border-spacing: 0;
+                border-collapse: collapse;
+                font-family: sans-serif;
+                height: 1px;
+                width: 100%
+            }
+
+            th, td {
+                border: solid grey 1px;
+                overflow: auto;
+                max-width: 500px
+            }
+
+            pre {
+                height: 100%;
+            }
+
+            pre code,
+            pre div {
+                padding: 0.5em;
+                background: #F0F0F0;
+            }
+
+            td.signal {
+                padding: 0.5em;
+                background-color: #fff900;
+            }
+
+            iframe {
+                border: 0;
+                height: 100%;
+                width: 100%;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div style="padding: 3rem;">
+            <p><strong>HEADS UP!!!</strong></p>
+            <p>
+                This page is <em>extremely</em> slow and it will take a few seconds to fully load. This page is slow
+                because it needs to load <?= count($hl->listLanguages()); ?> <code>iframe</code>s; each iframe needs to
+                load their own CSS and highlight their own PHP.
+            </p>
+            <p>
+                <strong>After</strong> all of the iframes have loaded, then this page has JS to iterate through each
+                language and compare the results of highlight.php against highlight.js.
+            </p>
+            <p>
+                This page does <strong>not</strong> indicate a performance issue with highlight.php. This page is
+                designed this way so that you can load this page without JavaScript enabled and you'll still be able to
+                see the code samples highlighted.
+            </p>
+        </div>
+
+        <table>
+            <tr>
+                <th>result</th>
+                <th>highlight.php</th>
+                <th>highlight.js</th>
+            </tr>
+            <?php foreach ($hl->listLanguages() as $languageId): ?>
+                <tr data-lang-comparison>
+                    <td class="signal"><?= $languageId; ?></td>
+                    <td>
+                        <iframe src="compare.php?lang=<?= $languageId; ?>"></iframe>
+                    </td>
+                    <td class="js">
+                        <pre><code class="<?= $languageId; ?>"><?= htmlentities(getLanguageRaw($languageId)); ?></code></pre>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        </table>
+    </body>
 </html>
-<?php
-error_log("Highlighting took " . (microtime(true) - $start) . " seconds");
-?>
