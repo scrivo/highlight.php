@@ -30,240 +30,144 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-set_time_limit(0);
-$start = microtime(true);
-
 require_once "../Highlight/Autoloader.php";
+require_once "../HighlightUtilities/functions.php";
 spl_autoload_register("Highlight\\Autoloader::load");
-
-$styles = array();
-$d = dir(".." . DIRECTORY_SEPARATOR . "styles");
-while (($e = $d->read()) !== false) {
-    if ($e[0] !== "." && $e !== "default.css" && strpos($e, ".css") !== false) {
-        $styles[] = $e;
-    }
-}
-sort($styles);
 
 use Highlight\Highlighter;
 
 $hl = new Highlighter();
 $hl->setAutodetectLanguages($hl->listLanguages());
 
-$tableRows = "";
-$failed = array();
-
-foreach ($hl->listLanguages() as $name) {
-    $sn = $name;
-    $snippet = file_get_contents("../test/detect/{$sn}/default.txt");
-    $r = $hl->highlightAuto($snippet);
-    $passed = ($r->language === $name);
-    $res = "<div class=\"test\"><var class=\"" . ($passed ? "passed" : "failed") .
-        "\">{$r->language}</var>" . " ({$r->relevance})<br>";
-    if (isset($r->secondBest)) {
-        $res .= "{$r->secondBest->language}" . " ({$r->secondBest->relevance})";
-    }
-    $tableRows .= "<tr><th>{$name}{$res}</th><td class=\"{$name}\">
-        <pre><code class=\"hljs {$name}\">{$r->value}</code></pre></td></th>";
-    if (!$passed) {
-        $failed[] = $name;
-    }
+function getLanguageRaw($lang)
+{
+    return file_get_contents("../test/detect/{$lang}/default.txt");
 }
 
-if (count($failed)) {
-    $testResult = "<p id=\"summary\" class=\"failed\">Failed tests: " .
-        implode(", ", $failed);
-} else {
-    $testResult = "<p id=\"summary\" class=\"passed\">All tests passed";
+function getLanguageDemo($lang)
+{
+    $snippet = getLanguageRaw($lang);
+
+    if ($snippet === false) {
+        die("Language not found");
+    }
+
+    global $hl;
+
+    $start = microtime(true);
+    $result = $hl->highlightAuto($snippet);
+    $totalTime = microtime(true) - $start;
+
+    return strtr(
+        '
+            <link rel="stylesheet" type="text/css" href="../styles/default.css">
+            <style>* { margin: 0; padding: 0 }</style>
+            <p>Result: {result} <small>[Expected: {expected}; Actual: {actual} ({actRel}); Second Best: {second} ({secRel})]</small></p>
+            <p>Total Time: {time} secs</p>
+            <pre><code class="{actual} hljs">{code}</code></pre>
+        ',
+        array(
+            '{result}' => $result->language === $lang ? 'Passed' : 'FAILED',
+            '{expected}' => $lang,
+            '{actual}' => $result->language,
+            '{actRel}' => $result->relevance,
+            '{second}' => $result->secondBest->language,
+            '{secRel}' => $result->secondBest->relevance,
+            '{code}' => $result->value,
+            '{time}' => sprintf('%.3f', $totalTime),
+        )
+    );
 }
 
-$testResult .= "</p><p>Highlighting took " .
-    (microtime(true) - $start) . " seconds</p>";
+if (isset($_GET['lang'])) {
+    $lang = $_GET['lang'];
 
-$d->close();
+    if (isset($_GET['raw'])) {
+        echo getLanguageRaw($lang);
+        die();
+    }
 
+    echo getLanguageDemo($_GET['lang']);
+    die();
+}
+
+$styles = HighlightUtilities\getAvailableStyleSheets();
+sort($styles);
+
+$languageCount = count($hl->listLanguages());
 ?>
 <!DOCTYPE html>
-<head>
-  <title>highlight.js test</title>
-  <meta charset="utf-8">
+<html lang="en">
+    <head>
+        <title>highlight.js test</title>
+        <meta charset="utf-8">
 
-  <link rel="stylesheet" title="Default" href="../styles/default.css">
-<?php foreach ($styles as $style) {
-    ?>
-  <link rel="alternate stylesheet" title="<?php echo $style; ?>"
-    href="../styles/<?php echo $style; ?>">
-<?php
-} ?>
+        <link rel="stylesheet" title="Default" href="../styles/default.css">
+        <?php foreach ($styles as $style): ?>
+            <link rel="alternate stylesheet" title="<?= $style; ?>" href="../styles/<?= $style; ?>.css">
+        <?php endforeach; ?>
 
-  <style>
-    /* Base styles */
-    body {
-      font: small Arial, sans-serif;
-    }
-    h2 {
-      font: bold 100% Arial, sans-serif;
-      margin-top: 2em;
-      margin-bottom: 0.5em;
-    }
-    table {
-      width: 100%;
-      padding: 0;
-      border-collapse: collapse;
-    }
-    th {
-      width: 12em;
-      padding: 0; margin: 0;
-    }
-    td {
-      padding-bottom: 1em;
-    }
-    td, th {
-      vertical-align: top;
-      text-align: left;
-    }
-    pre {
-      margin: 0;
-      font-size: medium;
-    }
-    .hljs-debug {
-      color: red;
-    }
-    /* Style switcher */
-    ul#switch {
-      width: 66em;
-      -webkit-column-width: 15em;
-      -webkit-column-gap: 2em;
-      -moz-column-width: 15em;
-      -moz-column-gap: 2em;
-      -o-column-width: 15em;
-      -o-column-gap: 2em;
-      column-width: 15em;
-      column-gap: 2em;
-      list-style: none;
-      overflow: auto;
-      padding: 0;
-      margin: 0;
-    }
-    ul#switch li {
-      -webkit-column-break-inside: avoid;
-      -moz-column-break-inside: avoid;
-      -o-column-break-inside: avoid;
-      column-break-inside: avoid;
-      padding: 0.1em;
-      margin: 0.1em 1em 0.1em 0;
-      background: #EEE;
-      cursor: pointer;
-    }
-    ul#switch li.current {
-      background: #CCC;
-    }
-    /* Tests */
-    .test {
-      color: #888;
-      font-weight: normal;
-      margin: 2em 0 0 0;
-    }
-    .test var {
-      font-style: normal;
-    }
-    .passed {
-      color: green;
-    }
-    .failed, .failed a {
-      color: red;
-    }
-    .code {
-      font: medium monospace;
-    }
-    .code .hljs-keyword {
-      font-weight: bold;
-    }
-    /* Export form */
-    #export_from, #export_to {
-      width: 98%;
-    }
-    address {
-      margin-top: 4em;
-    }
-  </style>
+        <style>
+            iframe {
+                border: 0;
+                width: 100%;
+            }
 
-  <script>
-  // Stylesheet switcher © Vladimir Epifanov <voldmar@voldmar.ru>
-  (function(container_id) {
-      if (window.addEventListener) {
-          var attach = function(el, ev, handler) {
-              el.addEventListener(ev, handler, false);
-          }
-      } else if (window.attachEvent) {
-          var attach = function(el, ev, handler) {
-              el.attachEvent('on' + ev, handler);
-          }
-      } else {
-          var attach = function(el, ev, handler) {
-              ev['on' + ev] = handler;
-          }
-      }
+            .style-selector {
+                display: flex;
+                flex-wrap: wrap;
+            }
 
-      attach(window, 'load', function() {
-          var current = null;
+            .style-selector label {
+                width: 25%;
+            }
+        </style>
+    </head>
 
-          var info = {};
-          var links = document.getElementsByTagName('link');
-          var ul = document.createElement('ul');
+    <body>
+        <h1>highlight.php Auto-Detection</h1>
 
-          for (var i = 0; (link = links[i]); i++) {
-              if ((link.getAttribute('rel').indexOf('style') != -1) && link.title) {
-                  var title = link.title;
+        <p>
+            This is a demo/test page showing all languages supported by
+            <a href="https://github.com/scrivo/highlight.php">highlight.php</a>. Most snippets do not contain working
+            code :-).
+        </p>
 
-                  info[title] = {
-                      'link': link,
-                      'li': document.createElement('li')
-                  };
+        <p>
+            This page will take an <strong>EXTREMELY</strong> long time to load since it is automatically detecting
+            <?= $languageCount; ?> languages. Automatic detection happens in a brute force fashion meaning loading this
+            page will cause <?= pow($languageCount, 2); ?> iterations.
+        </p>
 
-                  ul.appendChild(info[title].li);
-                  info[title].li.title = title;
+        <p>For example, this page takes approximately 9 minutes to load completely for @allejo</p>
 
-                  info[title].link.disabled = true;
+        <div>
+            <fieldset>
+                <legend>Stylesheet</legend>
 
-                  info[title].li.appendChild(document.createTextNode(title));
+                <div class="style-selector">
+                    <?php foreach ($styles as $style): ?>
+                        <label>
+                            <input
+                                type="radio"
+                                name="stylesheet"
+                                value="<?= $style; ?>"
+                                <?= $style !== 'default' ?: 'checked'; ?>
+                            />
+                            <?= $style; ?>
+                        </label>
+                    <?php endforeach; ?>
+                </div>
+            </fieldset>
+        </div>
 
-                  attach(info[title].li, 'click', (function (el) {
-                      return function() {
-                          current.li.className = '';
-                          current.link.disabled = true;
-                          current = el;
-                          current.li.className = 'current';
-                          current.link.disabled = false;
-                      }
-                  })(info[title]));
-              }
-          }
+        <h2>Automatically detected languages</h2>
 
-          current = info['Default'];
-          current.li.className = 'current';
-          current.link.disabled = false;
-
-          ul.id = 'switch';
-          container = document.getElementById(container_id);
-          container.appendChild(ul);
-      });
-  })('styleswitcher');
-  </script>
-<body>
-
-<p>This is a demo/test page showing all languages supported by
-<a href="https://github.com/scrivo/highlight.php">highlight.php</a>.
-Most snippets do not contain working code :-).
-
-<div id="styleswitcher">
-  <h2>Styles</h2>
-</div>
-
-<h2>Automatically detected languages</h2>
-
-<?php echo $testResult; ?>
-<table id="autotest"><?php echo $tableRows; ?></table>
-
-</body>
+        <?php foreach ($hl->listLanguages() as $language): ?>
+            <section>
+                <h3><?= $language; ?></h3>
+                <iframe src="demo.php?lang=<?= $language; ?>"></iframe>
+            </section>
+        <?php endforeach; ?>
+    </body>
 </html>
