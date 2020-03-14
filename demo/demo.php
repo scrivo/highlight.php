@@ -80,6 +80,8 @@ function getLanguageDemo($lang)
 }
 
 if (isset($_GET['lang'])) {
+    set_time_limit(90);
+
     $lang = $_GET['lang'];
 
     if (isset($_GET['raw'])) {
