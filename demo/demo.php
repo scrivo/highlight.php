@@ -104,11 +104,6 @@ $languageCount = count($hl->listLanguages());
         <title>highlight.js test</title>
         <meta charset="utf-8">
 
-        <link rel="stylesheet" title="Default" href="../styles/default.css">
-        <?php foreach ($styles as $style): ?>
-            <link rel="alternate stylesheet" title="<?= $style; ?>" href="../styles/<?= $style; ?>.css">
-        <?php endforeach; ?>
-
         <style>
             iframe {
                 border: 0;
@@ -143,7 +138,7 @@ $languageCount = count($hl->listLanguages());
 
         <p>For example, this page takes approximately 9 minutes to load completely for @allejo</p>
 
-        <div>
+        <form id="stylesheet-switcher">
             <fieldset>
                 <legend>Stylesheet</legend>
 
@@ -161,7 +156,7 @@ $languageCount = count($hl->listLanguages());
                     <?php endforeach; ?>
                 </div>
             </fieldset>
-        </div>
+        </form>
 
         <h2>Automatically detected languages</h2>
 
@@ -171,5 +166,28 @@ $languageCount = count($hl->listLanguages());
                 <iframe src="demo.php?lang=<?= $language; ?>"></iframe>
             </section>
         <?php endforeach; ?>
+
+        <script>
+            const iframes = document.getElementsByTagName('iframe');
+
+            for (let i = 0; i < iframes.length; i++) {
+                iframes.item(i).addEventListener('load', function () {
+                    this.height = this.contentDocument.body.scrollHeight + 'px';
+                });
+            }
+
+            document
+                .getElementById("stylesheet-switcher")
+                .addEventListener('change', function () {
+                    const newStylesheet = this.stylesheet.value;
+
+                    for (let i = 0; i < iframes.length; i++) {
+                        const iframe = iframes.item(i);
+                        const link = iframe.contentDocument.getElementsByTagName('link').item(0);
+
+                        link.href = '../styles/' + newStylesheet + '.css';
+                    }
+                });
+        </script>
     </body>
 </html>
