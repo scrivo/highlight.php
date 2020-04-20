@@ -4,3 +4,14 @@
 
 styles/* linguist-vendored
 test/**/*.txt linguist-vendored
+
+/.editorconfig        export-ignore
+/.gitattributes       export-ignore
+/.github              export-ignore
+/.gitignore           export-ignore
+/.php_cs.dist         export-ignore
+/.travis              export-ignore
+/phpunit.xml.dist     export-ignore
+/demo                 export-ignore
+/tools                export-ignore
+/test                 export-ignore
