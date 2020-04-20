@@ -11,6 +11,7 @@ test/**/*.txt linguist-vendored
 /.gitignore           export-ignore
 /.php_cs.dist         export-ignore
 /.travis              export-ignore
+/.travis.yml          export-ignore
 /phpunit.xml.dist     export-ignore
 /demo                 export-ignore
 /tools                export-ignore
