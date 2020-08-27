@@ -116,6 +116,26 @@ PHP;
         }
     }
 
+    public function testSplitCodeIntoArray_Emojis()
+    {
+        $raw = <<<'PHP'
+// ✅ ...
+$user = new \stdClass();
+$isUserPending = $user->isStatus('pending');
+PHP;
+        $highlighted = $this->hl->highlight('php', $raw);
+        $split = \HighlightUtilities\splitCodeIntoArray($highlighted->value);
+
+        $this->assertEquals(
+            $split,
+            array(
+                '<span class="hljs-comment">// ✅ ...</span>',
+                '$user = <span class="hljs-keyword">new</span> \stdClass();',
+                '$isUserPending = $user-&gt;isStatus(<span class="hljs-string">\'pending\'</span>);',
+            )
+        );
+    }
+
     public function testGetThemeBackgroundColorSingleColor()
     {
         $theme = 'atom-one-dark';
