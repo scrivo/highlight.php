@@ -136,29 +136,6 @@ class JsonRef
     /**
      * Decode JSON data that may contain path based references.
      *
-     * @deprecated 9.16.0.0 This method will be removed in Highlight.php. Make use of `decodeRef` instead.
-     *
-     * @param string|object $json JSON data string or JSON data object
-     *
-     * @return mixed The decoded JSON data
-     */
-    public function decode($json)
-    {
-        // Clear the path array.
-        $this->paths = array();
-        // Decode the given JSON data if necessary.
-        $x = is_string($json) ? json_decode($json) : $json;
-        // Get all data paths.
-        $this->getPaths($x);
-        // Resolve all path references.
-        $this->resolvePathReferences($x);
-        // Return the data.
-        return $x;
-    }
-
-    /**
-     * Decode JSON data that may contain path based references.
-     *
      * @param object $json JSON data string or JSON data object
      *
      * @return void

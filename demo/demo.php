@@ -30,9 +30,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-require_once "../Highlight/Autoloader.php";
-require_once "../HighlightUtilities/functions.php";
-spl_autoload_register("Highlight\\Autoloader::load");
+require_once "../vendor/autoload.php";
 
 use Highlight\Highlighter;
 

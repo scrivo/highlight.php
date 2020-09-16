@@ -20,13 +20,9 @@
         "source": "https://github.com/scrivo/highlight.php"
     },
     "autoload": {
-        "psr-0": {
-            "Highlight\\": "",
-            "HighlightUtilities\\": ""
-        },
-        "files": [
-            "HighlightUtilities/functions.php"
-        ]
+        "psr-4": {
+            "Highlight\\": "src/"
+        }
     },
     "authors": [
         {
