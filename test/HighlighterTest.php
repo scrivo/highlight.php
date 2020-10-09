@@ -44,7 +44,7 @@ class HighlighterTest extends PHPUnit_Framework_TestCase
     public function testListLanguagesWithoutAliases()
     {
         $languageFinder = new Finder();
-        $expectedLanguageCount = $languageFinder->in(\Highlight\Utilities::getLanguageFolder() . '/')->name('*.json')->count();
+        $expectedLanguageCount = $languageFinder->in(\HighlightUtilities\Functions::getLanguageFolder() . '/')->name('*.json')->count();
 
         $hl = new Highlighter();
 
@@ -58,7 +58,7 @@ class HighlighterTest extends PHPUnit_Framework_TestCase
     public function testListLanguagesWithAliases()
     {
         $languageFinder = new Finder();
-        $minimumLanguageCount = $languageFinder->in(\Highlight\Utilities::getLanguageFolder() . '/')->name('*.json')->count();
+        $minimumLanguageCount = $languageFinder->in(\HighlightUtilities\Functions::getLanguageFolder() . '/')->name('*.json')->count();
 
         $hl = new Highlighter();
         $availableLanguages = $hl->listLanguages(true);
@@ -74,7 +74,7 @@ class HighlighterTest extends PHPUnit_Framework_TestCase
 
     public function testGetAliasesForLanguageWhenUsingMainLanguageName()
     {
-        $languageDefinitionFile = \Highlight\Utilities::getLanguageFolder() . DIRECTORY_SEPARATOR . "php.json";
+        $languageDefinitionFile = \HighlightUtilities\Functions::getLanguageFolder() . DIRECTORY_SEPARATOR . "php.json";
         $language = new Language('php', $languageDefinitionFile);
         $expected_aliases = $language->aliases;
         $expected_aliases[] = 'php';
@@ -89,7 +89,7 @@ class HighlighterTest extends PHPUnit_Framework_TestCase
 
     public function testGetAliasesForLanguageWhenLanguageHasNoAliases()
     {
-        $languageDefinitionFile = \Highlight\Utilities::getLanguageFolder() . DIRECTORY_SEPARATOR . "ada.json";
+        $languageDefinitionFile = \HighlightUtilities\Functions::getLanguageFolder() . DIRECTORY_SEPARATOR . "ada.json";
         $language = new Language('ada', $languageDefinitionFile);
         $expected_aliases = $language->aliases;
         $expected_aliases[] = 'ada';
@@ -104,7 +104,7 @@ class HighlighterTest extends PHPUnit_Framework_TestCase
 
     public function testGetAliasesForLanguageWhenUsingLanguageAlias()
     {
-        $languageDefinitionFile = \Highlight\Utilities::getLanguageFolder() . DIRECTORY_SEPARATOR . "php.json";
+        $languageDefinitionFile = \HighlightUtilities\Functions::getLanguageFolder() . DIRECTORY_SEPARATOR . "php.json";
         $language = new Language('php', $languageDefinitionFile);
         $expected_aliases = $language->aliases;
         $expected_aliases[] = 'php';

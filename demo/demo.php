@@ -91,7 +91,7 @@ if (isset($_GET['lang'])) {
     die();
 }
 
-$styles = HighlightUtilities\getAvailableStyleSheets();
+$styles = HighlightUtilities\Functions::getAvailableStyleSheets();
 sort($styles);
 
 $languageCount = count($hl->listLanguages());

@@ -21,8 +21,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Highlight\\": "src/"
-        }
+          "Highlight\\": "src/Highlight",
+          "HighlightUtilities\\": "src/HighlightUtilities"
+        },
+        "files": [
+            "src/HighlightUtilities/Functions.php"
+        ]
     },
     "authors": [
         {
