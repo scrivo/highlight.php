@@ -55,5 +55,10 @@
     },
     "suggest": {
         "ext-dom": "Needed to make use of the features in the utilities namespace"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "10.0-dev"
+        }
     }
 }
