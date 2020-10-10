@@ -71,12 +71,10 @@ require_once "../vendor/autoload.php";
     <body>
         <h1>Render highlight.php with line numbers</h1>
 
-
-
-<p>
-Here's a demo of rendering the result of highlight.php with line numbers. With the <code>
-HighlightUtilities\Functions::splitCodeIntoArray()</code> function.
-</p>
+        <p>
+            Here's a demo of rendering the result of highlight.php with line numbers. With the
+            <code>HighlightUtilities\Functions::splitCodeIntoArray()</code> function.
+        </p>
 
         <?php
         $hl = new Highlight\Highlighter();

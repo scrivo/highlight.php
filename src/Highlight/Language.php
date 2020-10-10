@@ -378,5 +378,4 @@ class Language extends Mode
 
         $this->compileMode($this->mode);
     }
-
 }

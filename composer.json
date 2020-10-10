@@ -21,12 +21,9 @@
     },
     "autoload": {
         "psr-4": {
-          "Highlight\\": "src/Highlight",
-          "HighlightUtilities\\": "src/HighlightUtilities"
-        },
-        "files": [
-            "src/HighlightUtilities/Functions.php"
-        ]
+            "Highlight\\": "src/Highlight",
+            "HighlightUtilities\\": "src/HighlightUtilities"
+        }
     },
     "authors": [
         {
@@ -46,7 +43,7 @@
         }
     ],
     "require": {
-        "php": ">=5.4",
+        "php": ">=5.6",
         "ext-json": "*",
         "ext-mbstring": "*"
     },

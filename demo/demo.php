@@ -131,7 +131,7 @@ $languageCount = count($hl->listLanguages());
         <p>
             This page will take an <strong>EXTREMELY</strong> long time to load since it is automatically detecting
             <?= $languageCount; ?> languages. Automatic detection happens in a brute force fashion meaning loading this
-            page will cause <?= pow($languageCount, 2); ?> iterations.
+            page will cause <?= $languageCount ** 2; ?> iterations.
         </p>
 
         <p>For example, this page takes approximately 9 minutes to load completely for @allejo</p>
