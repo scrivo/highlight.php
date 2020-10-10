@@ -39,7 +39,7 @@ class HighlightUtilitiesTest extends PHPUnit_Framework_TestCase
 
     public function testGetAvailableStyleSheets_NamesOnly()
     {
-        $results = \HighlightUtilities\getAvailableStyleSheets();
+        $results = \HighlightUtilities\Functions::getAvailableStyleSheets();
 
         $this->assertNotEmpty($results);
 
@@ -51,7 +51,7 @@ class HighlightUtilitiesTest extends PHPUnit_Framework_TestCase
 
     public function testGetAvailableStyleSheets_FilePaths()
     {
-        $results = \HighlightUtilities\getAvailableStyleSheets(true);
+        $results = \HighlightUtilities\Functions::getAvailableStyleSheets(true);
 
         $this->assertNotEmpty($results);
 
@@ -65,16 +65,16 @@ class HighlightUtilitiesTest extends PHPUnit_Framework_TestCase
 
     public function testGetAvailableStyleSheets_SameCount()
     {
-        $namesOnly = \HighlightUtilities\getAvailableStyleSheets();
-        $filePaths = \HighlightUtilities\getAvailableStyleSheets(true);
+        $namesOnly = \HighlightUtilities\Functions::getAvailableStyleSheets();
+        $filePaths = \HighlightUtilities\Functions::getAvailableStyleSheets(true);
 
         $this->assertCount(count($namesOnly), $filePaths);
     }
 
     public function testGetStyleSheet_Exists()
     {
-        $yesExt = \HighlightUtilities\getStyleSheet("a11y-dark.css");
-        $noExt = \HighlightUtilities\getStyleSheet("a11y-dark");
+        $yesExt = \HighlightUtilities\Functions::getStyleSheet("a11y-dark.css");
+        $noExt = \HighlightUtilities\Functions::getStyleSheet("a11y-dark");
 
         $this->assertNotEmpty($yesExt);
         $this->assertEquals($yesExt, $noExt);
@@ -84,7 +84,7 @@ class HighlightUtilitiesTest extends PHPUnit_Framework_TestCase
     {
         $this->setExpectedException('\DomainException');
 
-        \HighlightUtilities\getStyleSheet("strawberry.png");
+        \HighlightUtilities\Functions::getStyleSheet("strawberry.png");
     }
 
     public function testSplitCodeIntoArray_MultilineComment()
@@ -100,7 +100,7 @@ class HighlightUtilitiesTest extends PHPUnit_Framework_TestCase
 PHP;
         $highlighted = $this->hl->highlight('php', $raw);
 
-        $cleanSplit = \HighlightUtilities\splitCodeIntoArray($highlighted->value);
+        $cleanSplit = \HighlightUtilities\Functions::splitCodeIntoArray($highlighted->value);
         $dumbSplit = preg_split('/\R/', $highlighted->value);
 
         $this->assertEquals(1, substr_count($highlighted->value, 'hljs-comment'));
@@ -124,7 +124,7 @@ $user = new \stdClass();
 $isUserPending = $user->isStatus('pending');
 PHP;
         $highlighted = $this->hl->highlight('php', $raw);
-        $split = \HighlightUtilities\splitCodeIntoArray($highlighted->value);
+        $split = \HighlightUtilities\Functions::splitCodeIntoArray($highlighted->value);
 
         $this->assertEquals(
             $split,
@@ -140,13 +140,13 @@ PHP;
     {
         $theme = 'atom-one-dark';
 
-        $this->assertEquals(array('r' => 40, 'g' => 44, 'b' => 52), \HighlightUtilities\getThemeBackgroundColor($theme));
+        $this->assertEquals(array('r' => 40, 'g' => 44, 'b' => 52), \HighlightUtilities\Functions::getThemeBackgroundColor($theme));
     }
 
     public function testGetThemeBackgroundColorColorWithBgImage()
     {
         $theme = 'brown-paper';
 
-        $this->assertEquals(array('r' => 183, 'g' => 166, 'b' => 142), \HighlightUtilities\getThemeBackgroundColor($theme));
+        $this->assertEquals(array('r' => 183, 'g' => 166, 'b' => 142), \HighlightUtilities\Functions::getThemeBackgroundColor($theme));
     }
 }

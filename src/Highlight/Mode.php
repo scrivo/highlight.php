@@ -35,7 +35,6 @@ namespace Highlight;
  * @internal
  *
  * @since 9.16.0.0
- * @mixin ModeDeprecations
  *
  * Language definition set via language definition JSON files
  *
@@ -168,28 +167,6 @@ abstract class Mode extends \stdClass
             if (is_object($obj)) {
                 $obj->{$k} = $v;
             }
-        }
-    }
-
-    /**
-     * Set any deprecated properties values to their replacement values.
-     *
-     * @internal
-     *
-     * @param \stdClass $obj
-     *
-     * @return void
-     */
-    public static function _handleDeprecations(&$obj)
-    {
-        $deprecations = array(
-            // @TODO Deprecated since 9.16.0.0; remove at 10.x
-            'caseInsensitive' => 'case_insensitive',
-            'terminatorEnd' => 'terminator_end',
-        );
-
-        foreach ($deprecations as $deprecated => $new) {
-            $obj->{$deprecated} = &$obj->{$new};
         }
     }
 }

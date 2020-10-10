@@ -30,9 +30,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-require_once "../Highlight/Autoloader.php";
-require_once "../HighlightUtilities/functions.php";
-spl_autoload_register("Highlight\\Autoloader::load");
+require_once "../vendor/autoload.php";
 
 use Highlight\Highlighter;
 
@@ -93,7 +91,7 @@ if (isset($_GET['lang'])) {
     die();
 }
 
-$styles = HighlightUtilities\getAvailableStyleSheets();
+$styles = HighlightUtilities\Functions::getAvailableStyleSheets();
 sort($styles);
 
 $languageCount = count($hl->listLanguages());
@@ -133,7 +131,7 @@ $languageCount = count($hl->listLanguages());
         <p>
             This page will take an <strong>EXTREMELY</strong> long time to load since it is automatically detecting
             <?= $languageCount; ?> languages. Automatic detection happens in a brute force fashion meaning loading this
-            page will cause <?= pow($languageCount, 2); ?> iterations.
+            page will cause <?= $languageCount ** 2; ?> iterations.
         </p>
 
         <p>For example, this page takes approximately 9 minutes to load completely for @allejo</p>

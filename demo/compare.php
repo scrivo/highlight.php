@@ -29,10 +29,11 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-require_once "../Highlight/Autoloader.php";
-spl_autoload_register("Highlight\\Autoloader::load");
+require_once "../vendor/autoload.php";
 
-$hl = new Highlight\Highlighter();
+use Highlight\Highlighter;
+
+$hl = new Highlighter();
 
 function getLanguageRaw($lang)
 {

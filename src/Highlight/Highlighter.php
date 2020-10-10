@@ -117,7 +117,7 @@ class Highlighter
     private static function registerLanguages()
     {
         // Languages that take precedence in the classMap array.
-        $languagePath = __DIR__ . DIRECTORY_SEPARATOR . "languages" . DIRECTORY_SEPARATOR;
+        $languagePath = __DIR__ . "/languages/";
         foreach (array("xml", "django", "javascript", "matlab", "cpp") as $languageId) {
             $filePath = $languagePath . $languageId . ".json";
             if (is_readable($filePath)) {

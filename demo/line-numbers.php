@@ -27,10 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-require_once "../Highlight/Autoloader.php";
-require_once "../HighlightUtilities/functions.php";
-
-spl_autoload_register("Highlight\\Autoloader::load");
+require_once "../vendor/autoload.php";
 
 ?>
 
@@ -75,7 +72,8 @@ spl_autoload_register("Highlight\\Autoloader::load");
         <h1>Render highlight.php with line numbers</h1>
 
         <p>
-            Here's a demo of rendering the result of highlight.php with line numbers. With the <code>HighlightUtilities\splitCodeIntoArray()</code> function.
+            Here's a demo of rendering the result of highlight.php with line numbers. With the
+            <code>HighlightUtilities\Functions::splitCodeIntoArray()</code> function.
         </p>
 
         <?php
@@ -83,7 +81,7 @@ spl_autoload_register("Highlight\\Autoloader::load");
         $snippet = file_get_contents("../test/detect/php/default.txt");
         $result = $hl->highlight("php", $snippet);
 
-        $lines = HighlightUtilities\splitCodeIntoArray($result->value);
+        $lines = HighlightUtilities\Functions::splitCodeIntoArray($result->value);
         ?>
         <table>
             <tbody>

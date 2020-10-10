@@ -11,7 +11,7 @@ require __DIR__ . '/../vendor/autoload.php';
 
 $finder = new Finder();
 $finder
-    ->in(__DIR__ . '/../styles/')
+    ->in(__DIR__ . '/../src/Highlight/styles/')
     ->name('*.css')
     ->sortByName()
     ->files()
@@ -106,4 +106,4 @@ $document = strtr($document, array(
     '{colorMapping}' => var_export($backgroundColors, true),
 ));
 
-file_put_contents(__DIR__ . '/../HighlightUtilities/_themeColors.php', $document);
+file_put_contents(__DIR__ . '/../src/HighlightUtilities/_themeColors.php', $document);

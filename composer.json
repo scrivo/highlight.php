@@ -20,13 +20,10 @@
         "source": "https://github.com/scrivo/highlight.php"
     },
     "autoload": {
-        "psr-0": {
-            "Highlight\\": "",
-            "HighlightUtilities\\": ""
-        },
-        "files": [
-            "HighlightUtilities/functions.php"
-        ]
+        "psr-4": {
+            "Highlight\\": "src/Highlight",
+            "HighlightUtilities\\": "src/HighlightUtilities"
+        }
     },
     "authors": [
         {
@@ -46,7 +43,7 @@
         }
     ],
     "require": {
-        "php": ">=5.4",
+        "php": ">=5.6",
         "ext-json": "*",
         "ext-mbstring": "*"
     },

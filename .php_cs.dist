@@ -2,8 +2,7 @@
 
 $finder = PhpCsFixer\Finder::create()
     ->in('demo')
-    ->in('Highlight')
-    ->in('HighlightUtilities')
+    ->in('src')
     ->in('test')
     ->in('tools')
     ->exclude('lib_dojo')
