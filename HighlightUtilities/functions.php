@@ -185,23 +185,18 @@ function splitCodeIntoArray($html)
 
     /** @var \DOMElement $span */
     foreach ($spans as $span) {
-        $classes = [];
+        $closingTags = '';
+        $openingTags = '';
         $curr = $span;
 
         while ($curr->tagName === 'span') {
-            $classes[] = $curr->getAttribute("class");
+            $closingTags .= '</span>';
+            $openingTags = sprintf('<span class="%s">%s', $curr->getAttribute("class"), $openingTags);
+
             $curr = $curr->parentNode;
         }
 
         $renderedSpan = $dom->saveHTML($span);
-        $closingTags = '';
-        $openingTags = '';
-
-        foreach ($classes as $class) {
-            $closingTags .= '</span>';
-            $openingTags = sprintf('<span class="%s">%s', $class, $openingTags);
-        }
-
         $finished = preg_replace(
             '/\R/u',
             $closingTags . PHP_EOL . $openingTags,
