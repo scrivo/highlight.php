@@ -173,6 +173,10 @@ function splitCodeIntoArray($html)
         throw new \RuntimeException("The DOM extension is not loaded but is required.");
     }
 
+    if (trim($html) === "") {
+        return array();
+    }
+
     $dom = new \DOMDocument();
 
     // https://stackoverflow.com/a/8218649
