@@ -176,25 +176,38 @@ function splitCodeIntoArray($html)
     $dom = new \DOMDocument();
 
     // https://stackoverflow.com/a/8218649
-    if (!$dom->loadHTML(mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8'))) {
+    if (!$dom->loadHTML(mb_convert_encoding($html, "HTML-ENTITIES", "UTF-8"))) {
         throw new \UnexpectedValueException("The given HTML could not be parsed correctly.");
     }
 
-    $spans = $dom->getElementsByTagName("span");
+    $xpath = new \DOMXPath($dom);
+    $spans = $xpath->query("//span[contains(text(), '\n') or contains(text(), '\r\n')]");
 
     /** @var \DOMElement $span */
     foreach ($spans as $span) {
-        $classes = $span->getAttribute("class");
-        $renderedSpan = $dom->saveHTML($span);
+        $classes = [];
+        $curr = $span;
 
-        if (preg_match('/\R/u', $renderedSpan)) {
-            $finished = preg_replace(
-                '/\R/u',
-                sprintf('</span>%s<span class="%s">', PHP_EOL, $classes),
-                $renderedSpan
-            );
-            $html = str_replace($renderedSpan, $finished, $html);
+        while ($curr->tagName === 'span') {
+            $classes[] = $curr->getAttribute("class");
+            $curr = $curr->parentNode;
         }
+
+        $renderedSpan = $dom->saveHTML($span);
+        $closingTags = '';
+        $openingTags = '';
+
+        foreach ($classes as $class) {
+            $closingTags .= '</span>';
+            $openingTags = sprintf('<span class="%s">%s', $class, $openingTags);
+        }
+
+        $finished = preg_replace(
+            '/\R/u',
+            $closingTags . PHP_EOL . $openingTags,
+            $renderedSpan
+        );
+        $html = str_replace($renderedSpan, $finished, $html);
     }
 
     return preg_split('/\R/u', $html);
