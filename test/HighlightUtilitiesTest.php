@@ -170,6 +170,23 @@ JAVA;
         );
     }
 
+    public static function dataProvider_emptyStrings()
+    {
+        return array(
+            array(""),
+            array("\t"),
+            array("  "),
+        );
+    }
+
+    /**
+     * @dataProvider dataProvider_emptyStrings
+     */
+    public function testSplitCodeIntoArray_EmptyString($string)
+    {
+        $this->assertEquals(array(), \HighlightUtilities\splitCodeIntoArray($string));
+    }
+
     public function testGetThemeBackgroundColorSingleColor()
     {
         $theme = 'atom-one-dark';
