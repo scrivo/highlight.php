@@ -57,7 +57,7 @@ class RegExMatch implements \ArrayAccess, \Countable, \IteratorAggregate
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function getIterator()
     {
@@ -65,7 +65,7 @@ class RegExMatch implements \ArrayAccess, \Countable, \IteratorAggregate
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function offsetExists($offset)
     {
@@ -73,7 +73,7 @@ class RegExMatch implements \ArrayAccess, \Countable, \IteratorAggregate
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function offsetGet($offset)
     {
@@ -81,7 +81,7 @@ class RegExMatch implements \ArrayAccess, \Countable, \IteratorAggregate
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function offsetSet($offset, $value)
     {
@@ -89,7 +89,7 @@ class RegExMatch implements \ArrayAccess, \Countable, \IteratorAggregate
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function offsetUnset($offset)
     {
@@ -97,7 +97,7 @@ class RegExMatch implements \ArrayAccess, \Countable, \IteratorAggregate
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      *
      * @return int
      */
