@@ -1,6 +1,6 @@
 # highlight.php
 
-[![Build Status](https://travis-ci.org/scrivo/highlight.php.svg?branch=master)](https://travis-ci.org/scrivo/highlight.php)
+[![Unit Tests](https://github.com/scrivo/highlight.php/workflows/Unit%20Tests/badge.svg)](https://github.com/scrivo/highlight.php/actions?query=workflow%3A%22Unit+Tests%22)
 [![Latest Packagist release](https://img.shields.io/packagist/v/scrivo/highlight.php.svg)](https://packagist.org/packages/scrivo/highlight.php)
 [![Monthly downloads on Packagist](https://img.shields.io/packagist/dm/scrivo/highlight.php.svg)](https://packagist.org/packages/scrivo/highlight.php/stats)
 
