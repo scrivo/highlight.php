@@ -1,6 +1,6 @@
 # highlight.php
 
-[![Unit Tests](https://github.com/scrivo/highlight.php/workflows/Unit%20Tests/badge.svg)](https://github.com/scrivo/highlight.php/actions?query=workflow%3A%22Unit+Tests%22)
+[![Unit Tests](https://github.com/scrivo/highlight.php/workflows/Unit%20Tests/badge.svg?branch=master)](https://github.com/scrivo/highlight.php/actions?query=workflow%3A%22Unit+Tests%22+branch%3Amaster)
 [![Latest Packagist release](https://img.shields.io/packagist/v/scrivo/highlight.php.svg)](https://packagist.org/packages/scrivo/highlight.php)
 [![Monthly downloads on Packagist](https://img.shields.io/packagist/dm/scrivo/highlight.php.svg)](https://packagist.org/packages/scrivo/highlight.php/stats)
 
