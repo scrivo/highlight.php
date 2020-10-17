@@ -136,6 +136,57 @@ PHP;
         );
     }
 
+    public function testSplitCodeIntoArray_DeeplyNestedSpans()
+    {
+        $raw = <<<'JAVA'
+public QuoteEntity(
+)
+JAVA;
+        $highlighted = $this->hl->highlight('java', $raw);
+        $split = \HighlightUtilities\Functions::splitCodeIntoArray($highlighted->value);
+
+        $this->assertEquals(
+            $split,
+            array(
+                '<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">QuoteEntity</span><span class="hljs-params">(</span></span>',
+                '<span class="hljs-function"><span class="hljs-params">)</span></span>',
+            )
+        );
+    }
+
+    public function testSplitCodeIntoArray_DeeplyNestedSpansCRLF()
+    {
+        $raw = "public QuoteEntity(\r\n)";
+
+        $highlighted = $this->hl->highlight('java', $raw);
+        $split = \HighlightUtilities\Functions::splitCodeIntoArray($highlighted->value);
+
+        $this->assertEquals(
+            $split,
+            array(
+                '<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">QuoteEntity</span><span class="hljs-params">(</span></span>',
+                '<span class="hljs-function"><span class="hljs-params">)</span></span>',
+            )
+        );
+    }
+
+    public static function dataProvider_emptyStrings()
+    {
+        return array(
+            array(""),
+            array("\t"),
+            array("  "),
+        );
+    }
+
+    /**
+     * @dataProvider dataProvider_emptyStrings
+     */
+    public function testSplitCodeIntoArray_EmptyString($string)
+    {
+        $this->assertEquals(array(), \HighlightUtilities\Functions::splitCodeIntoArray($string));
+    }
+
     public function testGetThemeBackgroundColorSingleColor()
     {
         $theme = 'atom-one-dark';
