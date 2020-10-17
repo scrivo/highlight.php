@@ -1,6 +1,6 @@
 # highlight.php
 
-[![Build Status](https://travis-ci.org/scrivo/highlight.php.svg?branch=master)](https://travis-ci.org/scrivo/highlight.php)
+[![Unit Tests](https://github.com/scrivo/highlight.php/workflows/Unit%20Tests/badge.svg?branch=9.18)](https://github.com/scrivo/highlight.php/actions?query=workflow%3A%22Unit+Tests%22+branch%3A9.18)
 [![Latest Packagist release](https://img.shields.io/packagist/v/scrivo/highlight.php.svg)](https://packagist.org/packages/scrivo/highlight.php)
 [![Monthly downloads on Packagist](https://img.shields.io/packagist/dm/scrivo/highlight.php.svg)](https://packagist.org/packages/scrivo/highlight.php/stats)
 
@@ -10,14 +10,14 @@
 
 ## Table of Contents
 - [Installation + Setup](#installation--setup)
-    - [Composer Version Constraints](#composer-version-constraints)
+  - [Composer Version Constraints](#composer-version-constraints)
 - [Usage](#usage)
-    - [Explicit Mode](#explicit-mode)
-    - [Automatic Language Detection Mode](#automatic-language-detection-mode)
-    - [Stylesheets](#stylesheets)
+  - [Explicit Mode](#explicit-mode)
+  - [Automatic Language Detection Mode](#automatic-language-detection-mode)
+  - [Stylesheets](#stylesheets)
 - [Highlighter Utilities](#highlighter-utilities)
 - [Versioning](#versioning)
-    - [Backward Compatibility Promise](#backward-compatibility-promise)
+  - [Backward Compatibility Promise](#backward-compatibility-promise)
 - [Some History](#some-history)
 - [License](#license)
 
