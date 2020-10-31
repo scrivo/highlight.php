@@ -88,7 +88,15 @@ class Highlighter
     /** @var array<string, string> A mapping from alias (key) to main language ID (value) */
     private static $aliases = array();
 
-    public function __construct()
+    /**
+     * @param bool $loadAllLanguages If true, will automatically register all languages distributed with this library.
+     *                               If false, user must explicitly register languages by calling `registerLanguage()`.
+     *
+     * @since 9.18.1.4 added `$loadAllLanguages` parameter
+     *
+     * @see Highlighter::registerLanguage()
+     */
+    public function __construct($loadAllLanguages = true)
     {
         $this->lastMatch = new RegExMatch(array());
         $this->lastMatch->type = "";
@@ -104,7 +112,9 @@ class Highlighter
             ),
         );
 
-        self::registerLanguages();
+        if ($loadAllLanguages) {
+            self::registerLanguages();
+        }
     }
 
     /**
