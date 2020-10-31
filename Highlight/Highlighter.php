@@ -132,6 +132,15 @@ class Highlighter
             return self::$bundledLanguages;
         }
 
+        // Languages that take precedence in the classMap array. (I don't know why...)
+        $bundledLanguages = array(
+            "xml" => true,
+            "django" => true,
+            "javascript" => true,
+            "matlab" => true,
+            "cpp" => true,
+        );
+
         $languagePath = __DIR__ . '/languages/';
         $d = @dir($languagePath);
 
@@ -146,14 +155,14 @@ class Highlighter
                 $filePath = $languagePath . $entry;
 
                 if (is_readable($filePath)) {
-                    self::$bundledLanguages[] = $languageId;
+                    $bundledLanguages[$languageId] = true;
                 }
             }
         }
 
         $d->close();
 
-        return self::$bundledLanguages;
+        return self::$bundledLanguages = array_keys($bundledLanguages);
     }
 
     /**
