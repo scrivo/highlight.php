@@ -33,6 +33,11 @@ use Symfony\Component\Finder\Finder;
 
 class HighlighterTest extends PHPUnit_Framework_TestCase
 {
+    protected function setUp()
+    {
+        Highlighter::clearAllLanguages();
+    }
+
     public function testUnknownLanguageThrowsDomainException()
     {
         $this->setExpectedException('\DomainException');
@@ -126,5 +131,33 @@ class HighlighterTest extends PHPUnit_Framework_TestCase
 
         $hl = new Highlighter();
         $hl->getAliasesForLanguage('blah+');
+    }
+
+    public function testLoadAllLanguagesByDefault()
+    {
+        $hl = new Highlighter();
+        $langs = new Finder();
+        $langs
+            ->in(__DIR__ . '/../Highlight/languages/')
+            ->files()
+        ;
+
+        $this->assertCount($langs->count(), $hl->listLanguages());
+    }
+
+    public function testLoadNoLanguagesInConstructor()
+    {
+        $hl = new Highlighter(false);
+
+        $this->assertCount(0, $hl->listLanguages());
+    }
+
+    public function testLoadOneLanguageManually()
+    {
+        Highlighter::registerLanguage('1c', __DIR__ . '/../Highlight/languages/1c.json');
+
+        $hl = new Highlighter(false);
+
+        $this->assertCount(1, $hl->listLanguages());
     }
 }
