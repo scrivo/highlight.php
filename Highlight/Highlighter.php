@@ -138,8 +138,6 @@ class Highlighter
             }
             $d->close();
         }
-
-        self::$languages = array_keys(self::$classMap);
     }
 
     /**
@@ -158,6 +156,9 @@ class Highlighter
         if (!isset(self::$classMap[$languageId]) || $overwrite) {
             $lang = new Language($languageId, $filePath);
             self::$classMap[$languageId] = $lang;
+
+            self::$languages[] = $languageId;
+            self::$languages = array_unique(self::$languages);
 
             if ($lang->aliases) {
                 foreach ($lang->aliases as $alias) {
