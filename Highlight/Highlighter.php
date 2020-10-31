@@ -186,6 +186,20 @@ class Highlighter
     }
 
     /**
+     * Clear all registered languages.
+     *
+     * @since 9.18.1.4
+     *
+     * @return void
+     */
+    public static function clearAllLanguages()
+    {
+        self::$classMap = [];
+        self::$languages = [];
+        self::$aliases = [];
+    }
+
+    /**
      * @param RegEx|null $re
      * @param string     $lexeme
      *
