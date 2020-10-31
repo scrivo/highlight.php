@@ -143,7 +143,7 @@ $languageCount = count($hl->listLanguages());
                 <legend>Stylesheet</legend>
 
                 <div class="style-selector">
-                    <?php foreach ($styles as $style): ?>
+                    <?php foreach ($styles as $style) : ?>
                         <label>
                             <input
                                 type="radio"
@@ -160,7 +160,7 @@ $languageCount = count($hl->listLanguages());
 
         <h2>Automatically detected languages</h2>
 
-        <?php foreach ($hl->listLanguages() as $language): ?>
+        <?php foreach ($hl->listLanguages() as $language) : ?>
             <section>
                 <h3><?= $language; ?></h3>
                 <iframe src="demo.php?lang=<?= $language; ?>"></iframe>

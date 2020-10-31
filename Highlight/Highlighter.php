@@ -96,7 +96,6 @@ class Highlighter
      *                               If false, user must explicitly register languages by calling `registerLanguage()`.
      *
      * @since 9.18.1.4 added `$loadAllLanguages` parameter
-     *
      * @see Highlighter::registerLanguage()
      */
     public function __construct($loadAllLanguages = true)
@@ -165,7 +164,7 @@ class Highlighter
      * @since 9.18.1.4
      *
      * @param bool $includeAliases Specify whether language aliases should be
-     *                              included as well
+     *                             included as well
      *
      * @return string[] An array of language names
      */
@@ -185,7 +184,6 @@ class Highlighter
      *
      * @since 9.18.1.4 Method is now public
      * @since 8.3.0.0
-     *
      * @see Highlighter::registerLanguage
      *
      * @return void
@@ -256,9 +254,9 @@ class Highlighter
      */
     public static function clearAllLanguages()
     {
-        self::$classMap = [];
-        self::$languages = [];
-        self::$aliases = [];
+        self::$classMap = array();
+        self::$languages = array();
+        self::$aliases = array();
     }
 
     /**
@@ -911,7 +909,7 @@ class Highlighter
      * setAutodetectLanguages will turn on autodetection for all supported
      * languages.
      *
-     * @deprecated Use `Highlighter::listRegisteredLanguages()` or `Highlighter::listBundledLanguages()` instead.
+     * @deprecated use `Highlighter::listRegisteredLanguages()` or `Highlighter::listBundledLanguages()` instead
      *
      * @param bool $include_aliases specify whether language aliases
      *                              should be included as well
