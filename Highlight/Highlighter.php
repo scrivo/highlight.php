@@ -113,18 +113,23 @@ class Highlighter
         );
 
         if ($loadAllLanguages) {
-            self::registerLanguages();
+            self::registerAllLanguages();
         }
     }
 
     /**
-     * Loop through all of the languages in our `languages` folder and automatically register them all.
+     * Register all 185+ languages that are bundled in this library.
      *
+     * To register languages individually, use `registerLanguage`.
+     *
+     * @since 9.18.1.4 Method is now public
      * @since 8.3.0.0
+     *
+     * @see Highlighter::registerLanguage
      *
      * @return void
      */
-    private static function registerLanguages()
+    public static function registerAllLanguages()
     {
         // Languages that take precedence in the classMap array.
         $languagePath = __DIR__ . DIRECTORY_SEPARATOR . "languages" . DIRECTORY_SEPARATOR;
@@ -552,20 +557,20 @@ class Highlighter
     }
 
     /**
-     * Set the set of languages used for autodetection. When using
-     * autodetection the code to highlight will be probed for every language
-     * in this set. Limiting this set to only the languages you want to use
-     * will greatly improve highlighting speed.
+     * Set the languages that will used for auto-detection. When using auto-
+     * detection the code to highlight will be probed for every language in this
+     * set. Limiting this set to only the languages you want to use will greatly
+     * improve highlighting speed.
      *
-     * @param string[] $set An array of language games to use for autodetection. This defaults
-     *                      to a typical set Web development languages.
+     * @param string[] $set An array of language games to use for autodetection.
+     *                      This defaults to a typical set Web development
+     *                      languages.
      *
      * @return void
      */
     public function setAutodetectLanguages(array $set)
     {
         $this->options['languages'] = array_unique($set);
-        self::registerLanguages();
     }
 
     /**
