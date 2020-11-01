@@ -53,10 +53,24 @@ class HighlighterTest extends PHPUnit_Framework_TestCase
 
         $hl = new Highlighter();
 
-        $availableLanguages = $hl->listLanguages();
+        try {
+            $availableLanguages = $hl->listLanguages();
+            $this->assertEquals($expectedLanguageCount, count($availableLanguages));
+        } catch (Exception $e) {
+            $this->assertEquals(E_USER_DEPRECATED, $e->getCode());
+        }
+
+        try {
+            $availableLanguages = $hl->listLanguages(false);
+            $this->assertEquals($expectedLanguageCount, count($availableLanguages));
+        } catch (Exception $e) {
+            $this->assertEquals(E_USER_DEPRECATED, $e->getCode());
+        }
+
+        $availableLanguages = Highlighter::listRegisteredLanguages();
         $this->assertEquals($expectedLanguageCount, count($availableLanguages));
 
-        $availableLanguages = $hl->listLanguages(false);
+        $availableLanguages = Highlighter::listRegisteredLanguages(false);
         $this->assertEquals($expectedLanguageCount, count($availableLanguages));
     }
 
@@ -66,7 +80,13 @@ class HighlighterTest extends PHPUnit_Framework_TestCase
         $minimumLanguageCount = $languageFinder->in(__DIR__ . '/../Highlight/languages/')->name('*.json')->count();
 
         $hl = new Highlighter();
-        $availableLanguages = $hl->listLanguages(true);
+        $availableLanguages = Highlighter::listRegisteredLanguages(true);
+
+        try {
+            $this->assertGreaterThan($minimumLanguageCount, count($hl->listLanguages(true)));
+        } catch (Exception $e) {
+            $this->assertEquals(E_USER_DEPRECATED, $e->getCode());
+        }
 
         $this->assertGreaterThan($minimumLanguageCount, count($availableLanguages));
 
@@ -142,14 +162,27 @@ class HighlighterTest extends PHPUnit_Framework_TestCase
             ->files()
         ;
 
-        $this->assertCount($langs->count(), $hl->listLanguages());
+        try {
+            $this->assertEquals($hl->listLanguages(), Highlighter::listBundledLanguages());
+        } catch (Exception $e) {
+            $this->assertEquals(E_USER_DEPRECATED, $e->getCode());
+        }
+
+        $this->assertCount($langs->count(), Highlighter::listBundledLanguages());
+        $this->assertCount($langs->count(), Highlighter::listRegisteredLanguages());
     }
 
     public function testLoadNoLanguagesInConstructor()
     {
         $hl = new Highlighter(false);
 
-        $this->assertCount(0, $hl->listLanguages());
+        try {
+            $this->assertCount(0, $hl->listLanguages());
+        } catch (Exception $e) {
+            $this->assertEquals(E_USER_DEPRECATED, $e->getCode());
+        }
+
+        $this->assertCount(0, Highlighter::listRegisteredLanguages());
     }
 
     public function testLoadOneLanguageManually()
@@ -158,6 +191,12 @@ class HighlighterTest extends PHPUnit_Framework_TestCase
 
         $hl = new Highlighter(false);
 
-        $this->assertCount(1, $hl->listLanguages());
+        try {
+            $this->assertCount(1, $hl->listLanguages());
+        } catch (Exception $e) {
+            $this->assertEquals(E_USER_DEPRECATED, $e->getCode());
+        }
+
+        $this->assertCount(1, Highlighter::listRegisteredLanguages());
     }
 }

@@ -79,6 +79,9 @@ class Highlighter
     /** @var string The current code we are highlighting */
     private $codeToHighlight;
 
+    /** @var string[] A list of all the bundled languages */
+    private static $bundledLanguages = array();
+
     /** @var array<string, Language> A mapping of a language ID to a Language definition */
     private static $classMap = array();
 
@@ -118,6 +121,64 @@ class Highlighter
     }
 
     /**
+     * Return a list of all available languages bundled with this library.
+     *
+     * @since 9.18.1.4
+     *
+     * @return string[] An array of language names
+     */
+    public static function listBundledLanguages()
+    {
+        if (!empty(self::$bundledLanguages)) {
+            return self::$bundledLanguages;
+        }
+
+        $languagePath = __DIR__ . '/languages/';
+        $d = @dir($languagePath);
+
+        if (!$d) {
+            throw new \RuntimeException('Could not read bundled language definition directory.');
+        }
+
+        // @TODO In 10.x, rewrite this as a generator yielding results
+        while (($entry = $d->read()) !== false) {
+            if (substr($entry, -5) === ".json") {
+                $languageId = substr($entry, 0, -5);
+                $filePath = $languagePath . $entry;
+
+                if (is_readable($filePath)) {
+                    self::$bundledLanguages[] = $languageId;
+                }
+            }
+        }
+
+        $d->close();
+
+        return self::$bundledLanguages;
+    }
+
+    /**
+     * Return a list of all the registered languages. Using this list in
+     * setAutodetectLanguages will turn on auto-detection for all supported
+     * languages.
+     *
+     * @since 9.18.1.4
+     *
+     * @param bool $includeAliases Specify whether language aliases should be
+     *                              included as well
+     *
+     * @return string[] An array of language names
+     */
+    public static function listRegisteredLanguages($includeAliases = false)
+    {
+        if ($includeAliases === true) {
+            return array_merge(self::$languages, array_keys(self::$aliases));
+        }
+
+        return self::$languages;
+    }
+
+    /**
      * Register all 185+ languages that are bundled in this library.
      *
      * To register languages individually, use `registerLanguage`.
@@ -140,6 +201,7 @@ class Highlighter
             }
         }
 
+        // @TODO In 10.x, call `listBundledLanguages()` instead when it's a generator
         $d = @dir($languagePath);
         if ($d) {
             while (($entry = $d->read()) !== false) {
@@ -849,9 +911,13 @@ class Highlighter
      * setAutodetectLanguages will turn on autodetection for all supported
      * languages.
      *
+     * @deprecated Use `Highlighter::listRegisteredLanguages()` or `Highlighter::listBundledLanguages()` instead.
+     *
      * @param bool $include_aliases specify whether language aliases
      *                              should be included as well
      *
+     * @since 9.18.1.4 Deprecated in favor of `Highlighter::listRegisteredLanguages()`
+     *                 and `Highlighter::listBundledLanguages()`.
      * @since 9.12.0.3 The `$include_aliases` parameter was added
      * @since 8.3.0.0
      *
@@ -859,6 +925,14 @@ class Highlighter
      */
     public function listLanguages($include_aliases = false)
     {
+        @trigger_error('This method is deprecated in favor `Highlighter::listRegisteredLanguages()` or `Highlighter::listBundledLanguages()`. This function will be removed in highlight.php 10.', E_USER_DEPRECATED);
+
+        if (empty(self::$languages)) {
+            trigger_error('No languages are registered, returning all bundled languages instead. You probably did not want this.', E_USER_WARNING);
+
+            return self::listBundledLanguages();
+        }
+
         if ($include_aliases === true) {
             return array_merge(self::$languages, array_keys(self::$aliases));
         }

@@ -76,7 +76,7 @@ class DetectionTest extends PHPUnit_Framework_TestCase
     public function testAutomaticDetection($language, $raw)
     {
         $hl = new Highlighter();
-        $hl->setAutodetectLanguages($hl->listLanguages());
+        $hl->setAutodetectLanguages(Highlighter::listBundledLanguages());
 
         $actual = $hl->highlightAuto($raw);
 
