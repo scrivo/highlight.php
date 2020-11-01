@@ -176,6 +176,8 @@ function getLanguagesFolder()
  *
  * @param string $name The slug of the language to look for
  *
+ * @throws \DomainException when the no definition for this language exists
+ *
  * @return string
  */
 function getLanguageDefinitionPath($name)
