@@ -134,17 +134,41 @@ abstract class Functions
     }
 
     /**
-     * Get the absolute path to the folder containing the languages distributed in this package.
+     * Get the directory path for the bundled languages folder.
      *
      * @api
      *
-     * @since 10.0
+     * @since 9.18.1.4
      *
-     * @return string An absolute path to the folder
+     * @return string An absolute path to the bundled languages folder
      */
-    public static function getLanguageFolder()
+    public static function getLanguagesFolder()
     {
         return __DIR__ . '/../Highlight/languages';
+    }
+
+    /**
+     * Get the file path for the specified bundled language definition.
+     *
+     * @api
+     *
+     * @since 9.18.1.4
+     *
+     * @param string $name The slug of the language to look for
+     *
+     * @throws \DomainException when the no definition for this language exists
+     *
+     * @return string
+     */
+    public static function getLanguageDefinitionPath($name)
+    {
+        $path = self::getLanguagesFolder() . '/' . $name . '.json';
+
+        if (!file_exists($path)) {
+            throw new \DomainException("There is no language definition for $name");
+        }
+
+        return $path;
     }
 
     /**

@@ -107,10 +107,11 @@ Available functions:
 - [`getAvailableStyleSheets(bool $filePaths = false): string[]`](src/HighlightUtilities/Functions.php#L40-L53)
 - [`getStyleSheet(string $name): false|string`](src/HighlightUtilities/Functions.php#L101-L114)
 - [`getStyleSheetFolder(): string`](src/HighlightUtilities/Functions.php#L122-L130)
-- [`getStyleSheetPath(string $name): string`](src/HighlightUtilities/Functions.php#L150-L162)
-- [`getLanguageFolder(): string`](src/HighlightUtilities/Functions.php#L136-L144)
+- [`getStyleSheetPath(string $name): string`](src/HighlightUtilities/Functions.php#L172-L184)
+- [`getLanguagesFolder(): string`](src/HighlightUtilities/Functions.php#L136-L144)
+- [`getLanguageDefinitionPath(string $name): string`](src/HighlightUtilities/Functions.php#L150-L160)
 - [`getThemeBackgroundColor(string $name): float[]`](src/HighlightUtilities/Functions.php#L80-L93)
-- [`splitCodeIntoArray(string $html): false|string[]`](src/HighlightUtilities/Functions.php#L175-L188)
+- [`splitCodeIntoArray(string $html): false|string[]`](src/HighlightUtilities/Functions.php#L197-L210)
 
 ## Versioning
 
