@@ -37,7 +37,7 @@ class HighlightUtilitiesTest extends PHPUnit_Framework_TestCase
         $this->hl = new \Highlight\Highlighter();
     }
 
-    public function testGetAvailableStyleSheets_NamesOnly()
+    public function testGetAvailableStyleSheetsNamesOnly()
     {
         $results = \HighlightUtilities\getAvailableStyleSheets();
 
@@ -49,7 +49,7 @@ class HighlightUtilitiesTest extends PHPUnit_Framework_TestCase
         }
     }
 
-    public function testGetAvailableStyleSheets_FilePaths()
+    public function testGetAvailableStyleSheetsFilePaths()
     {
         $results = \HighlightUtilities\getAvailableStyleSheets(true);
 
@@ -63,7 +63,7 @@ class HighlightUtilitiesTest extends PHPUnit_Framework_TestCase
         }
     }
 
-    public function testGetAvailableStyleSheets_SameCount()
+    public function testGetAvailableStyleSheetsSameCount()
     {
         $namesOnly = \HighlightUtilities\getAvailableStyleSheets();
         $filePaths = \HighlightUtilities\getAvailableStyleSheets(true);
@@ -71,7 +71,7 @@ class HighlightUtilitiesTest extends PHPUnit_Framework_TestCase
         $this->assertCount(count($namesOnly), $filePaths);
     }
 
-    public function testGetStyleSheet_Exists()
+    public function testGetStyleSheetExists()
     {
         $yesExt = \HighlightUtilities\getStyleSheet("a11y-dark.css");
         $noExt = \HighlightUtilities\getStyleSheet("a11y-dark");
@@ -80,14 +80,14 @@ class HighlightUtilitiesTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($yesExt, $noExt);
     }
 
-    public function testGetStyleSheet_NotExists()
+    public function testGetStyleSheetNotExists()
     {
         $this->setExpectedException('\DomainException');
 
         \HighlightUtilities\getStyleSheet("strawberry.png");
     }
 
-    public function testSplitCodeIntoArray_MultilineComment()
+    public function testSplitCodeIntoArrayMultilineComment()
     {
         $raw = <<<PHP
 /**
@@ -116,7 +116,7 @@ PHP;
         }
     }
 
-    public function testSplitCodeIntoArray_Emojis()
+    public function testSplitCodeIntoArrayEmojis()
     {
         $raw = <<<'PHP'
 // ✅ ...
@@ -136,7 +136,7 @@ PHP;
         );
     }
 
-    public function testSplitCodeIntoArray_DeeplyNestedSpans()
+    public function testSplitCodeIntoArrayDeeplyNestedSpans()
     {
         $raw = <<<'JAVA'
 public QuoteEntity(
@@ -154,7 +154,7 @@ JAVA;
         );
     }
 
-    public function testSplitCodeIntoArray_XmlWithAttributesOnNewLines()
+    public function testSplitCodeIntoArrayXmlWithAttributesOnNewLines()
     {
         $raw = <<<'XML'
 <?xml version="1.0" encoding="utf-8" ?>
@@ -180,7 +180,7 @@ XML;
         );
     }
 
-    public function testSplitCodeIntoArray_DeeplyNestedSpansCRLF()
+    public function testSplitCodeIntoArrayDeeplyNestedSpansCRLF()
     {
         $raw = "public QuoteEntity(\r\n)";
 
@@ -208,7 +208,7 @@ XML;
     /**
      * @dataProvider dataProvider_emptyStrings
      */
-    public function testSplitCodeIntoArray_EmptyString($string)
+    public function testSplitCodeIntoArrayEmptyString($string)
     {
         $this->assertEquals(array(), \HighlightUtilities\splitCodeIntoArray($string));
     }
