@@ -154,6 +154,32 @@ JAVA;
         );
     }
 
+    public function testSplitCodeIntoArray_XmlWithAttributesOnNewLines()
+    {
+        $raw = <<<'XML'
+<?xml version="1.0" encoding="utf-8" ?>
+<nlog xmlns="http://www.nlog-project.org/schemas/NLog.xsd"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.nlog-project.org/schemas/NLog.xsd NLog.xsd"
+      autoReload="true">
+</nlog>
+XML;
+        $highlighted = $this->hl->highlight('xml', htmlentities($raw));
+        $split = \HighlightUtilities\splitCodeIntoArray($highlighted->value);
+
+        $this->assertEquals(
+            $split,
+            array(
+                '<span class="hljs-symbol">&amp;lt;</span>?xml version=<span class="hljs-symbol">&amp;quot;</span>1.0<span class="hljs-symbol">&amp;quot;</span> encoding=<span class="hljs-symbol">&amp;quot;</span>utf-8<span class="hljs-symbol">&amp;quot;</span> ?<span class="hljs-symbol">&amp;gt;</span>',
+                '<span class="hljs-symbol">&amp;lt;</span>nlog xmlns=<span class="hljs-symbol">&amp;quot;</span>http://www.nlog-project.org/schemas/NLog.xsd<span class="hljs-symbol">&amp;quot;</span>',
+                '      xmlns:xsi=<span class="hljs-symbol">&amp;quot;</span>http://www.w3.org/2001/XMLSchema-instance<span class="hljs-symbol">&amp;quot;</span>',
+                '      xsi:schemaLocation=<span class="hljs-symbol">&amp;quot;</span>http://www.nlog-project.org/schemas/NLog.xsd NLog.xsd<span class="hljs-symbol">&amp;quot;</span>',
+                '      autoReload=<span class="hljs-symbol">&amp;quot;</span>true<span class="hljs-symbol">&amp;quot;</span><span class="hljs-symbol">&amp;gt;</span>',
+                '<span class="hljs-symbol">&amp;lt;</span>/nlog<span class="hljs-symbol">&amp;gt;</span>',
+            )
+        );
+    }
+
     public function testSplitCodeIntoArray_DeeplyNestedSpansCRLF()
     {
         $raw = "public QuoteEntity(\r\n)";
