@@ -127,12 +127,12 @@ PHP;
         $split = \HighlightUtilities\splitCodeIntoArray($highlighted->value);
 
         $this->assertEquals(
-            $split,
             array(
                 '<span class="hljs-comment">// ✅ ...</span>',
                 '$user = <span class="hljs-keyword">new</span> \stdClass();',
                 '$isUserPending = $user-&gt;isStatus(<span class="hljs-string">\'pending\'</span>);',
-            )
+            ),
+            $split
         );
     }
 
@@ -146,11 +146,11 @@ JAVA;
         $split = \HighlightUtilities\splitCodeIntoArray($highlighted->value);
 
         $this->assertEquals(
-            $split,
             array(
                 '<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">QuoteEntity</span><span class="hljs-params">(</span></span>',
                 '<span class="hljs-function"><span class="hljs-params">)</span></span>',
-            )
+            ),
+            $split
         );
     }
 
@@ -188,11 +188,11 @@ XML;
         $split = \HighlightUtilities\splitCodeIntoArray($highlighted->value);
 
         $this->assertEquals(
-            $split,
             array(
                 '<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">QuoteEntity</span><span class="hljs-params">(</span></span>',
                 '<span class="hljs-function"><span class="hljs-params">)</span></span>',
-            )
+            ),
+            $split
         );
     }
 
