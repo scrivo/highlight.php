@@ -222,11 +222,25 @@ function splitCodeIntoArray($html)
         throw new \UnexpectedValueException("The given HTML could not be parsed correctly.");
     }
 
-    $xpath = new \DOMXPath($dom);
-    $spans = $xpath->query("//span[contains(text(), '\n') or contains(text(), '\r\n')]");
+    $spans = $dom->getElementsByTagName('span');
 
     /** @var \DOMElement $span */
     foreach ($spans as $span) {
+        if ($span->hasChildNodes()) {
+            $hasNewlines = false;
+
+            foreach ($span->childNodes as $child) {
+                if ($child->nodeType === XML_TEXT_NODE && preg_match('/\R/', $child->textContent)) {
+                    $hasNewlines = true;
+                    break;
+                }
+            }
+
+            if (!$hasNewlines) {
+                continue;
+            }
+        }
+
         $closingTags = '';
         $openingTags = '';
         $curr = $span;
