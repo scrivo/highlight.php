@@ -207,59 +207,50 @@ function getLanguageDefinitionPath($name)
  */
 function splitCodeIntoArray($html)
 {
-    if (!extension_loaded("dom")) {
-        throw new \RuntimeException("The DOM extension is not loaded but is required.");
-    }
-
     if (trim($html) === "") {
         return array();
     }
 
-    $dom = new \DOMDocument();
+    $queuedPrefix = '';
+    $regexWorkspace = array();
+    $rawLines = preg_split('/\R/u', $html);
 
-    // https://stackoverflow.com/a/8218649
-    if (!$dom->loadHTML(mb_convert_encoding($html, "HTML-ENTITIES", "UTF-8"))) {
-        throw new \UnexpectedValueException("The given HTML could not be parsed correctly.");
+    if ($rawLines === false) {
+        return false;
     }
 
-    $spans = $dom->getElementsByTagName('span');
-
-    /** @var \DOMElement $span */
-    foreach ($spans as $span) {
-        if ($span->hasChildNodes()) {
-            $hasNewlines = false;
-
-            foreach ($span->childNodes as $child) {
-                if ($child->nodeType === XML_TEXT_NODE && preg_match('/\R/', $child->textContent)) {
-                    $hasNewlines = true;
-                    break;
-                }
-            }
-
-            if (!$hasNewlines) {
-                continue;
-            }
+    foreach ($rawLines as &$rawLine) {
+        // If the previous line has been marked as "open", then we'll have something
+        // in our queue
+        if ($queuedPrefix !== '') {
+            $rawLine = $queuedPrefix . $rawLine;
+            $queuedPrefix = '';
         }
 
-        $closingTags = '';
-        $openingTags = '';
-        $curr = $span;
+        // Find how many opening `<span>` tags exist on this line
+        preg_match_all('/<span[^<>]+>/u', $rawLine, $regexWorkspace);
+        $openingTags = count($regexWorkspace[0]);
 
-        while ($curr->tagName === 'span') {
-            $closingTags .= '</span>';
-            $openingTags = sprintf('<span class="%s">%s', $curr->getAttribute("class"), $openingTags);
+        // Find all of the closing `</span>` tags that exist on this line
+        preg_match_all('/<\/span>/u', $rawLine, $regexWorkspace);
+        $closingTags = count($regexWorkspace[0]);
 
-            $curr = $curr->parentNode;
+        // If the number of opening tags matches the number of closing tags, then
+        // we don't have any new tags that span multiple lines
+        if ($openingTags === $closingTags) {
+            continue;
         }
 
-        $renderedSpan = $dom->saveHTML($span);
-        $finished = preg_replace(
-            '/\R/u',
-            $closingTags . PHP_EOL . $openingTags,
-            $renderedSpan
-        );
-        $html = str_replace($renderedSpan, $finished, $html);
+        // Find all of the complete `<span>` tags and remove them from a working
+        // copy of the line. Then we'll be left with just opening tags.
+        $workingLine = preg_replace('/<span[^<]+>[^<>]+<\/span>/u', '', $rawLine);
+        preg_match_all('/<span[^>]+>/u', $workingLine, $regexWorkspace);
+        $queuedPrefix = implode('', $regexWorkspace[0]);
+
+        // Close all of the remaining open tags on this line
+        $diff = str_repeat('</span>', $openingTags - $closingTags);
+        $rawLine .= $diff;
     }
 
-    return preg_split('/\R/u', $html);
+    return $rawLines;
 }
