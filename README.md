@@ -118,7 +118,7 @@ Available functions:
 - [`getStyleSheetFolder(): string`](HighlightUtilities/functions.php#L115-L123)
 - [`getStyleSheetPath(string $name): string`](HighlightUtilities/functions.php#L131-L143)
 - [`getThemeBackgroundColor(string $name): float[]`](HighlightUtilities/functions.php#L75-L88)
-- [`splitCodeIntoArray(string $html): false|string[]`](HighlightUtilities/functions.php#L194-L207)
+- [`splitCodeIntoArray(string $html): false|string[]`](HighlightUtilities/functions.php#L194-L205)
 
 ## Versioning
 
