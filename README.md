@@ -111,7 +111,7 @@ Available functions:
 - [`getLanguagesFolder(): string`](src/HighlightUtilities/Functions.php#L136-L144)
 - [`getLanguageDefinitionPath(string $name): string`](src/HighlightUtilities/Functions.php#L150-L160)
 - [`getThemeBackgroundColor(string $name): float[]`](src/HighlightUtilities/Functions.php#L80-L93)
-- [`splitCodeIntoArray(string $html): false|string[]`](src/HighlightUtilities/Functions.php#L197-L210)
+- [`splitCodeIntoArray(string $html): false|string[]`](src/HighlightUtilities/Functions.php#L199-L210)
 
 ## Versioning
 

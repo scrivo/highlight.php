@@ -41,6 +41,6 @@ $r = $hl->highlight("html", file_get_contents(__FILE__));
         <link rel="stylesheet" type="text/css" href="../styles/default.css">
     </head>
     <body>
-        <pre><code class="hljs <?=$r->language; ?>"><?=$r->value; ?></code></pre>
+        <pre><code class="hljs <?= $r->language; ?>"><?= $r->value; ?></code></pre>
     </body>
 </html>

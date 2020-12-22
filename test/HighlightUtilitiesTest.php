@@ -37,7 +37,7 @@ class HighlightUtilitiesTest extends PHPUnit_Framework_TestCase
         $this->hl = new \Highlight\Highlighter();
     }
 
-    public function testGetAvailableStyleSheets_NamesOnly()
+    public function testGetAvailableStyleSheetsNamesOnly()
     {
         $results = \HighlightUtilities\Functions::getAvailableStyleSheets();
 
@@ -49,7 +49,7 @@ class HighlightUtilitiesTest extends PHPUnit_Framework_TestCase
         }
     }
 
-    public function testGetAvailableStyleSheets_FilePaths()
+    public function testGetAvailableStyleSheetsFilePaths()
     {
         $results = \HighlightUtilities\Functions::getAvailableStyleSheets(true);
 
@@ -63,7 +63,7 @@ class HighlightUtilitiesTest extends PHPUnit_Framework_TestCase
         }
     }
 
-    public function testGetAvailableStyleSheets_SameCount()
+    public function testGetAvailableStyleSheetsSameCount()
     {
         $namesOnly = \HighlightUtilities\Functions::getAvailableStyleSheets();
         $filePaths = \HighlightUtilities\Functions::getAvailableStyleSheets(true);
@@ -71,7 +71,7 @@ class HighlightUtilitiesTest extends PHPUnit_Framework_TestCase
         $this->assertCount(count($namesOnly), $filePaths);
     }
 
-    public function testGetStyleSheet_Exists()
+    public function testGetStyleSheetExists()
     {
         $yesExt = \HighlightUtilities\Functions::getStyleSheet("a11y-dark.css");
         $noExt = \HighlightUtilities\Functions::getStyleSheet("a11y-dark");
@@ -80,14 +80,14 @@ class HighlightUtilitiesTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($yesExt, $noExt);
     }
 
-    public function testGetStyleSheet_NotExists()
+    public function testGetStyleSheetNotExists()
     {
         $this->setExpectedException('\DomainException');
 
         \HighlightUtilities\Functions::getStyleSheet("strawberry.png");
     }
 
-    public function testSplitCodeIntoArray_MultilineComment()
+    public function testSplitCodeIntoArrayMultilineComment()
     {
         $raw = <<<PHP
 /**
@@ -116,7 +116,7 @@ PHP;
         }
     }
 
-    public function testSplitCodeIntoArray_Emojis()
+    public function testSplitCodeIntoArrayEmojis()
     {
         $raw = <<<'PHP'
 // ✅ ...
@@ -127,16 +127,16 @@ PHP;
         $split = \HighlightUtilities\Functions::splitCodeIntoArray($highlighted->value);
 
         $this->assertEquals(
-            $split,
             array(
                 '<span class="hljs-comment">// ✅ ...</span>',
                 '$user = <span class="hljs-keyword">new</span> \stdClass();',
                 '$isUserPending = $user-&gt;isStatus(<span class="hljs-string">\'pending\'</span>);',
-            )
+            ),
+            $split
         );
     }
 
-    public function testSplitCodeIntoArray_DeeplyNestedSpans()
+    public function testSplitCodeIntoArrayDeeplyNestedSpans()
     {
         $raw = <<<'JAVA'
 public QuoteEntity(
@@ -146,15 +146,63 @@ JAVA;
         $split = \HighlightUtilities\Functions::splitCodeIntoArray($highlighted->value);
 
         $this->assertEquals(
-            $split,
             array(
                 '<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">QuoteEntity</span><span class="hljs-params">(</span></span>',
                 '<span class="hljs-function"><span class="hljs-params">)</span></span>',
-            )
+            ),
+            $split
         );
     }
 
-    public function testSplitCodeIntoArray_DeeplyNestedSpansCRLF()
+    public function testSplitCodeIntoArrayXmlWithAttributesOnNewLines()
+    {
+        $raw = <<<'XML'
+<?xml version="1.0" encoding="utf-8" ?>
+               <tag a="t"
+                        b="t">
+                 </tag>
+XML;
+        $highlighted = $this->hl->highlight('xml', $raw);
+        $split = \HighlightUtilities\Functions::splitCodeIntoArray($highlighted->value);
+
+        $this->assertEquals(
+            array(
+                '<span class="hljs-meta">&lt;?xml version="1.0" encoding="utf-8" ?&gt;</span>',
+                '               <span class="hljs-tag">&lt;<span class="hljs-name">tag</span> <span class="hljs-attr">a</span>=<span class="hljs-string">"t"</span></span>',
+                '<span class="hljs-tag">                        <span class="hljs-attr">b</span>=<span class="hljs-string">"t"</span>&gt;</span>',
+                '                 <span class="hljs-tag">&lt;/<span class="hljs-name">tag</span>&gt;</span>',
+            ),
+            $split
+        );
+    }
+
+    public function testSplitCodeIntoArrayXmlWithAttributesSpanningMultipleLines()
+    {
+        $raw = <<<'XML'
+<?xml version="1.0" encoding="utf-8" ?>
+<nlog xmlns="http://www.nlog-project.org/schemas/NLog.xsd"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.nlog-project.org/schemas/NLog.xsd NLog.xsd"
+      autoReload="true">
+</nlog>
+XML;
+        $highlighted = $this->hl->highlight('xml', $raw);
+        $split = \HighlightUtilities\Functions::splitCodeIntoArray($highlighted->value);
+
+        $this->assertEquals(
+            array(
+                '<span class="hljs-meta">&lt;?xml version="1.0" encoding="utf-8" ?&gt;</span>',
+                '<span class="hljs-tag">&lt;<span class="hljs-name">nlog</span> <span class="hljs-attr">xmlns</span>=<span class="hljs-string">"http://www.nlog-project.org/schemas/NLog.xsd"</span></span>',
+                '<span class="hljs-tag">      <span class="hljs-attr">xmlns:xsi</span>=<span class="hljs-string">"http://www.w3.org/2001/XMLSchema-instance"</span></span>',
+                '<span class="hljs-tag">      <span class="hljs-attr">xsi:schemaLocation</span>=<span class="hljs-string">"http://www.nlog-project.org/schemas/NLog.xsd NLog.xsd"</span></span>',
+                '<span class="hljs-tag">      <span class="hljs-attr">autoReload</span>=<span class="hljs-string">"true"</span>&gt;</span>',
+                '<span class="hljs-tag">&lt;/<span class="hljs-name">nlog</span>&gt;</span>',
+            ),
+            $split
+        );
+    }
+
+    public function testSplitCodeIntoArrayDeeplyNestedSpansCRLF()
     {
         $raw = "public QuoteEntity(\r\n)";
 
@@ -162,11 +210,11 @@ JAVA;
         $split = \HighlightUtilities\Functions::splitCodeIntoArray($highlighted->value);
 
         $this->assertEquals(
-            $split,
             array(
                 '<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">QuoteEntity</span><span class="hljs-params">(</span></span>',
                 '<span class="hljs-function"><span class="hljs-params">)</span></span>',
-            )
+            ),
+            $split
         );
     }
 
@@ -182,7 +230,7 @@ JAVA;
     /**
      * @dataProvider dataProvider_emptyStrings
      */
-    public function testSplitCodeIntoArray_EmptyString($string)
+    public function testSplitCodeIntoArrayEmptyString($string)
     {
         $this->assertEquals(array(), \HighlightUtilities\Functions::splitCodeIntoArray($string));
     }
