@@ -158,25 +158,47 @@ JAVA;
     {
         $raw = <<<'XML'
 <?xml version="1.0" encoding="utf-8" ?>
+               <tag a="t"
+                        b="t">
+                 </tag>
+XML;
+        $highlighted = $this->hl->highlight('xml', $raw);
+        $split = \HighlightUtilities\splitCodeIntoArray($highlighted->value);
+
+        $this->assertEquals(
+            array(
+                '<span class="hljs-meta">&lt;?xml version="1.0" encoding="utf-8" ?&gt;</span>',
+                '               <span class="hljs-tag">&lt;<span class="hljs-name">tag</span> <span class="hljs-attr">a</span>=<span class="hljs-string">"t"</span></span>',
+                '<span class="hljs-tag">                        <span class="hljs-attr">b</span>=<span class="hljs-string">"t"</span>&gt;</span>',
+                '                 <span class="hljs-tag">&lt;/<span class="hljs-name">tag</span>&gt;</span>',
+            ),
+            $split
+        );
+    }
+
+    public function testSplitCodeIntoArrayXmlWithAttributesSpanningMultipleLines()
+    {
+        $raw = <<<'XML'
+<?xml version="1.0" encoding="utf-8" ?>
 <nlog xmlns="http://www.nlog-project.org/schemas/NLog.xsd"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://www.nlog-project.org/schemas/NLog.xsd NLog.xsd"
       autoReload="true">
 </nlog>
 XML;
-        $highlighted = $this->hl->highlight('xml', htmlentities($raw));
+        $highlighted = $this->hl->highlight('xml', $raw);
         $split = \HighlightUtilities\splitCodeIntoArray($highlighted->value);
 
         $this->assertEquals(
-            $split,
             array(
-                '<span class="hljs-symbol">&amp;lt;</span>?xml version=<span class="hljs-symbol">&amp;quot;</span>1.0<span class="hljs-symbol">&amp;quot;</span> encoding=<span class="hljs-symbol">&amp;quot;</span>utf-8<span class="hljs-symbol">&amp;quot;</span> ?<span class="hljs-symbol">&amp;gt;</span>',
-                '<span class="hljs-symbol">&amp;lt;</span>nlog xmlns=<span class="hljs-symbol">&amp;quot;</span>http://www.nlog-project.org/schemas/NLog.xsd<span class="hljs-symbol">&amp;quot;</span>',
-                '      xmlns:xsi=<span class="hljs-symbol">&amp;quot;</span>http://www.w3.org/2001/XMLSchema-instance<span class="hljs-symbol">&amp;quot;</span>',
-                '      xsi:schemaLocation=<span class="hljs-symbol">&amp;quot;</span>http://www.nlog-project.org/schemas/NLog.xsd NLog.xsd<span class="hljs-symbol">&amp;quot;</span>',
-                '      autoReload=<span class="hljs-symbol">&amp;quot;</span>true<span class="hljs-symbol">&amp;quot;</span><span class="hljs-symbol">&amp;gt;</span>',
-                '<span class="hljs-symbol">&amp;lt;</span>/nlog<span class="hljs-symbol">&amp;gt;</span>',
-            )
+                '<span class="hljs-meta">&lt;?xml version="1.0" encoding="utf-8" ?&gt;</span>',
+                '<span class="hljs-tag">&lt;<span class="hljs-name">nlog</span> <span class="hljs-attr">xmlns</span>=<span class="hljs-string">"http://www.nlog-project.org/schemas/NLog.xsd"</span></span>',
+                '<span class="hljs-tag">      <span class="hljs-attr">xmlns:xsi</span>=<span class="hljs-string">"http://www.w3.org/2001/XMLSchema-instance"</span></span>',
+                '<span class="hljs-tag">      <span class="hljs-attr">xsi:schemaLocation</span>=<span class="hljs-string">"http://www.nlog-project.org/schemas/NLog.xsd NLog.xsd"</span></span>',
+                '<span class="hljs-tag">      <span class="hljs-attr">autoReload</span>=<span class="hljs-string">"true"</span>&gt;</span>',
+                '<span class="hljs-tag">&lt;/<span class="hljs-name">nlog</span>&gt;</span>',
+            ),
+            $split
         );
     }
 
