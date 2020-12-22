@@ -55,8 +55,5 @@
         "sabberworm/php-css-parser": "^8.3",
         "symfony/finder": "^2.8|^3.4",
         "symfony/var-dumper": "^2.8|^3.4"
-    },
-    "suggest": {
-        "ext-dom": "Needed to make use of the features in the utilities namespace"
     }
 }
