@@ -226,7 +226,7 @@ function splitCodeIntoArray($html)
         }
 
         // Find how many opening `<span>` tags exist on this line
-        preg_match_all('/<span[^<>]+>/u', $rawLine, $regexWorkspace);
+        preg_match_all('/<span[^>]*+>/u', $rawLine, $regexWorkspace);
         $openingTags = count($regexWorkspace[0]);
 
         // Find all of the closing `</span>` tags that exist on this line
@@ -241,8 +241,8 @@ function splitCodeIntoArray($html)
 
         // Find all of the complete `<span>` tags and remove them from a working
         // copy of the line. Then we'll be left with just opening tags.
-        $workingLine = preg_replace('/<span[^<]+>[^<>]+<\/span>/u', '', $rawLine);
-        preg_match_all('/<span[^>]+>/u', $workingLine, $regexWorkspace);
+        $workingLine = preg_replace('/<span[^>]*+>[^<]*+<\/span>/u', '', $rawLine);
+        preg_match_all('/<span[^>]*+>/u', $workingLine, $regexWorkspace);
         $queuedPrefix = implode('', $regexWorkspace[0]);
 
         // Close all of the remaining open tags on this line
