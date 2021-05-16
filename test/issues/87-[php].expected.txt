@@ -11,7 +11,7 @@ $form = ActiveForm::begin([
 
     &lt;div <span class="hljs-class"><span class="hljs-keyword">class</span>="<span class="hljs-title">form</span>-<span class="hljs-title">group</span>"&gt;
         &lt;<span class="hljs-title">div</span> <span class="hljs-title">class</span>="<span class="hljs-title">col</span>-<span class="hljs-title">lg</span>-<span class="hljs-title">offset</span>-1 <span class="hljs-title">col</span>-<span class="hljs-title">lg</span>-11"&gt;
-            &lt;?= <span class="hljs-title">Html</span>::<span class="hljs-title">submitButton</span>('Входодд<span class="hljs-title">class</span>' =&gt; '<span class="hljs-title">btn</span> <span class="hljs-title">btn</span>-<span class="hljs-title">primary</span>']) ?&gt;
+            &lt;?= <span class="hljs-title">Html</span>::<span class="hljs-title">submitButton</span>('<span class="hljs-title">Вход</span>', ['<span class="hljs-title">class</span>' =&gt; '<span class="hljs-title">btn</span> <span class="hljs-title">btn</span>-<span class="hljs-title">primary</span>']) ?&gt;
         &lt;/<span class="hljs-title">div</span>&gt;
     &lt;/<span class="hljs-title">div</span>&gt;
 &lt;?<span class="hljs-title">php</span> <span class="hljs-title">ActiveForm</span>::<span class="hljs-title">end</span>() ?&gt;</span>
