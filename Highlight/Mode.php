@@ -39,41 +39,41 @@ namespace Highlight;
  *
  * Language definition set via language definition JSON files
  *
- * @property bool $case_insensitive = false
- * @property string[] $aliases = array()
- * @property string|null $className = null
- * @property string|null $begin = null
- * @property RegEx|null $beginRe = null
- * @property string|null $end = null
- * @property RegEx|null $endRe = null
- * @property string|null $beginKeywords = null
- * @property bool $endsWithParent = false
- * @property bool $endsParent = false
- * @property bool $endSameAsBegin = false
- * @property string|null $lexemes = null
- * @property RegEx|null $lexemesRe = null
- * @property array<string, array<int, string|int>> $keywords = array()
- * @property string|null $illegal = null
- * @property RegEx|null $illegalRe = null
- * @property bool $excludeBegin = false
- * @property bool $excludeEnd = false
- * @property bool $returnBegin = false
- * @property bool $returnEnd = false
- * @property Mode[] $contains = array()
- * @property Mode|null $starts = null
- * @property Mode[] $variants = array()
- * @property int|null $relevance = null
- * @property string|string[]|null $subLanguage = null
- * @property bool $skip = false
- * @property bool $disableAutodetect = false
+ * @property bool                                  $case_insensitive  = false
+ * @property string[]                              $aliases           = array()
+ * @property string|null                           $className         = null
+ * @property string|null                           $begin             = null
+ * @property RegEx|null                            $beginRe           = null
+ * @property string|null                           $end               = null
+ * @property RegEx|null                            $endRe             = null
+ * @property string|null                           $beginKeywords     = null
+ * @property bool                                  $endsWithParent    = false
+ * @property bool                                  $endsParent        = false
+ * @property bool                                  $endSameAsBegin    = false
+ * @property string|null                           $lexemes           = null
+ * @property RegEx|null                            $lexemesRe         = null
+ * @property array<string, array<int, string|int>> $keywords          = array()
+ * @property string|null                           $illegal           = null
+ * @property RegEx|null                            $illegalRe         = null
+ * @property bool                                  $excludeBegin      = false
+ * @property bool                                  $excludeEnd        = false
+ * @property bool                                  $returnBegin       = false
+ * @property bool                                  $returnEnd         = false
+ * @property Mode[]                                $contains          = array()
+ * @property Mode|null                             $starts            = null
+ * @property Mode[]                                $variants          = array()
+ * @property int|null                              $relevance         = null
+ * @property string|string[]|null                  $subLanguage       = null
+ * @property bool                                  $skip              = false
+ * @property bool                                  $disableAutodetect = false
  *
  * Properties set at runtime by the language compilation process
  * @property array<int, Mode> $cachedVariants = array()
- * @property Terminators|null $terminators = null
- * @property string $terminator_end = ""
- * @property bool $compiled = false
- * @property Mode|null $parent = null
- * @property string $type = ''
+ * @property Terminators|null $terminators    = null
+ * @property string           $terminator_end = ""
+ * @property bool             $compiled       = false
+ * @property Mode|null        $parent         = null
+ * @property string           $type           = ''
  *
  * @see https://highlightjs.readthedocs.io/en/latest/reference.html
  */
