@@ -1,0 +1,8 @@
+<span class="hljs-keyword">if</span> (FELTÉTEL)
+{
+  IGAZ ÁG
+}
+<span class="hljs-keyword">else</span>
+{
+  HAMIS ÁG
+}
