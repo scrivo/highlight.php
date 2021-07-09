@@ -27,7 +27,9 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-class HighlightUtilitiesTest extends PHPUnit_Framework_TestCase
+namespace Highlight\Tests;
+
+class HighlightUtilitiesTest extends \PHPUnit_Framework_TestCase
 {
     /** @var \Highlight\Highlighter */
     private $hl;

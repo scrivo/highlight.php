@@ -27,17 +27,17 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+namespace Highlight\Tests;
+
 use Highlight\Highlighter;
 
-class SpecialTest extends PHPUnit_Framework_TestCase
+class SpecialTest extends \PHPUnit_Framework_TestCase
 {
     private function getTestData($name)
     {
         return (object) array(
-            "code" => file_get_contents(__DIR__ . DIRECTORY_SEPARATOR .
-                "special" . DIRECTORY_SEPARATOR . "{$name}.txt"),
-            "expected" => file_get_contents(__DIR__ . DIRECTORY_SEPARATOR .
-                "special" . DIRECTORY_SEPARATOR . "{$name}.expect.txt"),
+            "code" => file_get_contents(__DIR__ . DIRECTORY_SEPARATOR),
+            "expected" => file_get_contents(__DIR__ . DIRECTORY_SEPARATOR),
         );
     }
 

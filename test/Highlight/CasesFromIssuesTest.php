@@ -27,10 +27,12 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+namespace Highlight\Tests;
+
 use Highlight\Highlighter;
 use Symfony\Component\Finder\Finder;
 
-class CasesFromIssuesTest extends PHPUnit_Framework_TestCase
+class CasesFromIssuesTest extends \PHPUnit_Framework_TestCase
 {
     private static function parseFileName($filename)
     {

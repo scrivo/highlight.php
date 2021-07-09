@@ -27,10 +27,12 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+namespace Highlight\Tests;
+
 use Highlight\Highlighter;
 use Symfony\Component\Finder\Finder;
 
-class MarkupTest extends PHPUnit_Framework_TestCase
+class MarkupTest extends \PHPUnit_Framework_TestCase
 {
     private $allowedFailures;
 

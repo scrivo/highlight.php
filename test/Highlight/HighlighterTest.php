@@ -27,11 +27,14 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+namespace Highlight\Tests;
+
 use Highlight\Highlighter;
 use Highlight\Language;
+use HighlightUtilities\Functions;
 use Symfony\Component\Finder\Finder;
 
-class HighlighterTest extends PHPUnit_Framework_TestCase
+class HighlighterTest extends \PHPUnit_Framework_TestCase
 {
     protected function setUp()
     {
@@ -40,7 +43,7 @@ class HighlighterTest extends PHPUnit_Framework_TestCase
 
     public function testUnknownLanguageThrowsDomainException()
     {
-        $this->setExpectedException('\DomainException');
+        $this->expectException(\DomainException::class);
 
         $hl = new Highlighter();
         $hl->highlight("blah++", "als blurp eq z dan zeg 'flipper'");
@@ -49,45 +52,30 @@ class HighlighterTest extends PHPUnit_Framework_TestCase
     public function testListLanguagesWithoutAliases()
     {
         $languageFinder = new Finder();
-        $expectedLanguageCount = $languageFinder->in(\HighlightUtilities\Functions::getLanguagesFolder() . '/')->name('*.json')->count();
+        $expectedLanguageCount = $languageFinder
+            ->in(Functions::getLanguagesFolder())
+            ->name('*.json')
+            ->count()
+        ;
 
-        $hl = new Highlighter();
-
-        try {
-            $availableLanguages = $hl->listLanguages();
-            $this->assertEquals($expectedLanguageCount, count($availableLanguages));
-        } catch (Exception $e) {
-            $this->assertEquals(E_USER_DEPRECATED, $e->getCode());
-        }
-
-        try {
-            $availableLanguages = $hl->listLanguages(false);
-            $this->assertEquals($expectedLanguageCount, count($availableLanguages));
-        } catch (Exception $e) {
-            $this->assertEquals(E_USER_DEPRECATED, $e->getCode());
-        }
+        new Highlighter();
 
         $availableLanguages = Highlighter::listRegisteredLanguages();
-        $this->assertEquals($expectedLanguageCount, count($availableLanguages));
-
-        $availableLanguages = Highlighter::listRegisteredLanguages(false);
         $this->assertEquals($expectedLanguageCount, count($availableLanguages));
     }
 
     public function testListLanguagesWithAliases()
     {
         $languageFinder = new Finder();
-        $minimumLanguageCount = $languageFinder->in(\HighlightUtilities\Functions::getLanguagesFolder() . '/')->name('*.json')->count();
+        $minimumLanguageCount = $languageFinder
+            ->in(Functions::getLanguagesFolder())
+            ->name('*.json')
+            ->count()
+        ;
 
-        $hl = new Highlighter();
+        new Highlighter();
+
         $availableLanguages = Highlighter::listRegisteredLanguages(true);
-
-        try {
-            $this->assertGreaterThan($minimumLanguageCount, count($hl->listLanguages(true)));
-        } catch (Exception $e) {
-            $this->assertEquals(E_USER_DEPRECATED, $e->getCode());
-        }
-
         $this->assertGreaterThan($minimumLanguageCount, count($availableLanguages));
 
         // Verify some common aliases/names are present.
@@ -99,7 +87,7 @@ class HighlighterTest extends PHPUnit_Framework_TestCase
 
     public function testGetAliasesForLanguageWhenUsingMainLanguageName()
     {
-        $languageDefinitionFile = \HighlightUtilities\Functions::getLanguagesFolder() . DIRECTORY_SEPARATOR . "php.json";
+        $languageDefinitionFile = Functions::getLanguagesFolder() . DIRECTORY_SEPARATOR . "php.json";
         $language = new Language('php', $languageDefinitionFile);
         $expected_aliases = $language->aliases;
         $expected_aliases[] = 'php';
@@ -114,7 +102,7 @@ class HighlighterTest extends PHPUnit_Framework_TestCase
 
     public function testGetAliasesForLanguageWhenLanguageHasNoAliases()
     {
-        $languageDefinitionFile = \HighlightUtilities\Functions::getLanguagesFolder() . DIRECTORY_SEPARATOR . "ada.json";
+        $languageDefinitionFile = Functions::getLanguagesFolder() . DIRECTORY_SEPARATOR . "ada.json";
         $language = new Language('ada', $languageDefinitionFile);
         $expected_aliases = $language->aliases;
         $expected_aliases[] = 'ada';
@@ -129,7 +117,7 @@ class HighlighterTest extends PHPUnit_Framework_TestCase
 
     public function testGetAliasesForLanguageWhenUsingLanguageAlias()
     {
-        $languageDefinitionFile = \HighlightUtilities\Functions::getLanguagesFolder() . DIRECTORY_SEPARATOR . "php.json";
+        $languageDefinitionFile = Functions::getLanguagesFolder() . DIRECTORY_SEPARATOR . "php.json";
         $language = new Language('php', $languageDefinitionFile);
         $expected_aliases = $language->aliases;
         $expected_aliases[] = 'php';
@@ -144,7 +132,7 @@ class HighlighterTest extends PHPUnit_Framework_TestCase
 
     public function testGetAliasesForLanguageRaisesExceptionForNonExistingLanguage()
     {
-        $this->setExpectedException('\DomainException');
+        $this->expectException(\DomainException::class);
 
         $hl = new Highlighter();
         $hl->getAliasesForLanguage('blah+');
@@ -152,18 +140,10 @@ class HighlighterTest extends PHPUnit_Framework_TestCase
 
     public function testLoadAllLanguagesByDefault()
     {
-        $hl = new Highlighter();
         $langs = new Finder();
-        $langs
-            ->in(__DIR__ . '/../src/Highlight/languages/')
-            ->files()
-        ;
+        $langs->in(Functions::getLanguagesFolder())->files();
 
-        try {
-            $this->assertEquals($hl->listLanguages(), Highlighter::listBundledLanguages());
-        } catch (Exception $e) {
-            $this->assertEquals(E_USER_DEPRECATED, $e->getCode());
-        }
+        new Highlighter();
 
         $this->assertCount($langs->count(), Highlighter::listBundledLanguages());
         $this->assertCount($langs->count(), Highlighter::listRegisteredLanguages());
@@ -171,28 +151,16 @@ class HighlighterTest extends PHPUnit_Framework_TestCase
 
     public function testLoadNoLanguagesInConstructor()
     {
-        $hl = new Highlighter(false);
-
-        try {
-            $this->assertCount(0, $hl->listLanguages());
-        } catch (Exception $e) {
-            $this->assertEquals(E_USER_DEPRECATED, $e->getCode());
-        }
+        new Highlighter(false);
 
         $this->assertCount(0, Highlighter::listRegisteredLanguages());
     }
 
     public function testLoadOneLanguageManually()
     {
-        Highlighter::registerLanguage('1c', HighlightUtilities\Functions::getLanguageDefinitionPath('1c'));
+        Highlighter::registerLanguage('1c', Functions::getLanguageDefinitionPath('1c'));
 
-        $hl = new Highlighter(false);
-
-        try {
-            $this->assertCount(1, $hl->listLanguages());
-        } catch (Exception $e) {
-            $this->assertEquals(E_USER_DEPRECATED, $e->getCode());
-        }
+        new Highlighter(false);
 
         $this->assertCount(1, Highlighter::listRegisteredLanguages());
     }
