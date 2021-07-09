@@ -1,0 +1,8 @@
+if (FELTÉTEL)
+{
+  IGAZ ÁG
+}
+else
+{
+  HAMIS ÁG
+}
