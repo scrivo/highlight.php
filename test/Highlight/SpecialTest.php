@@ -36,8 +36,8 @@ class SpecialTest extends \PHPUnit_Framework_TestCase
     private function getTestData($name)
     {
         return (object) array(
-            "code" => file_get_contents(__DIR__ . DIRECTORY_SEPARATOR),
-            "expected" => file_get_contents(__DIR__ . DIRECTORY_SEPARATOR),
+            "code" => file_get_contents(__DIR__ . "/special/{$name}.txt"),
+            "expected" => file_get_contents(__DIR__ . "/special/{$name}.expect.txt"),
         );
     }
 
