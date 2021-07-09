@@ -97,7 +97,7 @@ final class RegEx
 
         unset($result);
 
-        $this->lastIndex += mb_strlen($results[0]) + ($index - $this->lastIndex);
+        $this->lastIndex += strlen($results[0]) + ($index - $this->lastIndex);
 
         $matches = new RegExMatch($results);
         $matches->index = isset($index) ? $index : 0;

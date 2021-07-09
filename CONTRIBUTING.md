@@ -104,3 +104,9 @@ The process of bringing in languages from highlight.js has been put into a singl
 cd tools
 bash process.sh
 ```
+
+## Why don't we generally use `mb_*` functions?
+
+PHP offers `mb_` prefixed string functions to support multi-byte strings, this means supporting unicode characters. However, the PREG functions in PHP calculate [string lengths and positions in _bytes_, and not character lengths](https://www.php.net/manual/en/function.preg-match.php#refsect1-function.preg-match-parameters). For that reason, we will generally **not** use the multi-byte variants of string functions; there are exceptions to this policy.
+
+An exception to this policy is the use of functions that aren't used for calculating string lengths or positions; e.g. `mb_strtolower`.
