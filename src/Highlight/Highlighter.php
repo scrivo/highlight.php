@@ -914,40 +914,6 @@ class Highlighter
     }
 
     /**
-     * Return a list of all supported languages. Using this list in
-     * setAutodetectLanguages will turn on autodetection for all supported
-     * languages.
-     *
-     * @deprecated use `Highlighter::listRegisteredLanguages()` or `Highlighter::listBundledLanguages()` instead
-     *
-     * @param bool $include_aliases specify whether language aliases
-     *                              should be included as well
-     *
-     * @since 9.18.1.4 Deprecated in favor of `Highlighter::listRegisteredLanguages()`
-     *                 and `Highlighter::listBundledLanguages()`.
-     * @since 9.12.0.3 The `$include_aliases` parameter was added
-     * @since 8.3.0.0
-     *
-     * @return string[] An array of language names
-     */
-    public function listLanguages($include_aliases = false)
-    {
-        @trigger_error('This method is deprecated in favor `Highlighter::listRegisteredLanguages()` or `Highlighter::listBundledLanguages()`. This function will be removed in highlight.php 10.', E_USER_DEPRECATED);
-
-        if (empty(self::$languages)) {
-            trigger_error('No languages are registered, returning all bundled languages instead. You probably did not want this.', E_USER_WARNING);
-
-            return self::listBundledLanguages();
-        }
-
-        if ($include_aliases === true) {
-            return array_merge(self::$languages, array_keys(self::$aliases));
-        }
-
-        return self::$languages;
-    }
-
-    /**
      * Returns list of all available aliases for given language name.
      *
      * @param string $name name or alias of language to look-up
