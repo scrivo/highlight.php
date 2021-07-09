@@ -328,7 +328,7 @@ class Highlighter
      */
     private function keywordMatch($mode, $match)
     {
-        $kwd = $this->language->case_insensitive ? mb_strtolower($match[0], "UTF-8") : $match[0];
+        $kwd = $this->language->case_insensitive ? mb_strtolower($match[0]) : $match[0];
 
         return isset($mode->keywords[$kwd]) ? $mode->keywords[$kwd] : null;
     }

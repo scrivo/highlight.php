@@ -9,7 +9,8 @@ $finder = PhpCsFixer\Finder::create()
     ->exclude('lib_highlight')
 ;
 
-return PhpCsFixer\Config::create()
+$config = new PhpCsFixer\Config();
+return $config
     ->setRules([
         '@PSR1' => true,
         '@PSR2' => true,
@@ -24,11 +25,11 @@ return PhpCsFixer\Config::create()
         'no_useless_return' => true,
         'phpdoc_align' => true,
         'phpdoc_order' => true,
-        'phpdoc_inline_tag' => false,
         'phpdoc_trim_consecutive_blank_line_separation' => true,
         'single_quote' => false,
         'ternary_to_null_coalescing' => false,
-        'trailing_comma_in_multiline_array' => true,
+        'trailing_comma_in_multiline' => true,
+        'visibility_required' => false,
         'yoda_style' => [
             'equal' => false,
             'identical' => false,
