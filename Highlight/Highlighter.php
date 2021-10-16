@@ -45,6 +45,9 @@ class Highlighter
      */
     const SPAN_END_TAG = "</span>";
 
+    /** @var bool Disable warnings thrown on PHP installations without multibyte functions available. */
+    public static $DISABLE_MULTIBYTE_WARNING = false;
+
     /** @var bool */
     private $safeMode = true;
 
@@ -78,6 +81,12 @@ class Highlighter
 
     /** @var string The current code we are highlighting */
     private $codeToHighlight;
+
+    /** @var bool|null */
+    private static $hasMultiByteSupport = null;
+
+    /** @var bool */
+    private static $hasThrownMultiByteWarning = false;
 
     /** @var string[] A list of all the bundled languages */
     private static $bundledLanguages = array();
@@ -328,9 +337,37 @@ class Highlighter
      */
     private function keywordMatch($mode, $match)
     {
-        $kwd = $this->language->case_insensitive ? mb_strtolower($match[0]) : $match[0];
+        $kwd = $this->language->case_insensitive ? self::strToLower($match[0]) : $match[0];
 
         return isset($mode->keywords[$kwd]) ? $mode->keywords[$kwd] : null;
+    }
+
+    /**
+     * Allow for graceful failure if the mb_strtolower function doesn't exist.
+     *
+     * @param string $str
+     *
+     * @return string
+     */
+    private static function strToLower($str)
+    {
+        if (self::$hasMultiByteSupport === null) {
+            self::$hasMultiByteSupport = function_exists('mb_strtolower');
+        }
+
+        if (self::$hasMultiByteSupport) {
+            return mb_strtolower($str);
+        }
+
+        if (!self::$hasThrownMultiByteWarning) {
+            if (!self::$DISABLE_MULTIBYTE_WARNING) {
+                @trigger_error('Your PHP does not have multibyte string support, falling back to primitive support. You should install the `mbstring` package or `symfony/polyfill-mbstring` composer package if you use unicode characters.', E_USER_WARNING);
+            }
+
+            self::$hasThrownMultiByteWarning = true;
+        }
+
+        return strtolower($str);
     }
 
     /**
