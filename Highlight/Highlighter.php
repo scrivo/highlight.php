@@ -343,34 +343,6 @@ class Highlighter
     }
 
     /**
-     * Allow for graceful failure if the mb_strtolower function doesn't exist.
-     *
-     * @param string $str
-     *
-     * @return string
-     */
-    private static function strToLower($str)
-    {
-        if (self::$hasMultiByteSupport === null) {
-            self::$hasMultiByteSupport = function_exists('mb_strtolower');
-        }
-
-        if (self::$hasMultiByteSupport) {
-            return mb_strtolower($str);
-        }
-
-        if (!self::$hasThrownMultiByteWarning) {
-            if (!self::$DISABLE_MULTIBYTE_WARNING) {
-                @trigger_error('Your PHP does not have multibyte string support, falling back to primitive support. You should install the `mbstring` package or `symfony/polyfill-mbstring` composer package if you use unicode characters.', E_USER_WARNING);
-            }
-
-            self::$hasThrownMultiByteWarning = true;
-        }
-
-        return strtolower($str);
-    }
-
-    /**
      * @param string $className
      * @param string $insideSpan
      * @param bool   $leaveOpen
@@ -676,6 +648,44 @@ class Highlighter
         return $code;
     }
 
+    private function checkMultibyteNecessity()
+    {
+        if (self::$hasMultiByteSupport === null) {
+            self::$hasMultiByteSupport = function_exists('mb_strtolower');
+        }
+
+        // If our PHP has multibyte support, then who cares about the rest and assume everything is multibyte
+        if (self::$hasMultiByteSupport) {
+            return;
+        }
+
+        $isAllAscii = preg_match('/[^\x00-\x7F]/', $this->codeToHighlight) === 0;
+
+        if (!self::$hasThrownMultiByteWarning) {
+            if (!$isAllAscii) {
+                @trigger_error('Your code snippet has unicode characters but your PHP version does not have multibyte string support. You should install the `mbstring` PHP package or `symfony/polyfill-mbstring` composer package if you use unicode characters.', E_USER_WARNING);
+            }
+
+            self::$hasThrownMultiByteWarning = true;
+        }
+    }
+
+    /**
+     * Allow for graceful failure if the mb_strtolower function doesn't exist.
+     *
+     * @param string $str
+     *
+     * @return string
+     */
+    private static function strToLower($str)
+    {
+        if (self::$hasMultiByteSupport) {
+            return mb_strtolower($str);
+        }
+
+        return strtolower($str);
+    }
+
     /**
      * Set the languages that will used for auto-detection. When using auto-
      * detection the code to highlight will be probed for every language in this
@@ -816,6 +826,8 @@ class Highlighter
         if ($this->language === null) {
             throw new \DomainException("Unknown language: \"$languageName\"");
         }
+
+        $this->checkMultibyteNecessity();
 
         $this->language->compile($this->safeMode);
         $this->top = $continuation ? $continuation : $this->language;
