@@ -82,6 +82,9 @@ class Highlighter
     /** @var string The current code we are highlighting */
     private $codeToHighlight;
 
+    /** @var bool */
+    private $needsMultibyteSupport = false;
+
     /** @var bool|null */
     private static $hasMultiByteSupport = null;
 
@@ -337,7 +340,7 @@ class Highlighter
      */
     private function keywordMatch($mode, $match)
     {
-        $kwd = $this->language->case_insensitive ? self::strToLower($match[0]) : $match[0];
+        $kwd = $this->language->case_insensitive ? $this->strToLower($match[0]) : $match[0];
 
         return isset($mode->keywords[$kwd]) ? $mode->keywords[$kwd] : null;
     }
@@ -650,22 +653,20 @@ class Highlighter
 
     private function checkMultibyteNecessity()
     {
+        $this->needsMultibyteSupport = preg_match('/[^\x00-\x7F]/', $this->codeToHighlight) === 1;
+
+        // If we aren't working with Unicode strings, then we default to `strtolower` since it's significantly faster
+        //   https://github.com/scrivo/highlight.php/pull/92#pullrequestreview-782213861
+        if (!$this->needsMultibyteSupport) {
+            return;
+        }
+
         if (self::$hasMultiByteSupport === null) {
             self::$hasMultiByteSupport = function_exists('mb_strtolower');
         }
 
-        // If our PHP has multibyte support, then who cares about the rest and assume everything is multibyte
-        if (self::$hasMultiByteSupport) {
-            return;
-        }
-
-        $isAllAscii = preg_match('/[^\x00-\x7F]/', $this->codeToHighlight) === 0;
-
-        if (!self::$hasThrownMultiByteWarning) {
-            if (!$isAllAscii) {
-                @trigger_error('Your code snippet has unicode characters but your PHP version does not have multibyte string support. You should install the `mbstring` PHP package or `symfony/polyfill-mbstring` composer package if you use unicode characters.', E_USER_WARNING);
-            }
-
+        if (!self::$hasMultiByteSupport && !self::$hasThrownMultiByteWarning) {
+            @trigger_error('Your code snippet has unicode characters but your PHP version does not have multibyte string support. You should install the `mbstring` PHP package or `symfony/polyfill-mbstring` composer package if you use unicode characters.', E_USER_WARNING);
             self::$hasThrownMultiByteWarning = true;
         }
     }
@@ -677,9 +678,9 @@ class Highlighter
      *
      * @return string
      */
-    private static function strToLower($str)
+    private function strToLower($str)
     {
-        if (self::$hasMultiByteSupport) {
+        if ($this->needsMultibyteSupport && self::$hasMultiByteSupport) {
             return mb_strtolower($str);
         }
 
