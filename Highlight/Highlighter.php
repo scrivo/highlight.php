@@ -666,7 +666,7 @@ class Highlighter
         }
 
         if (!self::$hasMultiByteSupport && !self::$hasThrownMultiByteWarning) {
-            @trigger_error('Your code snippet has unicode characters but your PHP version does not have multibyte string support. You should install the `mbstring` PHP package or `symfony/polyfill-mbstring` composer package if you use unicode characters.', E_USER_WARNING);
+            trigger_error('Your code snippet has unicode characters but your PHP version does not have multibyte string support. You should install the `mbstring` PHP package or `symfony/polyfill-mbstring` composer package if you use unicode characters.', E_USER_WARNING);
             self::$hasThrownMultiByteWarning = true;
         }
     }
