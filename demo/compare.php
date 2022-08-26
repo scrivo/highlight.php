@@ -83,7 +83,7 @@ if (isset($_GET['lang'])) {
         <title>highlight.php vs highlight.js Comparison</title>
         <link rel="stylesheet" type="text/css" href="../styles/default.css">
 
-        <script src="highlight.pack.js"></script>
+        <script src="highlight.min.js"></script>
         <script>
             hljs.tabReplace = '    ';
             hljs.initHighlightingOnLoad();

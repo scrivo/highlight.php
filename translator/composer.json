@@ -1,0 +1,11 @@
+{
+    "require": {
+        "allejo/rosetta-php-script": "dev-master",
+        "nikic/php-parser": "^4.14"
+    },
+    "scripts": {
+        "transform": [
+            "rosetta -c rosetta-config.php"
+        ]
+    }
+}
