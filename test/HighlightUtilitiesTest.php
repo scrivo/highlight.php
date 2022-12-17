@@ -27,7 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-class HighlightUtilitiesTest extends PHPUnit_Framework_TestCase
+class HighlightUtilitiesTest extends BC_PHPUnit_Framework_TestCase
 {
     /** @var \Highlight\Highlighter */
     private $hl;
@@ -82,7 +82,7 @@ class HighlightUtilitiesTest extends PHPUnit_Framework_TestCase
 
     public function testGetStyleSheetNotExists()
     {
-        $this->setExpectedException('\DomainException');
+        $this->bc_expectException('\DomainException');
 
         \HighlightUtilities\getStyleSheet("strawberry.png");
     }

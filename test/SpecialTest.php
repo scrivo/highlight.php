@@ -29,7 +29,7 @@
 
 use Highlight\Highlighter;
 
-class SpecialTest extends PHPUnit_Framework_TestCase
+class SpecialTest extends BC_PHPUnit_Framework_TestCase
 {
     private function getTestData($name)
     {

@@ -52,8 +52,8 @@
     "require-dev": {
         "phpunit/phpunit": "^4.8|^5.7",
         "sabberworm/php-css-parser": "^8.3",
-        "symfony/finder": "^2.8|^3.4",
-        "symfony/var-dumper": "^2.8|^3.4"
+        "symfony/finder": "^2.8|^3.4|^5.4",
+        "symfony/var-dumper": "^2.8|^3.4|^5.4"
     },
     "suggest": {
         "ext-mbstring": "Allows highlighting code with unicode characters and supports language with unicode keywords"

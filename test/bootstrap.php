@@ -29,6 +29,49 @@
 
 require __DIR__ . '/../vendor/autoload.php';
 
+if (!class_exists("PHPUnit_Framework_TestCase"))
+{
+    class_alias('\PHPUnit\Framework\TestCase', 'PHPUnit_Framework_TestCase');
+}
+
+if (!class_exists("PHPUnit_Framework_Error"))
+{
+    class_alias('PHPUnit\Framework\Error\Warning', 'PHPUnit_Framework_Error');
+}
+
+if (!class_exists("PHPUnit_Util_ErrorHandler"))
+{
+    class PHPUnit_Util_ErrorHandler {
+        public static function handleError($errno, $errstr, $errfile, $errline)
+        {
+            $errorHandler = new \PHPUnit\Util\ErrorHandler(
+                true,
+                true,
+                true,
+                true
+            );
+
+            return $errorHandler($errno, $errstr, $errfile, $errline);
+        }
+    }
+}
+
+/**
+ * A modified version of PHPUnit's TestCase to rid ourselves of deprecation
+ * warnings since we're using two different versions of PHPUnit in this branch
+ * (PHPUnit 4 and 5).
+ */
+class BC_PHPUnit_Framework_TestCase extends \PHPUnit_Framework_TestCase {
+    public function bc_expectException($exception)
+    {
+        if (method_exists($this, 'expectException')) {
+            $this->expectException($exception);
+        } elseif (method_exists($this, 'setExpectedException')) {
+            $this->setExpectedException($exception);
+        }
+    }
+}
+
 // Throw an exception when E_ERRORs occur to better debug the problem
 function throwExceptionOnError($severity, $message, $file, $line)
 {

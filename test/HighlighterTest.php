@@ -31,7 +31,7 @@ use Highlight\Highlighter;
 use Highlight\Language;
 use Symfony\Component\Finder\Finder;
 
-class HighlighterTest extends PHPUnit_Framework_TestCase
+class HighlighterTest extends BC_PHPUnit_Framework_TestCase
 {
     protected function setUp()
     {
@@ -40,7 +40,7 @@ class HighlighterTest extends PHPUnit_Framework_TestCase
 
     public function testUnknownLanguageThrowsDomainException()
     {
-        $this->setExpectedException('\DomainException');
+        $this->bc_expectException('\DomainException');
 
         $hl = new Highlighter();
         $hl->highlight("blah++", "als blurp eq z dan zeg 'flipper'");
@@ -147,7 +147,7 @@ class HighlighterTest extends PHPUnit_Framework_TestCase
 
     public function testGetAliasesForLanguageRaisesExceptionForNonExistingLanguage()
     {
-        $this->setExpectedException('\DomainException');
+        $this->bc_expectException('\DomainException');
 
         $hl = new Highlighter();
         $hl->getAliasesForLanguage('blah+');

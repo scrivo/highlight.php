@@ -30,7 +30,7 @@
 use Highlight\Highlighter;
 use Symfony\Component\Finder\Finder;
 
-class DetectionTest extends PHPUnit_Framework_TestCase
+class DetectionTest extends BC_PHPUnit_Framework_TestCase
 {
     private $allowedFailures;
 
