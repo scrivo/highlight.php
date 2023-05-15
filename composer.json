@@ -11,9 +11,11 @@
     "type": "library",
     "license": "BSD-3-Clause",
     "scripts": {
+        "format": "php-cs-fixer fix $(if [ ! -z $CI ]; then echo \"--format=checkstyle\"; fi)",
         "test:detection": "phpunit test/Highlight/DetectionTest.php",
         "test:markup": "phpunit test/Highlight/MarkupTest.php",
-        "test": "phpunit -v"
+        "test": "phpunit -v",
+        "tools": "@composer bin all install --ansi"
     },
     "support": {
         "issues": "https://github.com/scrivo/highlight.php/issues",
@@ -55,6 +57,8 @@
         "ext-mbstring": "*"
     },
     "require-dev": {
+        "php": ">=8.0",
+        "bamarni/composer-bin-plugin": "^1.8",
         "phpbench/phpbench": "^1.0",
         "phpunit/phpunit": "^5.7",
         "sabberworm/php-css-parser": "^8.3",
@@ -67,6 +71,9 @@
         }
     },
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "bamarni/composer-bin-plugin": true
+        }
     }
 }

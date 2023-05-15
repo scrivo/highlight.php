@@ -10,6 +10,7 @@ class HighlighterBench
 {
     /**
      * @Revs(500)
+     *
      * @Iterations(5)
      */
     public function benchLoadNoLanguages()
@@ -20,6 +21,7 @@ class HighlighterBench
 
     /**
      * @Revs(500)
+     *
      * @Iterations(5)
      */
     public function benchLoadAllLanguages()

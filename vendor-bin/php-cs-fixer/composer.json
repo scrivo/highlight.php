@@ -1,0 +1,6 @@
+{
+    "require": {
+        "friendsofphp/php-cs-fixer": "^3.16",
+        "kubawerlos/php-cs-fixer-custom-fixers": "^3.14"
+    }
+}

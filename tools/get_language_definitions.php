@@ -74,10 +74,10 @@ for ($i = 0; $i < count($f); $i += 2) {
     $jsonLangDef = preg_replace('/(\[[^:]*?\w)(-)([^a-zA-Z0-9\\\\]+?)/um', '$1\\\\\\-$3', $jsonLangDef);
 
     if (!$languageName) {
-        die(sprintf("ERROR: No language name on line %d\n", ($i + 1)));
+        die(sprintf("ERROR: No language name on line %d\n", $i + 1));
     }
     if (!@json_decode($jsonLangDef)) {
-        die(sprintf("ERROR: Invalid JSON data on line %d\n", ($i + 2)));
+        die(sprintf("ERROR: Invalid JSON data on line %d\n", $i + 2));
     }
 
     if (isset($patches[$languageName])) {

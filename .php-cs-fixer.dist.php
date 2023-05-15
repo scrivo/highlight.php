@@ -5,8 +5,9 @@ $finder = PhpCsFixer\Finder::create()
     ->in('src')
     ->in('test')
     ->in('tools')
-    ->exclude('lib_dojo')
+    ->in('translator')
     ->exclude('lib_highlight')
+    ->exclude('output')
 ;
 
 $config = new PhpCsFixer\Config();

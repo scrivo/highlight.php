@@ -70,11 +70,11 @@ if (isset($_GET['lang'])) {
 
     if (isset($_GET['raw'])) {
         echo getLanguageRaw($lang);
-        die();
+        die;
     }
 
     echo getLanguageDemo($_GET['lang']);
-    die();
+    die;
 }
 
 ?>

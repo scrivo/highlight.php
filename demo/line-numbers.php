@@ -78,11 +78,11 @@ require_once "../vendor/autoload.php";
 
         <?php
         $hl = new Highlight\Highlighter();
-        $snippet = file_get_contents("../test/detect/php/default.txt");
-        $result = $hl->highlight("php", $snippet);
+$snippet = file_get_contents("../test/detect/php/default.txt");
+$result = $hl->highlight("php", $snippet);
 
-        $lines = HighlightUtilities\Functions::splitCodeIntoArray($result->value);
-        ?>
+$lines = HighlightUtilities\Functions::splitCodeIntoArray($result->value);
+?>
         <table>
             <tbody>
                 <?php foreach ($lines as $number => $line): ?>
