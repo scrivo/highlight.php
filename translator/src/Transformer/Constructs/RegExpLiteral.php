@@ -1,6 +1,6 @@
 <?php
 
-namespace Highlight\Translator\Transformer;
+namespace Highlight\Translator\Transformer\Constructs;
 
 use allejo\Rosetta\Babel\RegExpLiteral as BabelRegExpLiteral;
 use allejo\Rosetta\Transformer\Constructs\PhpConstructInterface;
@@ -8,6 +8,7 @@ use allejo\Rosetta\Transformer\Transformer;
 use Highlight\RegEx;
 use PhpParser\Node\Expr\New_;
 use PhpParser\Node\Name;
+use PhpParser\Node\Scalar\String_;
 
 /**
  * @implements PhpConstructInterface<BabelRegExpLiteral, New_>
@@ -26,6 +27,6 @@ class RegExpLiteral implements PhpConstructInterface
     {
         $reSrc = sprintf('/%s/%s', preg_quote($babelConstruct->pattern, '/'), $babelConstruct->flags);
 
-        return new New_(new Name(RegEx::class), [$reSrc]);
+        return new New_(new Name(RegEx::class), [new String_($reSrc)]);
     }
 }
