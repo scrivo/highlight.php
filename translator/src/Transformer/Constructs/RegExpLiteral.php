@@ -27,6 +27,6 @@ class RegExpLiteral implements PhpConstructInterface
     {
         $reSrc = sprintf('/%s/%s', preg_quote($babelConstruct->pattern, '/'), $babelConstruct->flags);
 
-        return new New_(new Name(RegEx::class), [new String_($reSrc)]);
+        return new New_(new Name(RegEx::class), array(new String_($reSrc)));
     }
 }
