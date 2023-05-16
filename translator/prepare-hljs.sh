@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-HLJS_V="11.6.0"
+HLJS_V="11.8.0"
 HLJS_DL="https://api.github.com/repos/highlightjs/highlight.js/tarball/$HLJS_V"
 
 rm -rf lib_highlight/ lib_highlight.tar.gz ../src/Highlight/styles/ 2> /dev/null
@@ -37,3 +37,10 @@ cp -a lib_highlight/test/detect/ ../test/Highlight/detect/
 cp -a lib_highlight/test/markup/ ../test/Highlight/markup/
 
 rm ../test/Highlight/{detect,markup}/index.js 2> /dev/null
+
+# Translate Language Definitions
+rm -rf vendor/
+composer install
+composer translate
+rm output/*.js.php
+cp output/* ../src/Highlight/languages/

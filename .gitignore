@@ -1,6 +1,7 @@
 .rosetta/
 lib_dojo/
 lib_highlight/
+output/
 vendor/
 
 .DS_Store
@@ -10,3 +11,5 @@ vendor/
 composer.lock
 languages.dat
 test/**/*.js
+
+!translator/composer.lock

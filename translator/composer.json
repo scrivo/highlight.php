@@ -1,7 +1,7 @@
 {
     "require": {
         "php": ">=8.1",
-        "allejo/rosetta-php-script": "dev-master",
+        "allejo/rosetta-php-script": "^0.0.0",
         "nikic/php-parser": "^4.14"
     },
     "autoload": {
