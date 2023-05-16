@@ -1,0 +1,17 @@
+{
+    "require": {
+        "php": ">=8.1",
+        "allejo/rosetta-php-script": "^0.0.0",
+        "nikic/php-parser": "^4.14"
+    },
+    "autoload": {
+        "psr-4": {
+            "Highlight\\Translator\\": "src/"
+        }
+    },
+    "scripts": {
+        "translate": [
+            "rosetta translate -c rosetta-config.php lib_highlight/build/lib/languages/ output/"
+        ]
+    }
+}

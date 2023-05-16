@@ -1,6 +1,9 @@
-<span class="hljs-selector-tag">div</span> { <span class="hljs-attribute">background</span>: <span class="hljs-built_in">url</span>(<span class="hljs-string">"foo/bar/baz.jpg"</span>) }
-<span class="hljs-selector-tag">div</span> { <span class="hljs-attribute">background</span>: <span class="hljs-built_in">url</span>(<span class="hljs-string">'foo/bar/baz.jpg'</span>) }
-<span class="hljs-selector-tag">div</span> { <span class="hljs-attribute">background</span>: <span class="hljs-built_in">url</span>(foo/bar/baz.jpg) }
-<span class="hljs-selector-tag">div</span> { <span class="hljs-attribute">background-image</span>: <span class="hljs-built_in">url</span>(data:image/png;base64,TWFuIGlzIGRpc3=) }
-<span class="hljs-selector-tag">div</span> { <span class="hljs-attribute">background-image</span>: <span class="hljs-built_in">url</span>(<span class="hljs-string">"data:image/png;base64,TWFuIGlzIGRpc3="</span>) }
-<span class="hljs-selector-tag">div</span> { <span class="hljs-attribute">background-image</span>: <span class="hljs-built_in">url</span>(<span class="hljs-string">'data:image/png;base64,TWFuIGlzIGRpc3='</span>) }
+<span class="hljs-selector-tag">div</span> { <span class="hljs-attribute">background</span>: <span class="hljs-built_in">url</span>(<span class="hljs-string">&quot;foo/bar/baz.jpg&quot;</span>) }
+<span class="hljs-selector-tag">div</span> { <span class="hljs-attribute">background</span>: <span class="hljs-built_in">url</span>(<span class="hljs-string">&#x27;foo/bar/baz.jpg&#x27;</span>) }
+<span class="hljs-selector-tag">div</span> { <span class="hljs-attribute">background</span>: <span class="hljs-built_in">url</span>(<span class="hljs-string">foo/bar/baz.jpg</span>) }
+<span class="hljs-selector-tag">div</span> { <span class="hljs-attribute">background-image</span>: <span class="hljs-built_in">url</span>(<span class="hljs-string">data:image/png;base64,TWFuIGlzIGRpc3=</span>) }
+<span class="hljs-selector-tag">div</span> { <span class="hljs-attribute">background-image</span>: <span class="hljs-built_in">url</span>(<span class="hljs-string">&quot;data:image/png;base64,TWFuIGlzIGRpc3=&quot;</span>) }
+<span class="hljs-selector-tag">div</span> { <span class="hljs-attribute">background-image</span>: <span class="hljs-built_in">url</span>(<span class="hljs-string">&#x27;data:image/png;base64,TWFuIGlzIGRpc3=&#x27;</span>) }
+
+// https://github.com/highlightjs/highlight.js/issues/<span class="hljs-number">3514</span>
+div { <span class="hljs-attr">--custom-background-image-1</span>: <span class="hljs-built_in">url</span>(<span class="hljs-string">&#x27;/appearance/themes/Dark+/image/background (01).jpg&#x27;</span>); }
