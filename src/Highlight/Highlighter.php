@@ -460,7 +460,7 @@ class Highlighter
      */
     private function processBuffer()
     {
-        if (is_object($this->top) && $this->top->subLanguage) {
+        if (is_object($this->top) && $this->top->subLanguage !== null) {
             $this->result .= $this->processSubLanguage();
         } else {
             $this->result .= $this->processKeywords();
@@ -545,7 +545,7 @@ class Highlighter
             if ($this->top->className) {
                 $this->result .= self::SPAN_END_TAG;
             }
-            if (!$this->top->skip && !$this->top->subLanguage) {
+            if (!$this->top->skip && $this->top->subLanguage === null) {
                 $this->relevance += $this->top->relevance;
             }
             $this->top = $this->top->parent;

@@ -157,11 +157,14 @@ class Language extends Mode
     private function expandOrCloneMode($mode)
     {
         if ($mode->variants && !$mode->cachedVariants) {
-            $mode->cachedVariants = array();
+            // Build the list before assigning it, so the variants don't inherit a partial list of cached variants
+            $cachedVariants = array();
 
             foreach ($mode->variants as $variant) {
-                $mode->cachedVariants[] = $this->inherit($mode, array('variants' => null), $variant);
+                $cachedVariants[] = $this->inherit($mode, array('variants' => null), $variant);
             }
+
+            $mode->cachedVariants = $cachedVariants;
         }
 
         // EXPAND
@@ -331,7 +334,8 @@ class Language extends Mode
      */
     private function scoreForKeyword($keyword, $providedScore)
     {
-        if ($providedScore) {
+        // manual scores always win over common keywords, also a score of "0" (which is truthy in JS)
+        if ($providedScore !== null && $providedScore !== '') {
             return (int) $providedScore;
         }
 
