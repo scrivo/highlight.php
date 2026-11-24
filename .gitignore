@@ -10,3 +10,4 @@ test/**/*.js
 .php-cs-fixer.cache
 .phpunit.cache/
 .project
+tools/transpiler/node_modules/

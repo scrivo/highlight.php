@@ -1,0 +1,13 @@
+{
+  "name": "highlight-php-transpiler",
+  "private": true,
+  "description": "Transpiles highlight.js language definitions into highlight.php language classes",
+  "license": "BSD-3-Clause",
+  "scripts": {
+    "generate": "node generate.js",
+    "verify": "node verify.js"
+  },
+  "dependencies": {
+    "acorn": "^8.11.3"
+  }
+}
