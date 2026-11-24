@@ -19,7 +19,7 @@ $finder
 
 $backgroundColors = array();
 
-/** @var \Symfony\Component\Finder\SplFileInfo $file */
+/** @var Symfony\Component\Finder\SplFileInfo $file */
 foreach ($finder->getIterator() as $file) {
     $themeName = $file->getBasename('.css');
     $backgroundColors[$themeName] = array(

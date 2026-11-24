@@ -70,10 +70,11 @@ Much like [demo.php](#demo-php) but this page focuses on the comparison between 
 
 ## Test
 
-This folder contains the unit test for _highlight.php_. To run them, run _phpunit_ from this directory:
+This folder contains the unit tests for _highlight.php_. They require PHP 8.1 or newer and PHPUnit 10.5 or newer. To run them, install the development dependencies and run the test script from the project root:
 
 ```bash
-phpnunit .
+composer install
+composer test
 ```
 
 Note that the following tests for _highlight.js_ were not rewritten for _highlight.php_:

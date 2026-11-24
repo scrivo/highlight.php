@@ -30,13 +30,15 @@
 namespace Highlight\Tests;
 
 use Highlight\Highlighter;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Finder;
 
-class MarkupTest extends \PHPUnit_Framework_TestCase
+class MarkupTest extends TestCase
 {
     private $allowedFailures;
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->allowedFailures = array(
             array('haskell', 'nested-comments'),
@@ -81,9 +83,7 @@ class MarkupTest extends \PHPUnit_Framework_TestCase
         return $testData;
     }
 
-    /**
-     * @dataProvider markupTestProvider
-     */
+    #[DataProvider('markupTestProvider')]
     public function testHighlighter($language, $testName, $raw, $expected)
     {
         if (in_array(array($language, $testName), $this->allowedFailures)) {

@@ -32,11 +32,12 @@ namespace Highlight\Tests;
 use Highlight\Highlighter;
 use Highlight\Language;
 use HighlightUtilities\Functions;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Finder;
 
-class HighlighterTest extends \PHPUnit_Framework_TestCase
+class HighlighterTest extends TestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         Highlighter::clearAllLanguages();
     }

@@ -30,13 +30,15 @@
 namespace Highlight\Tests;
 
 use Highlight\Highlighter;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Finder;
 
-class DetectionTest extends \PHPUnit_Framework_TestCase
+class DetectionTest extends TestCase
 {
     private $allowedFailures;
 
-    public function setUp()
+    protected function setUp(): void
     {
         // These languages fail auto-detection because their relevance scores are tied with or wrong because of another
         // language.
@@ -72,9 +74,7 @@ class DetectionTest extends \PHPUnit_Framework_TestCase
         return $testData;
     }
 
-    /**
-     * @dataProvider detectableLanguagesProvider
-     */
+    #[DataProvider('detectableLanguagesProvider')]
     public function testAutomaticDetection($language, $raw)
     {
         $hl = new Highlighter();

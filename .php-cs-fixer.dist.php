@@ -5,7 +5,6 @@ $finder = PhpCsFixer\Finder::create()
     ->in('src')
     ->in('test')
     ->in('tools')
-    ->in('translator')
     ->exclude('lib_highlight')
     ->exclude('output')
 ;
@@ -22,10 +21,12 @@ return $config
         'echo_tag_syntax' => ['format' => 'short'],
         'no_alias_language_construct_call' => false,
         'no_alternative_syntax' => false,
+        'no_superfluous_phpdoc_tags' => ['remove_inheritdoc' => false],
         'no_useless_else' => true,
         'no_useless_return' => true,
         'phpdoc_align' => true,
         'phpdoc_order' => true,
+        'phpdoc_no_useless_inheritdoc' => false,
         'phpdoc_trim_consecutive_blank_line_separation' => true,
         'single_quote' => false,
         'ternary_to_null_coalescing' => false,

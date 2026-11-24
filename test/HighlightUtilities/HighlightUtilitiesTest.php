@@ -29,12 +29,15 @@
 
 namespace Highlight\Tests;
 
-class HighlightUtilitiesTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\TestCase;
+
+class HighlightUtilitiesTest extends TestCase
 {
     /** @var \Highlight\Highlighter */
     private $hl;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->hl = new \Highlight\Highlighter();
     }
@@ -46,8 +49,8 @@ class HighlightUtilitiesTest extends \PHPUnit_Framework_TestCase
         $this->assertNotEmpty($results);
 
         foreach ($results as $result) {
-            $this->assertNotContains(DIRECTORY_SEPARATOR, $result);
-            $this->assertNotContains(".css", $result);
+            $this->assertStringNotContainsString(DIRECTORY_SEPARATOR, $result);
+            $this->assertStringNotContainsString(".css", $result);
         }
     }
 
@@ -58,8 +61,8 @@ class HighlightUtilitiesTest extends \PHPUnit_Framework_TestCase
         $this->assertNotEmpty($results);
 
         foreach ($results as $result) {
-            $this->assertContains(DIRECTORY_SEPARATOR, $result);
-            $this->assertContains(".css", $result);
+            $this->assertStringContainsString(DIRECTORY_SEPARATOR, $result);
+            $this->assertStringContainsString(".css", $result);
 
             $this->assertFileExists($result);
         }
@@ -84,7 +87,7 @@ class HighlightUtilitiesTest extends \PHPUnit_Framework_TestCase
 
     public function testGetStyleSheetNotExists()
     {
-        $this->setExpectedException('\DomainException');
+        $this->expectException(\DomainException::class);
 
         \HighlightUtilities\Functions::getStyleSheet("strawberry.png");
     }
@@ -229,9 +232,7 @@ XML;
         );
     }
 
-    /**
-     * @dataProvider dataProvider_emptyStrings
-     */
+    #[DataProvider('dataProvider_emptyStrings')]
     public function testSplitCodeIntoArrayEmptyString($string)
     {
         $this->assertEquals(array(), \HighlightUtilities\Functions::splitCodeIntoArray($string));

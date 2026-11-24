@@ -7,7 +7,7 @@
  *
  * @param string $theme The theme name
  *
- * @throws \DomainException when no stylesheet with this name exists
+ * @throws DomainException when no stylesheet with this name exists
  *
  * @return float[]
  */

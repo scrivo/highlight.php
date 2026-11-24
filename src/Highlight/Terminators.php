@@ -16,7 +16,7 @@ final class Terminators
     private $matchIndexes = array();
 
     /** @var RegEx|null */
-    private $matcherRe = null;
+    private $matcherRe;
 
     /** @var array<int, array<int, Mode|string>> */
     private $regexes = array();
@@ -216,8 +216,6 @@ final class Terminators
 
     /**
      * @param RegEx|string $re
-     *
-     * @return mixed
      */
     private function reStr($re)
     {

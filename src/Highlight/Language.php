@@ -54,7 +54,7 @@ class Language extends Mode
     public $name;
 
     /** @var Mode|null */
-    private $mode = null;
+    private $mode;
 
     /**
      * @param string $lang

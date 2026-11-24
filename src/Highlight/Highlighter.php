@@ -43,7 +43,7 @@ class Highlighter
     /**
      * @since 9.12.0.4
      */
-    const SPAN_END_TAG = "</span>";
+    public const SPAN_END_TAG = "</span>";
 
     /** @var bool */
     private $safeMode = true;
@@ -59,10 +59,10 @@ class Highlighter
     private $result = "";
 
     /** @var Mode|null */
-    private $top = null;
+    private $top;
 
     /** @var Language|null */
-    private $language = null;
+    private $language;
 
     /** @var int */
     private $relevance = 0;
