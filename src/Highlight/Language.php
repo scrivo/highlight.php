@@ -56,26 +56,81 @@ class Language extends Mode
     /** @var Mode|null */
     private $mode;
 
+    /** @var LanguageDefinition|string */
+    private $definition;
+
+    /** @var callable(string): ?Language|null */
+    private $languageResolver;
+
     /**
-     * @param string $lang
-     * @param string $filePath
+     * @param string                    $lang             the language ID
+     * @param LanguageDefinition|string $definition       a LanguageDefinition, the name of a LanguageDefinition class,
+     *                                                    or the path to a (legacy) JSON language definition file
+     * @param callable|null             $languageResolver resolves other languages by name or alias, used by
+     *                                                    definitions that build upon other languages
      *
-     * @throws \InvalidArgumentException when the given $filePath is inaccessible
+     * @throws \InvalidArgumentException when the given JSON file is inaccessible
+     *
+     * @since 10.0.0 $definition accepts LanguageDefinition instances and class names
      */
-    public function __construct($lang, $filePath)
+    public function __construct($lang, $definition, $languageResolver = null)
     {
         $this->name = $lang;
+        $this->languageResolver = $languageResolver;
+
+        if (is_string($definition) && is_subclass_of($definition, LanguageDefinition::class)) {
+            $definition = new $definition();
+        }
+
+        if ($definition instanceof LanguageDefinition) {
+            // the definition is evaluated on first use
+            $this->definition = $definition;
+
+            return;
+        }
 
         // We're loading the JSON definition file as an \stdClass object instead of an associative array. This is being
         // done to take advantage of objects being pass by reference automatically in PHP whereas arrays are pass by
         // value.
-        $json = file_get_contents($filePath);
+        $json = @file_get_contents($definition);
 
         if ($json === false) {
-            throw new \InvalidArgumentException("Language file inaccessible: $filePath");
+            throw new \InvalidArgumentException("Language file inaccessible: $definition");
         }
 
+        $this->definition = $definition;
         $this->mode = json_decode($json);
+        $jr = new JsonRef();
+        $jr->decodeRef($this->mode);
+    }
+
+    /**
+     * Evaluates the language definition anew, like `rawDefinition()` in highlight.js. The result is not compiled and
+     * can be modified, which is how a language can build upon another one.
+     *
+     * @return Mode
+     */
+    public function rawDefinition()
+    {
+        if (!$this->definition instanceof LanguageDefinition) {
+            throw new \LogicException("Language '{$this->name}' is not defined by a LanguageDefinition");
+        }
+
+        return ($this->definition)(new Hljs($this->languageResolver));
+    }
+
+    /**
+     * The mode tree of this language, as defined by its definition.
+     *
+     * @return Mode
+     */
+    public function getMode()
+    {
+        if ($this->mode === null) {
+            $this->mode = Mode::finalize($this->rawDefinition());
+        }
+
+        return $this->mode;
     }
 
     /**
@@ -85,8 +140,10 @@ class Language extends Mode
      */
     public function __get($name)
     {
-        if (isset($this->mode->{$name})) {
-            return $this->mode->{$name};
+        $mode = $this->getMode();
+
+        if (isset($mode->{$name})) {
+            return $mode->{$name};
         }
 
         return null;
@@ -215,7 +272,12 @@ class Language extends Mode
 
         if ($parent) {
             if ($mode->beginKeywords) {
-                $mode->begin = "\\b(" . implode("|", explode(" ", $mode->beginKeywords)) . ")\\b";
+                // for languages with keywords that include non-word characters checking for
+                // a word boundary is not sufficient, so instead we check for a word boundary
+                // or whitespace - this does no harm in any case since our keyword engine
+                // doesn't allow spaces in keywords anyways and we still check for the boundary
+                // first
+                $mode->begin = "\\b(" . implode("|", explode(" ", $mode->beginKeywords)) . ")(?=\\b|\\s)";
             }
 
             if (!$mode->begin) {
@@ -367,8 +429,7 @@ class Language extends Mode
             return;
         }
 
-        $jr = new JsonRef();
-        $jr->decodeRef($this->mode);
+        $this->getMode();
 
         // self is not valid at the top-level
         if (isset($this->mode->contains) && !in_array("self", $this->mode->contains)) {

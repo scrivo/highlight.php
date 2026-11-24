@@ -139,36 +139,35 @@ abstract class Functions
      * @api
      *
      * @since 9.18.1.4
+     * @since 10.0.0 The folder contains PHP classes instead of JSON files
      *
      * @return string An absolute path to the bundled languages folder
      */
     public static function getLanguagesFolder()
     {
-        return __DIR__ . '/../Highlight/languages';
+        return __DIR__ . '/../Highlight/Languages';
     }
 
     /**
-     * Get the file path for the specified bundled language definition.
+     * Get the class name of the specified bundled language definition.
      *
      * @api
      *
-     * @since 9.18.1.4
+     * @since 10.0.0 Replaces `getLanguageDefinitionPath()`
      *
      * @param string $name The slug of the language to look for
      *
      * @throws \DomainException when the no definition for this language exists
      *
-     * @return string
+     * @return class-string<\Highlight\LanguageDefinition>
      */
-    public static function getLanguageDefinitionPath($name)
+    public static function getLanguageDefinitionClass($name)
     {
-        $path = self::getLanguagesFolder() . '/' . $name . '.json';
-
-        if (!file_exists($path)) {
+        if (!isset(\Highlight\Languages\Registry::LANGUAGES[$name])) {
             throw new \DomainException("There is no language definition for $name");
         }
 
-        return $path;
+        return \Highlight\Languages\Registry::LANGUAGES[$name];
     }
 
     /**

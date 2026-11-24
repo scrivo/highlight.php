@@ -33,6 +33,8 @@
 
 namespace Highlight;
 
+use Highlight\Languages\Registry;
+
 /**
  * @api
  *
@@ -141,26 +143,9 @@ class Highlighter
             "cpp" => true,
         );
 
-        $languagePath = __DIR__ . '/languages/';
-        $d = @dir($languagePath);
-
-        if (!$d) {
-            throw new \RuntimeException('Could not read bundled language definition directory.');
+        foreach (array_keys(Registry::LANGUAGES) as $languageId) {
+            $bundledLanguages[$languageId] = true;
         }
-
-        // @TODO In 10.x, rewrite this as a generator yielding results
-        while (($entry = $d->read()) !== false) {
-            if (substr($entry, -5) === ".json") {
-                $languageId = substr($entry, 0, -5);
-                $filePath = $languagePath . $entry;
-
-                if (is_readable($filePath)) {
-                    $bundledLanguages[$languageId] = true;
-                }
-            }
-        }
-
-        $d->close();
 
         return self::$bundledLanguages = array_keys($bundledLanguages);
     }
@@ -199,28 +184,8 @@ class Highlighter
      */
     public static function registerAllLanguages()
     {
-        // Languages that take precedence in the classMap array.
-        $languagePath = __DIR__ . "/languages/";
-        foreach (array("xml", "django", "javascript", "matlab", "cpp") as $languageId) {
-            $filePath = $languagePath . $languageId . ".json";
-            if (is_readable($filePath)) {
-                self::registerLanguage($languageId, $filePath);
-            }
-        }
-
-        // @TODO In 10.x, call `listBundledLanguages()` instead when it's a generator
-        $d = @dir($languagePath);
-        if ($d) {
-            while (($entry = $d->read()) !== false) {
-                if (substr($entry, -5) === ".json") {
-                    $languageId = substr($entry, 0, -5);
-                    $filePath = $languagePath . $entry;
-                    if (is_readable($filePath)) {
-                        self::registerLanguage($languageId, $filePath);
-                    }
-                }
-            }
-            $d->close();
+        foreach (self::listBundledLanguages() as $languageId) {
+            self::registerLanguage($languageId, Registry::LANGUAGES[$languageId]);
         }
     }
 
@@ -229,29 +194,66 @@ class Highlighter
      * storage. Languages are stored in a static variable, so they'll be available
      * across all instances. You only need to register a language once.
      *
-     * @param string $languageId The unique name of a language
-     * @param string $filePath   The file path to the language definition
-     * @param bool   $overwrite  Overwrite language if it already exists
+     * @param string                    $languageId The unique name of a language
+     * @param LanguageDefinition|string $definition A LanguageDefinition, the name of a LanguageDefinition class or the
+     *                                              file path to a (legacy) JSON language definition
+     * @param bool                      $overwrite  Overwrite language if it already exists
+     *
+     * @since 10.0.0 $definition accepts LanguageDefinition instances and class names
      *
      * @return Language The object containing the definition for a language's markup
      */
-    public static function registerLanguage($languageId, $filePath, $overwrite = false)
+    public static function registerLanguage($languageId, $definition, $overwrite = false)
     {
         if (!isset(self::$classMap[$languageId]) || $overwrite) {
-            $lang = new Language($languageId, $filePath);
+            $lang = new Language($languageId, $definition, self::languageResolver());
             self::$classMap[$languageId] = $lang;
 
             self::$languages[] = $languageId;
             self::$languages = array_unique(self::$languages);
 
-            if ($lang->aliases) {
-                foreach ($lang->aliases as $alias) {
-                    self::$aliases[$alias] = $languageId;
-                }
+            // Bundled languages come with their aliases so that registering them does not require evaluating them
+            $definitionClass = is_object($definition) ? get_class($definition) : $definition;
+            if (isset(Registry::LANGUAGES[$languageId]) && Registry::LANGUAGES[$languageId] === $definitionClass) {
+                $aliases = Registry::ALIASES[$languageId];
+            } else {
+                $aliases = $lang->aliases ?: array();
+            }
+
+            foreach ($aliases as $alias) {
+                self::$aliases[$alias] = $languageId;
             }
         }
 
         return self::$classMap[$languageId];
+    }
+
+    /**
+     * Lets language definitions look up other registered languages.
+     *
+     * @return \Closure(string): ?Language
+     */
+    private static function languageResolver()
+    {
+        return static function ($name) {
+            return self::findLanguage($name);
+        };
+    }
+
+    /**
+     * @param string $name A language name or alias
+     *
+     * @return Language|null
+     */
+    private static function findLanguage($name)
+    {
+        if (isset(self::$classMap[$name])) {
+            return self::$classMap[$name];
+        } elseif (isset(self::$aliases[$name]) && isset(self::$classMap[self::$aliases[$name]])) {
+            return self::$classMap[self::$aliases[$name]];
+        }
+
+        return null;
     }
 
     /**
@@ -728,13 +730,7 @@ class Highlighter
      */
     private function getLanguage($name)
     {
-        if (isset(self::$classMap[$name])) {
-            return self::$classMap[$name];
-        } elseif (isset(self::$aliases[$name]) && isset(self::$classMap[self::$aliases[$name]])) {
-            return self::$classMap[self::$aliases[$name]];
-        }
-
-        return null;
+        return self::findLanguage($name);
     }
 
     /**

@@ -40,10 +40,8 @@ class MarkupTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->allowedFailures = array(
-            array('haskell', 'nested-comments'),
-            array('http', 'default'),
-        );
+        // All markup tests of highlight.js pass, add [language, test name] pairs here when one is known to fail
+        $this->allowedFailures = array();
     }
 
     public static function markupTestProvider()

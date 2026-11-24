@@ -76,8 +76,122 @@ namespace Highlight;
  *
  * @see https://highlightjs.readthedocs.io/en/latest/reference.html
  */
-abstract class Mode extends \stdClass
+class Mode extends \stdClass
 {
+    /** @var string[] properties that hold (lists of) modes */
+    private const MODE_PROPERTIES = array('contains', 'variants', 'starts');
+
+    /**
+     * Creates a mode from an array of properties, as an object literal would in
+     * a highlight.js language definition.
+     *
+     * Elements of $properties that are PHP references stay references, so that
+     * an array shared by several modes (and modified afterwards) behaves like a
+     * shared JavaScript array while the language definition is being built.
+     * Language::finalize() breaks these references once the definition is done.
+     *
+     * Nested arrays describing modes (in `contains`, `variants` and `starts`)
+     * are converted to Mode objects right away, so they keep their identity
+     * when the mode is copied with `Hljs::inherit()`, as in JavaScript.
+     *
+     * @param array<string, mixed> $properties
+     */
+    public function __construct(array $properties = array())
+    {
+        foreach ($properties as $key => &$value) {
+            $this->{$key} = &$value;
+        }
+        unset($value);
+
+        self::convertNestedModes($this);
+    }
+
+    /**
+     * Converts arrays describing modes in `contains`, `variants` and `starts`
+     * into Mode objects (not recursively into existing Mode objects).
+     *
+     * @return void
+     */
+    public static function convertNestedModes(Mode $mode)
+    {
+        foreach (self::MODE_PROPERTIES as $key) {
+            if (!isset($mode->{$key}) || !is_array($mode->{$key})) {
+                continue;
+            }
+
+            if ($key === 'starts' || !array_is_list($mode->{$key})) {
+                $mode->{$key} = new Mode($mode->{$key});
+
+                continue;
+            }
+
+            // write through the property, it may be a reference to a shared array
+            foreach (array_keys($mode->{$key}) as $i) {
+                if (is_array($mode->{$key}[$i])) {
+                    $mode->{$key}[$i] = new Mode($mode->{$key}[$i]);
+                }
+            }
+        }
+    }
+
+    /**
+     * Turns a freshly defined mode graph into a plain graph of Mode objects.
+     *
+     * - mode definitions given as arrays are converted to Mode objects;
+     * - references used while building the definition are broken.
+     *
+     * Conversion happens before references are broken, so a mode array that is
+     * shared through a reference becomes a single shared Mode object.
+     *
+     * @return Mode
+     */
+    public static function finalize(Mode $root)
+    {
+        $modes = array();
+        self::convertModeArrays($root, $modes);
+
+        foreach ($modes as $mode) {
+            $properties = get_object_vars($mode);
+            foreach ($properties as $key => $value) {
+                unset($mode->{$key});
+            }
+            foreach ($properties as $key => $value) {
+                $mode->{$key} = $value;
+            }
+        }
+
+        return $root;
+    }
+
+    /**
+     * @param array<int, Mode> $visited
+     *
+     * @return void
+     */
+    private static function convertModeArrays(Mode $mode, array &$visited)
+    {
+        $id = spl_object_id($mode);
+        if (isset($visited[$id])) {
+            return;
+        }
+        $visited[$id] = $mode;
+
+        // modes may have been assigned arrays after they were created
+        self::convertNestedModes($mode);
+
+        foreach (self::MODE_PROPERTIES as $key) {
+            if (!isset($mode->{$key})) {
+                continue;
+            }
+            $children = $mode->{$key} instanceof Mode ? array($mode->{$key}) : $mode->{$key};
+            foreach ($children as $child) {
+                if ($child instanceof Mode) {
+                    self::convertModeArrays($child, $visited);
+                }
+            }
+        }
+    }
+
     /**
      * Fill in the missing properties that this Mode does not have.
      *
@@ -99,13 +213,6 @@ abstract class Mode extends \stdClass
         if ($obj === null) {
             $obj = new \stdClass();
         }
-
-        $patch = array(
-            "begin" => true,
-            "end" => true,
-            "lexemes" => true,
-            "illegal" => true,
-        );
 
         // These values come in from JSON definition files
         $defaultValues = array(
@@ -149,13 +256,6 @@ abstract class Mode extends \stdClass
             // This value is unique to highlight.php Modes
             "__IS_COMPLETE" => true,
         );
-
-        foreach ($patch as $k => $v) {
-            if (isset($obj->{$k})) {
-                $obj->{$k} = str_replace("\\/", "/", $obj->{$k});
-                $obj->{$k} = str_replace("/", "\\/", $obj->{$k});
-            }
-        }
 
         foreach ($defaultValues as $k => $v) {
             if (!isset($obj->{$k}) && is_object($obj)) {

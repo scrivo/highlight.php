@@ -134,7 +134,7 @@ PHP;
         $this->assertEquals(
             array(
                 '<span class="hljs-comment">// ✅ ...</span>',
-                '$user = <span class="hljs-keyword">new</span> \stdClass();',
+                '$user = <span class="hljs-keyword">new</span> \<span class="hljs-built_in">stdClass</span>();',
                 '$isUserPending = $user-&gt;isStatus(<span class="hljs-string">\'pending\'</span>);',
             ),
             $split

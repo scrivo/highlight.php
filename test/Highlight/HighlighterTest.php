@@ -55,7 +55,8 @@ class HighlighterTest extends TestCase
         $languageFinder = new Finder();
         $expectedLanguageCount = $languageFinder
             ->in(Functions::getLanguagesFolder())
-            ->name('*.json')
+            ->name('*.php')
+            ->notName('Registry.php')
             ->count()
         ;
 
@@ -70,7 +71,8 @@ class HighlighterTest extends TestCase
         $languageFinder = new Finder();
         $minimumLanguageCount = $languageFinder
             ->in(Functions::getLanguagesFolder())
-            ->name('*.json')
+            ->name('*.php')
+            ->notName('Registry.php')
             ->count()
         ;
 
@@ -88,8 +90,7 @@ class HighlighterTest extends TestCase
 
     public function testGetAliasesForLanguageWhenUsingMainLanguageName()
     {
-        $languageDefinitionFile = Functions::getLanguagesFolder() . DIRECTORY_SEPARATOR . "php.json";
-        $language = new Language('php', $languageDefinitionFile);
+        $language = new Language('php', Functions::getLanguageDefinitionClass('php'));
         $expected_aliases = $language->aliases;
         $expected_aliases[] = 'php';
         sort($expected_aliases);
@@ -103,8 +104,7 @@ class HighlighterTest extends TestCase
 
     public function testGetAliasesForLanguageWhenLanguageHasNoAliases()
     {
-        $languageDefinitionFile = Functions::getLanguagesFolder() . DIRECTORY_SEPARATOR . "ada.json";
-        $language = new Language('ada', $languageDefinitionFile);
+        $language = new Language('ada', Functions::getLanguageDefinitionClass('ada'));
         $expected_aliases = $language->aliases;
         $expected_aliases[] = 'ada';
         sort($expected_aliases);
@@ -118,8 +118,7 @@ class HighlighterTest extends TestCase
 
     public function testGetAliasesForLanguageWhenUsingLanguageAlias()
     {
-        $languageDefinitionFile = Functions::getLanguagesFolder() . DIRECTORY_SEPARATOR . "php.json";
-        $language = new Language('php', $languageDefinitionFile);
+        $language = new Language('php', Functions::getLanguageDefinitionClass('php'));
         $expected_aliases = $language->aliases;
         $expected_aliases[] = 'php';
         sort($expected_aliases);
@@ -142,7 +141,7 @@ class HighlighterTest extends TestCase
     public function testLoadAllLanguagesByDefault()
     {
         $langs = new Finder();
-        $langs->in(Functions::getLanguagesFolder())->files();
+        $langs->in(Functions::getLanguagesFolder())->name('*.php')->notName('Registry.php')->files();
 
         new Highlighter();
 
@@ -159,7 +158,7 @@ class HighlighterTest extends TestCase
 
     public function testLoadOneLanguageManually()
     {
-        Highlighter::registerLanguage('1c', Functions::getLanguageDefinitionPath('1c'));
+        Highlighter::registerLanguage('1c', Functions::getLanguageDefinitionClass('1c'));
 
         new Highlighter(false);
 

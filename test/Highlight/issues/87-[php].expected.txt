@@ -6,8 +6,8 @@ $form = ActiveForm::begin([
     <span class="hljs-string">'id'</span> =&gt; <span class="hljs-string">'login-form'</span>,
     <span class="hljs-string">'options'</span> =&gt; [<span class="hljs-string">'class'</span> =&gt; <span class="hljs-string">'form-horizontal'</span>],
 ]) <span class="hljs-meta">?&gt;</span>
-    <span class="hljs-meta">&lt;?</span>= $form-&gt;field($model, <span class="hljs-string">'username'</span>) <span class="hljs-meta">?&gt;</span>
-    <span class="hljs-meta">&lt;?</span>= $form-&gt;field($model, <span class="hljs-string">'password'</span>)-&gt;passwordInput() <span class="hljs-meta">?&gt;</span>
+    <span class="hljs-meta">&lt;?=</span> $form-&gt;field($model, <span class="hljs-string">'username'</span>) <span class="hljs-meta">?&gt;</span>
+    <span class="hljs-meta">&lt;?=</span> $form-&gt;field($model, <span class="hljs-string">'password'</span>)-&gt;passwordInput() <span class="hljs-meta">?&gt;</span>
 
     &lt;div <span class="hljs-class"><span class="hljs-keyword">class</span>="<span class="hljs-title">form</span>-<span class="hljs-title">group</span>"&gt;
         &lt;<span class="hljs-title">div</span> <span class="hljs-title">class</span>="<span class="hljs-title">col</span>-<span class="hljs-title">lg</span>-<span class="hljs-title">offset</span>-1 <span class="hljs-title">col</span>-<span class="hljs-title">lg</span>-11"&gt;
