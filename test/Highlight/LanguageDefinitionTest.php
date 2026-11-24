@@ -175,7 +175,13 @@ class LanguageDefinitionTest extends TestCase
      */
     private function getLanguage(Highlighter $hl, $id)
     {
-        return (new \ReflectionMethod(Highlighter::class, 'getLanguage'))->invoke($hl, $id);
+        $method = new \ReflectionMethod(Highlighter::class, 'getLanguage');
+        if (PHP_VERSION_ID < 80100) {
+            // Required to invoke private methods before PHP 8.1, deprecated since PHP 8.5
+            $method->setAccessible(true);
+        }
+
+        return $method->invoke($hl, $id);
     }
 
     private function walk(Mode $mode, callable $callback, ?\SplObjectStorage $seen = null)
