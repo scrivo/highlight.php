@@ -20,7 +20,7 @@ final class CLike implements LanguageDefinition
 
     public function __invoke(Hljs $hljs): Mode
     {
-        $optional = fn ($s = null) => '(?:' . $s . ')?';
+        $optional = function ($s = null) { return '(?:' . $s . ')?'; };
         $DECLTYPE_AUTO_RE = 'decltype\(auto\)';
         $NAMESPACE_RE = '[a-zA-Z_]\w*::';
         $TEMPLATE_ARGUMENT_RE = '<.*?>';

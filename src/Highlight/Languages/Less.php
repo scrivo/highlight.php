@@ -28,17 +28,20 @@ final class Less implements LanguageDefinition
         $RULES = [];
         $VALUE = []; // forward def. for recursive modes
 
-        $STRING_MODE = fn ($c = null) => new Mode([
-            // Less strings are not multiline (also include '~' for more consistent coloring of "escaped" strings)
-            'className' => 'string',
-            'begin' => '~?' . $c . '.*?' . $c,
-        ]);
+        $STRING_MODE = function ($c = null) {
+            return new Mode([
+                'className' => 'string',
+                'begin' => '~?' . $c . '.*?' . $c,
+            ]);
+        };
 
-        $IDENT_MODE = fn ($name = null, $begin = null, $relevance = null) => new Mode([
-            'className' => $name,
-            'begin' => $begin,
-            'relevance' => $relevance,
-        ]);
+        $IDENT_MODE = function ($name = null, $begin = null, $relevance = null) {
+            return new Mode([
+                'className' => $name,
+                'begin' => $begin,
+                'relevance' => $relevance,
+            ]);
+        };
 
         $PARENS_MODE = new Mode([
             // used only to properly balance nested parens inside mixin call, def. arg list

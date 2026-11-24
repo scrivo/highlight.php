@@ -54,7 +54,7 @@ final class Twig implements LanguageDefinition
         $TAGS = 'apply autoescape block deprecated do embed extends filter flush for from '
             . 'if import include macro sandbox set use verbatim with';
 
-        $TAGS = $TAGS . ' ' . implode(' ', array_map(fn ($t) => 'end' . $t, explode(' ', $TAGS)));
+        $TAGS = $TAGS . ' ' . implode(' ', array_map(function ($t) { return 'end' . $t; }, explode(' ', $TAGS)));
 
         return new Mode([
             'name' => 'Twig',

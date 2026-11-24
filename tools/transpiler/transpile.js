@@ -687,18 +687,22 @@ class Emitter {
         });
         if (name && free.includes(name)) uses.push('&$' + name); // recursion
 
-        return this.withFunctionScope(fn, () => {
-            // parameters used as modes/arrays: infer from usage inside the function
-            const body = fn.body.body;
-            if (body.length === 1 && body[0].type === 'ReturnStatement' && uses.every(function (u) { return u[0] !== '&'; })) {
-                const ret = this.emitValue(body[0].argument, indent, { root: true });
+        // The generated code must run on PHP 7.1, so no arrow functions (`fn () =>`, PHP 7.4)
+        const head = 'function (' + params + ')' + (uses.length ? ' use (' + uses.join(', ') + ')' : '');
 
-                return 'fn (' + params + ') => ' + ret;
+        return this.withFunctionScope(fn, () => {
+            const body = fn.body.body;
+            if (body.length === 1 && body[0].type === 'ReturnStatement' && body[0].argument) {
+                // short callbacks stay on one line, like `function ($t) { return 'end' . $t; }`
+                const ret = this.emitValue(body[0].argument, indent, { root: true });
+                const oneLine = head + ' { return ' + ret + '; }';
+                if (!ret.includes('\n') && oneLine.length + pad.length < MAX_LINE) {
+                    return oneLine;
+                }
             }
             const lines = this.emitBlock(body, indent + 1, fn.body.end);
 
-            return 'function (' + params + ')' + (uses.length ? ' use (' + uses.join(', ') + ')' : '') + ' {\n' +
-                lines.join('\n') + '\n' + pad + '}';
+            return head + ' {\n' + lines.join('\n') + '\n' + pad + '}';
         });
     }
 

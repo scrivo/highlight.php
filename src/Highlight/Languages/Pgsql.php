@@ -108,7 +108,7 @@ final class Pgsql implements LanguageDefinition
         // some types from standard extensions
         'HSTORE|10 LO LTREE|10 ';
 
-        $TYPES_RE = implode('|', array_map(fn ($val) => explode('|', $val)[0], explode(' ', trim($TYPES))));
+        $TYPES_RE = implode('|', array_map(function ($val) { return explode('|', $val)[0]; }, explode(' ', trim($TYPES))));
 
         $SQL_BI = 'CURRENT_TIME CURRENT_TIMESTAMP CURRENT_USER CURRENT_CATALOG|10 CURRENT_DATE LOCALTIME LOCALTIMESTAMP '
             . 'CURRENT_ROLE|10 CURRENT_SCHEMA|10 SESSION_USER PUBLIC ';
@@ -287,7 +287,7 @@ final class Pgsql implements LanguageDefinition
         // https://www.postgresql.org/docs/11/static/functions-trigger.html
         // ihttps://www.postgresql.org/docs/devel/static/lo-funcs.html
         //
-        $FUNCTIONS_RE = implode('|', array_map(fn ($val) => explode('|', $val)[0], explode(' ', trim($FUNCTIONS))));
+        $FUNCTIONS_RE = implode('|', array_map(function ($val) { return explode('|', $val)[0]; }, explode(' ', trim($FUNCTIONS))));
 
         return new Mode([
             'name' => 'PostgreSQL',

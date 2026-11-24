@@ -45,29 +45,50 @@ namespace Highlight;
 final class Hljs
 {
     // Common regexps
-    public string $IDENT_RE = '[a-zA-Z]\w*';
-    public string $UNDERSCORE_IDENT_RE = '[a-zA-Z_]\w*';
-    public string $NUMBER_RE = '\b\d+(\.\d+)?';
-    public string $C_NUMBER_RE = '(-?)(\b0[xX][a-fA-F0-9]+|(\b\d+(\.\d*)?|\.\d+)([eE][-+]?\d+)?)'; // 0x..., 0..., decimal, float
-    public string $BINARY_NUMBER_RE = '\b(0b[01]+)'; // 0b...
-    public string $RE_STARTERS_RE = '!|!=|!==|%|%=|&|&&|&=|\*|\*=|\+|\+=|,|-|-=|/=|/|:|;|<<|<<=|<=|<|===|==|=|>>>=|>>=|>=|>>>|>>|>|\?|\[|\{|\(|\^|\^=|\||\|=|\|\||~';
+    /** @var string */
+    public $IDENT_RE = '[a-zA-Z]\w*';
+    /** @var string */
+    public $UNDERSCORE_IDENT_RE = '[a-zA-Z_]\w*';
+    /** @var string */
+    public $NUMBER_RE = '\b\d+(\.\d+)?';
+    /** @var string */
+    public $C_NUMBER_RE = '(-?)(\b0[xX][a-fA-F0-9]+|(\b\d+(\.\d*)?|\.\d+)([eE][-+]?\d+)?)'; // 0x..., 0..., decimal, float
+    /** @var string */
+    public $BINARY_NUMBER_RE = '\b(0b[01]+)'; // 0b...
+    /** @var string */
+    public $RE_STARTERS_RE = '!|!=|!==|%|%=|&|&&|&=|\*|\*=|\+|\+=|,|-|-=|/=|/|:|;|<<|<<=|<=|<|===|==|=|>>>=|>>=|>=|>>>|>>|>|\?|\[|\{|\(|\^|\^=|\||\|=|\|\||~';
 
     // Common modes
-    public Mode $BACKSLASH_ESCAPE;
-    public Mode $APOS_STRING_MODE;
-    public Mode $QUOTE_STRING_MODE;
-    public Mode $PHRASAL_WORDS_MODE;
-    public Mode $C_LINE_COMMENT_MODE;
-    public Mode $C_BLOCK_COMMENT_MODE;
-    public Mode $HASH_COMMENT_MODE;
-    public Mode $NUMBER_MODE;
-    public Mode $C_NUMBER_MODE;
-    public Mode $BINARY_NUMBER_MODE;
-    public Mode $CSS_NUMBER_MODE;
-    public Mode $REGEXP_MODE;
-    public Mode $TITLE_MODE;
-    public Mode $UNDERSCORE_TITLE_MODE;
-    public Mode $METHOD_GUARD;
+    /** @var Mode */
+    public $BACKSLASH_ESCAPE;
+    /** @var Mode */
+    public $APOS_STRING_MODE;
+    /** @var Mode */
+    public $QUOTE_STRING_MODE;
+    /** @var Mode */
+    public $PHRASAL_WORDS_MODE;
+    /** @var Mode */
+    public $C_LINE_COMMENT_MODE;
+    /** @var Mode */
+    public $C_BLOCK_COMMENT_MODE;
+    /** @var Mode */
+    public $HASH_COMMENT_MODE;
+    /** @var Mode */
+    public $NUMBER_MODE;
+    /** @var Mode */
+    public $C_NUMBER_MODE;
+    /** @var Mode */
+    public $BINARY_NUMBER_MODE;
+    /** @var Mode */
+    public $CSS_NUMBER_MODE;
+    /** @var Mode */
+    public $REGEXP_MODE;
+    /** @var Mode */
+    public $TITLE_MODE;
+    /** @var Mode */
+    public $UNDERSCORE_TITLE_MODE;
+    /** @var Mode */
+    public $METHOD_GUARD;
 
     /** @var callable(string): ?Language */
     private $languageResolver;
@@ -77,7 +98,9 @@ final class Hljs
      */
     public function __construct(?callable $languageResolver = null)
     {
-        $this->languageResolver = $languageResolver ?? static fn (string $name): ?Language => null;
+        $this->languageResolver = $languageResolver ?: static function ($name) {
+            return null;
+        };
 
         $this->BACKSLASH_ESCAPE = new Mode(array(
             'begin' => '\\\\[\s\S]',

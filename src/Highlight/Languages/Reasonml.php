@@ -21,7 +21,11 @@ final class Reasonml implements LanguageDefinition
 
     public function __invoke(Hljs $hljs): Mode
     {
-        $orReValues = fn ($ops = null) => implode('|', array_map(fn ($op) => implode('', array_map(fn ($char) => '\\' . $char, str_split($op))), $ops));
+        $orReValues = function ($ops = null) {
+            return implode('|', array_map(function ($op) {
+                return implode('', array_map(function ($char) { return '\\' . $char; }, str_split($op)));
+            }, $ops));
+        };
 
         $RE_IDENT = '~?[a-z$_][0-9a-zA-Z$_]*';
         $RE_MODULE_IDENT = '`?[A-Z$_][0-9a-zA-Z$_]*';

@@ -33,7 +33,7 @@ The recommended approach is to install the project through [Composer](https://ge
 composer require scrivo/highlight.php
 ```
 
-highlight.php v10 requires PHP 8.1 or newer. If you need to support older PHP versions, use the [9.18.x series](https://github.com/scrivo/highlight.php/tree/9.18).
+highlight.php v10 requires PHP 7.1 or newer. If you need to support older PHP versions, use the [9.18.x series](https://github.com/scrivo/highlight.php/tree/9.18).
 
 If you're not using Composer, ensure that the classes defined in the `Highlight` namespace can be found either by inclusion or by an autoloader. A trivial autoloader for this purpose is included in this project as `Highlight\Autoloader.php`
 

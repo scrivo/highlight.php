@@ -119,7 +119,7 @@ class Mode extends \stdClass
                 continue;
             }
 
-            if ($key === 'starts' || !array_is_list($mode->{$key})) {
+            if ($key === 'starts' || !self::isList($mode->{$key})) {
                 $mode->{$key} = new Mode($mode->{$key});
 
                 continue;
@@ -135,6 +135,25 @@ class Mode extends \stdClass
     }
 
     /**
+     * array_is_list() for PHP < 8.1.
+     *
+     * @param array<mixed> $array
+     *
+     * @return bool
+     */
+    private static function isList(array $array)
+    {
+        $i = 0;
+        foreach ($array as $key => $value) {
+            if ($key !== $i++) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
      * Turns a freshly defined mode graph into a plain graph of Mode objects.
      *
      * - mode definitions given as arrays are converted to Mode objects;
@@ -147,7 +166,7 @@ class Mode extends \stdClass
      */
     public static function finalize(Mode $root)
     {
-        $modes = array();
+        $modes = new \SplObjectStorage();
         self::convertModeArrays($root, $modes);
 
         foreach ($modes as $mode) {
@@ -164,17 +183,16 @@ class Mode extends \stdClass
     }
 
     /**
-     * @param array<int, Mode> $visited
+     * @param \SplObjectStorage<Mode, bool> $visited
      *
      * @return void
      */
-    private static function convertModeArrays(Mode $mode, array &$visited)
+    private static function convertModeArrays(Mode $mode, \SplObjectStorage $visited)
     {
-        $id = spl_object_id($mode);
-        if (isset($visited[$id])) {
+        if (isset($visited[$mode])) {
             return;
         }
-        $visited[$id] = $mode;
+        $visited[$mode] = true;
 
         // modes may have been assigned arrays after they were created
         self::convertNestedModes($mode);

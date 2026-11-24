@@ -119,6 +119,8 @@ node generate.js /path/to/highlight.js              # (re)generates src/Highligh
 ./verify.sh /path/to/highlight.js                   # verifies the generated classes
 ```
 
+The transpiler and its verification may require a recent PHP version, but the generated classes must stay compatible with PHP 7.1, like the rest of highlight.php 10.x.
+
 `verify.sh` evaluates every language definition in both JavaScript and PHP and compares the resulting mode trees, including which modes are shared and which arrays are shared. Every language must match before the generated classes are committed.
 
 ## Why don't we generally use `mb_*` functions?
