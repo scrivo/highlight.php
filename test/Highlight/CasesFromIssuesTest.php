@@ -30,7 +30,6 @@
 namespace Highlight\Tests;
 
 use Highlight\Highlighter;
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Finder;
 
@@ -83,7 +82,9 @@ class CasesFromIssuesTest extends TestCase
         return $specialCases;
     }
 
-    #[DataProvider('projectSpecificIssueProvider')]
+    /**
+     * @dataProvider projectSpecificIssueProvider
+     */
     public function testIssueSpecificCases($issueNumber, $source, $expected, $languages)
     {
         $hl = new Highlighter();

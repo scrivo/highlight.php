@@ -37,7 +37,6 @@ use Highlight\Languages\Registry;
 use Highlight\Mode;
 use Highlight\RegEx;
 use Highlight\RegExUtils;
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class LanguageDefinitionTest extends TestCase
@@ -54,7 +53,9 @@ class LanguageDefinitionTest extends TestCase
         }
     }
 
-    #[DataProvider('bundledLanguagesProvider')]
+    /**
+     * @dataProvider bundledLanguagesProvider
+     */
     public function testRegistryAliasesMatchDefinition($id, $class)
     {
         $language = $this->getLanguage(new Highlighter(), $id);
@@ -65,7 +66,9 @@ class LanguageDefinitionTest extends TestCase
         $this->assertInstanceOf(LanguageDefinition::class, new $class());
     }
 
-    #[DataProvider('bundledLanguagesProvider')]
+    /**
+     * @dataProvider bundledLanguagesProvider
+     */
     public function testAllRegularExpressionsCompile($id, $class)
     {
         $hl = new Highlighter();
@@ -151,7 +154,9 @@ class LanguageDefinitionTest extends TestCase
         );
     }
 
-    #[DataProvider('jsRegexProvider')]
+    /**
+     * @dataProvider jsRegexProvider
+     */
     public function testJsToPcre($js, $pcre)
     {
         $this->assertSame($pcre, RegExUtils::jsToPcre($js));
@@ -173,12 +178,13 @@ class LanguageDefinitionTest extends TestCase
         return (new \ReflectionMethod(Highlighter::class, 'getLanguage'))->invoke($hl, $id);
     }
 
-    private function walk(Mode $mode, callable $callback, array &$seen = array())
+    private function walk(Mode $mode, callable $callback, ?\SplObjectStorage $seen = null)
     {
-        if (isset($seen[spl_object_id($mode)])) {
+        $seen = $seen ?: new \SplObjectStorage();
+        if (isset($seen[$mode])) {
             return;
         }
-        $seen[spl_object_id($mode)] = true;
+        $seen[$mode] = true;
         $callback($mode);
 
         foreach (array('contains', 'variants', 'cachedVariants') as $key) {

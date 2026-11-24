@@ -23,7 +23,7 @@ jobs:
         run: composer install --prefer-dist --no-progress
 
       - name: Install tools
-        run: composer tools
+        run: composer bin php-cs-fixer install --no-progress
 
       - name: Run php-cs-fixer
         run: vendor/bin/php-cs-fixer fix --dry-run --format=checkstyle | cs2pr
@@ -35,6 +35,11 @@ jobs:
       fail-fast: false
       matrix:
         php-versions:
+          - '7.1'
+          - '7.2'
+          - '7.3'
+          - '7.4'
+          - '8.0'
           - '8.1'
           - '8.2'
           - '8.3'
@@ -43,7 +48,7 @@ jobs:
         dependencies:
           - 'highest'
         include:
-          - php-versions: '8.1'
+          - php-versions: '7.1'
             dependencies: 'lowest'
 
     steps:

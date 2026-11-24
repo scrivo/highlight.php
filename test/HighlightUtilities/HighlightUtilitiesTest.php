@@ -29,7 +29,6 @@
 
 namespace Highlight\Tests;
 
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class HighlightUtilitiesTest extends TestCase
@@ -232,7 +231,9 @@ XML;
         );
     }
 
-    #[DataProvider('dataProvider_emptyStrings')]
+    /**
+     * @dataProvider dataProvider_emptyStrings
+     */
     public function testSplitCodeIntoArrayEmptyString($string)
     {
         $this->assertEquals(array(), \HighlightUtilities\Functions::splitCodeIntoArray($string));

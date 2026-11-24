@@ -30,7 +30,6 @@
 namespace Highlight\Tests;
 
 use Highlight\Highlighter;
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Finder;
 
@@ -81,7 +80,9 @@ class MarkupTest extends TestCase
         return $testData;
     }
 
-    #[DataProvider('markupTestProvider')]
+    /**
+     * @dataProvider markupTestProvider
+     */
     public function testHighlighter($language, $testName, $raw, $expected)
     {
         if (in_array(array($language, $testName), $this->allowedFailures)) {

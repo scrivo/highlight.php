@@ -11,3 +11,4 @@ test/**/*.js
 .phpunit.cache/
 .project
 tools/transpiler/node_modules/
+.phpunit.result.cache

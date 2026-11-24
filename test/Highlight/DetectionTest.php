@@ -30,7 +30,6 @@
 namespace Highlight\Tests;
 
 use Highlight\Highlighter;
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Finder;
 
@@ -65,7 +64,9 @@ class DetectionTest extends TestCase
         return $testData;
     }
 
-    #[DataProvider('detectableLanguagesProvider')]
+    /**
+     * @dataProvider detectableLanguagesProvider
+     */
     public function testAutomaticDetection($language, $raw)
     {
         $hl = new Highlighter();
