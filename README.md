@@ -4,7 +4,7 @@
 [![Latest Packagist release](https://img.shields.io/packagist/v/scrivo/highlight.php.svg)](https://packagist.org/packages/scrivo/highlight.php)
 [![Monthly downloads on Packagist](https://img.shields.io/packagist/dm/scrivo/highlight.php.svg)](https://packagist.org/packages/scrivo/highlight.php/stats)
 
-*highlight.php* is a server-side syntax highlighter written in PHP that currently supports 185 languages. It's a port of [highlight.js](http://www.highlightjs.org) by Ivan Sagalaev that makes full use of the language and style definitions of the original JavaScript project.
+*highlight.php* is a server-side syntax highlighter written in PHP that currently supports 189 languages. It's a port of [highlight.js](http://www.highlightjs.org) by Ivan Sagalaev that makes full use of the language and style definitions of the original JavaScript project.
 
 > This is the README for highlight.php v10, which is currently under development. The latest stable release is the [9.18.x series](https://github.com/scrivo/highlight.php/tree/9.18).
 
@@ -17,6 +17,7 @@
   - [Explicit Mode](#explicit-mode)
   - [Automatic Language Detection Mode](#automatic-language-detection-mode)
   - [Stylesheets](#stylesheets)
+  - [Custom Languages](#custom-languages)
 - [Highlighter Utilities](#highlighter-utilities)
 - [Versioning](#versioning)
   - [Backward Compatibility Promise](#backward-compatibility-promise)
@@ -31,6 +32,8 @@ The recommended approach is to install the project through [Composer](https://ge
 ```bash
 composer require scrivo/highlight.php
 ```
+
+highlight.php v10 requires PHP 7.1 or newer. If you need to support older PHP versions, use the [9.18.x series](https://github.com/scrivo/highlight.php/tree/9.18).
 
 If you're not using Composer, ensure that the classes defined in the `Highlight` namespace can be found either by inclusion or by an autoloader. A trivial autoloader for this purpose is included in this project as `Highlight\Autoloader.php`
 
@@ -97,6 +100,36 @@ If no autodetect languages are set in the highlighter, then every language will 
 ### Stylesheets
 
 The same stylesheets available in the **highlight.js** project are available in the `styles` directory of this project and may be included in your own CSS or made accessible to your web server.
+
+### Custom Languages
+
+Every language is a class implementing `\Highlight\LanguageDefinition`. The bundled languages are in the `Highlight\Languages` namespace and are generated from the highlight.js language definitions. You can register your own languages in the same way:
+
+```php
+use Highlight\Highlighter;
+use Highlight\Hljs;
+use Highlight\LanguageDefinition;
+use Highlight\Mode;
+
+final class MyLanguage implements LanguageDefinition
+{
+    public function __invoke(Hljs $hljs): Mode
+    {
+        return new Mode([
+            'aliases' => ['mine'],
+            'keywords' => 'if else return',
+            'contains' => [
+                $hljs->QUOTE_STRING_MODE,
+                $hljs->C_LINE_COMMENT_MODE,
+            ],
+        ]);
+    }
+}
+
+Highlighter::registerLanguage('mylanguage', MyLanguage::class);
+```
+
+Language definitions follow the [highlight.js language definition guide](https://highlightjs.readthedocs.io/en/latest/language-guide.html); regular expressions use JavaScript syntax and are translated for PHP automatically. Language files in the JSON format used up to highlight.php 9.x can still be registered by passing their file path.
 
 ## Highlighter Utilities
 

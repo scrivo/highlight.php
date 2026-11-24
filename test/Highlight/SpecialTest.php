@@ -30,8 +30,9 @@
 namespace Highlight\Tests;
 
 use Highlight\Highlighter;
+use PHPUnit\Framework\TestCase;
 
-class SpecialTest extends \PHPUnit_Framework_TestCase
+class SpecialTest extends TestCase
 {
     private function getTestData($name)
     {

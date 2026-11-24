@@ -30,18 +30,17 @@
 namespace Highlight\Tests;
 
 use Highlight\Highlighter;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Finder;
 
-class MarkupTest extends \PHPUnit_Framework_TestCase
+class MarkupTest extends TestCase
 {
     private $allowedFailures;
 
-    public function setUp()
+    protected function setUp(): void
     {
-        $this->allowedFailures = array(
-            array('haskell', 'nested-comments'),
-            array('http', 'default'),
-        );
+        // All markup tests of highlight.js pass, add [language, test name] pairs here when one is known to fail
+        $this->allowedFailures = array();
     }
 
     public static function markupTestProvider()

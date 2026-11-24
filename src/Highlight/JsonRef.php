@@ -81,7 +81,7 @@ class JsonRef
      *
      * @var array<string, mixed>
      */
-    private $paths = null;
+    private $paths;
 
     /**
      * Recurse through the data tree and fill an array of paths that reference

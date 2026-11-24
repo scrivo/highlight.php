@@ -16,7 +16,7 @@ final class Terminators
     private $matchIndexes = array();
 
     /** @var RegEx|null */
-    private $matcherRe = null;
+    private $matcherRe;
 
     /** @var array<int, array<int, Mode|string>> */
     private $regexes = array();
@@ -55,7 +55,9 @@ final class Terminators
             $term = $mode->contains[$i];
 
             if ($term->beginKeywords) {
-                $re = "\.?(?:" . $term->begin . ")\.?";
+                // highlight.js ignores keyword matches preceded or followed by a dot, which is what these
+                // look-arounds do
+                $re = "(?<!\\.)(?:" . $term->begin . ")(?!\\.)";
             } else {
                 $re = $term->begin;
             }
@@ -216,8 +218,6 @@ final class Terminators
 
     /**
      * @param RegEx|string $re
-     *
-     * @return mixed
      */
     private function reStr($re)
     {
@@ -236,7 +236,7 @@ final class Terminators
     private function reCountMatchGroups($re)
     {
         $results = array();
-        $escaped = preg_replace('#(?<!\\\)/#um', '\\/', (string) $re);
+        $escaped = RegExUtils::jsToPcre((string) $re);
         preg_match_all("/{$escaped}|/u", '', $results);
 
         return count($results) - 1;

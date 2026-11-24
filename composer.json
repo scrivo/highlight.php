@@ -1,6 +1,6 @@
 {
     "name": "scrivo/highlight.php",
-    "description": "Server side syntax highlighter that supports 185 languages. It's a PHP port of highlight.js",
+    "description": "Server side syntax highlighter that supports 189 languages. It's a PHP port of highlight.js",
     "keywords": [
         "code",
         "syntax",
@@ -14,7 +14,7 @@
         "format": "php-cs-fixer fix $(if [ ! -z $CI ]; then echo \"--format=checkstyle\"; fi)",
         "test:detection": "phpunit test/Highlight/DetectionTest.php",
         "test:markup": "phpunit test/Highlight/MarkupTest.php",
-        "test": "phpunit -v",
+        "test": "phpunit",
         "tools": "@composer bin all install --ansi"
     },
     "support": {
@@ -52,18 +52,16 @@
         }
     ],
     "require": {
-        "php": ">=5.6",
+        "php": ">=7.1",
         "ext-json": "*",
         "ext-mbstring": "*"
     },
     "require-dev": {
-        "php": ">=8.0",
-        "bamarni/composer-bin-plugin": "^1.8",
-        "phpbench/phpbench": "^1.0",
-        "phpunit/phpunit": "^5.7",
+        "bamarni/composer-bin-plugin": "^1.4.1",
+        "phpunit/phpunit": "^7.5.20 || ^8.5.52 || ^9.6.33 || ^10.5.62",
         "sabberworm/php-css-parser": "^8.3",
-        "symfony/finder": "^4.4",
-        "symfony/var-dumper": "^4.4"
+        "symfony/finder": "^4.4 || ^5.4 || ^6.4 || ^7.0",
+        "symfony/var-dumper": "^4.4 || ^5.4 || ^6.4 || ^7.0"
     },
     "extra": {
         "branch-alias": {
@@ -74,6 +72,11 @@
         "sort-packages": true,
         "allow-plugins": {
             "bamarni/composer-bin-plugin": true
+        },
+        "audit": {
+            "ignore": {
+                "CVE-2026-24765": "Only PHPUnit 7.5, required to test on PHP 7.1, is affected: it has no fixed release. The vulnerability is in PHPT code coverage handling, which this project does not use."
+            }
         }
     }
 }

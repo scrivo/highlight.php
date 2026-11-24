@@ -38,19 +38,21 @@ Auxiliary class used in the Highlight class. Instances of these classes represen
 
 You don't need this class.
 
+### Hljs.php (Hljs)
+
+The `hljs` object that is passed to language definitions. It offers the common regular expressions and modes (`$hljs->C_LINE_COMMENT_MODE`, `$hljs->IDENT_RE`, ...) and the helpers `inherit()`, `COMMENT()`, `getLanguage()` and `requireLanguage()`, with the same names as in highlight.js.
+
+### LanguageDefinition.php (LanguageDefinition) and Mode.php (Mode)
+
+A language is defined by a class implementing `LanguageDefinition`: an invokable that receives an `Hljs` instance and returns the `Mode` tree of the language. This is the PHP counterpart of a highlight.js language function `function(hljs) { return {...}; }`. Regular expressions in language definitions use JavaScript syntax; `RegExUtils::jsToPcre()` translates them to PCRE when a language is compiled.
+
 ### JsonRef.php (JsonRef)
 
-Auxiliary class to decode JSON files containing path-based references. The language definition data from [highlight.js](http://www.highlightjs.org) is too complex to be described in ordinary JSON files. Therefore it was chosen to use [dojox.json.ref](https://dojotoolkit.org/reference-guide/1.9/dojox/json/ref.html) to export them. This class is able (to a very limited extend) to decode JSON data that was created with this [dojo](https://dojotoolkit.org) toolkit.
+Auxiliary class to decode JSON files containing path-based references, as created by [dojox.json.ref](https://dojotoolkit.org/reference-guide/1.9/dojox/json/ref.html). Up to highlight.php 9.x the language definitions were JSON files in this format; it is kept to load such legacy language files.
 
-This class has a very distinct purpose and might be useful in other projects as well (and might be a good starting point for a new project ;) ).
+### the Languages folder
 
-### Autoloader.php (Autoloader)
-
-A simple autoloader class that you possible might want or more likely not want to use. It is used for the tools and tests.
-
-### the languages folder
-
-This folder contains all language definitions: one JSON file for each language. These files are not hand coded but extracted from the original [highlight.js](http://www.highlightjs.org) project.
+This folder contains all language definitions: one PHP class for each language, plus `Registry.php` which maps language IDs to their classes and aliases. These files are not hand coded but generated from the original [highlight.js](http://www.highlightjs.org) language definitions by the transpiler in `tools/transpiler`.
 
 ## Styles
 
@@ -70,10 +72,11 @@ Much like [demo.php](#demo-php) but this page focuses on the comparison between 
 
 ## Test
 
-This folder contains the unit test for _highlight.php_. To run them, run _phpunit_ from this directory:
+This folder contains the unit tests for _highlight.php_. They run on PHP 7.1 or newer, with PHPUnit 7.5 up to 10.5 depending on the PHP version. To run them, install the development dependencies and run the test script from the project root:
 
 ```bash
-phpnunit .
+composer install
+composer test
 ```
 
 Note that the following tests for _highlight.js_ were not rewritten for _highlight.php_:
@@ -98,12 +101,27 @@ _highlight.php_ does not modify class names of code containers.
 
 A collection of scripts that are used to extract data from the original [highlight.js](http://www.highlightjs.org) project.
 
-The process of bringing in languages from highlight.js has been put into a single script. This script requires that you have cURL, PHP, and node.js installed on your machine. This is only necessary if you'd like to update languages or bring in new languages, it's **not** required for using this library in your application.
+The process of bringing in languages, styles and tests from highlight.js has been put into a single script. This script requires that you have cURL, PHP, and node.js installed on your machine. This is only necessary if you'd like to update languages or bring in new languages, it's **not** required for using this library in your application.
 
 ```bash
 cd tools
 bash process.sh
 ```
+
+### The language transpiler
+
+Since highlight.js 10, language definitions may contain code, so they can't be exported as data anymore. Instead, `tools/transpiler` translates the JavaScript of each language definition (`src/languages/*.js` in highlight.js) into an equivalent PHP class. It supports the subset of JavaScript that language definitions are written in, and fails loudly on anything else, so that new constructs are noticed when updating highlight.js.
+
+```bash
+cd tools/transpiler
+npm install
+node generate.js /path/to/highlight.js              # (re)generates src/Highlight/Languages
+./verify.sh /path/to/highlight.js                   # verifies the generated classes
+```
+
+The transpiler and its verification may require a recent PHP version, but the generated classes must stay compatible with PHP 7.1, like the rest of highlight.php 10.x.
+
+`verify.sh` evaluates every language definition in both JavaScript and PHP and compares the resulting mode trees, including which modes are shared and which arrays are shared. Every language must match before the generated classes are committed.
 
 ## Why don't we generally use `mb_*` functions?
 

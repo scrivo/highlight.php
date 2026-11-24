@@ -1,22 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Kept compatible with PHPUnit 7.5 up to 10.5, so the tests run on PHP 7.1 up to 8.x.
+    Deprecations, notices and warnings fail the tests: test/bootstrap.php turns them into exceptions.
+-->
 <phpunit
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/3.7/phpunit.xsd"
     bootstrap="test/bootstrap.php"
     colors="true"
+    failOnWarning="true"
 >
     <testsuites>
         <testsuite name="highlight.php Test Suite">
-            <directory suffix="Test.php" phpVersion="5.4.0" phpVersionOperator=">=">test</directory>
+            <directory suffix="Test.php">test</directory>
         </testsuite>
     </testsuites>
 
     <php>
         <ini name="error_reporting" value="-1" />
     </php>
-
-    <filter>
-        <whitelist>
-            <directory suffix="Test.php">test</directory>
-        </whitelist>
-    </filter>
 </phpunit>

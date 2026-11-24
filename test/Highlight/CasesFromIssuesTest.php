@@ -30,9 +30,10 @@
 namespace Highlight\Tests;
 
 use Highlight\Highlighter;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Finder;
 
-class CasesFromIssuesTest extends \PHPUnit_Framework_TestCase
+class CasesFromIssuesTest extends TestCase
 {
     private static function parseFileName($filename)
     {
